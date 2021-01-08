@@ -6,25 +6,25 @@
 #include <netinet/ip.h>
 
 #define PORT 8080
-#define TCP_BACKLOG 511
+#define TCP_BACKLOG 11
 
 int main() {
   int sock_fd, in_fd;
-  struct sockaddr_in servaddr;
-  struct sockaddr in_addr;
+  struct sockaddr_in serv_addr, in_addr;
+  int in_len = sizeof(in_addr);
 
   if ((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
     exit(EXIT_FAILURE);
   }
 
-  memset(&servaddr, 0, sizeof(servaddr));
+  memset(&serv_addr, 0, sizeof(serv_addr));
 
-  servaddr.sin_family = AF_INET;
-  servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-  servaddr.sin_port = htons(PORT);
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  serv_addr.sin_port = htons(PORT);
 
-  if (bind(sock_fd, (struct sockaddr*) &servaddr, sizeof(servaddr)) < 0) {
+  if (bind(sock_fd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
       perror("failed to bind socket");
       exit(EXIT_FAILURE);
   }
@@ -34,11 +34,13 @@ int main() {
     exit(EXIT_FAILURE);
   }
 
-  socklen_t in_len = sizeof(in_addr);
+  while (1) {
+    printf("--- listening for connections ---\n\n");
 
-  if ((in_fd = accept(sock_fd, &in_addr, &in_len)) < 0) {
-    perror("failed to accept");
-    exit(EXIT_FAILURE);
+    if ((in_fd = accept(sock_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
+      perror("failed to accept");
+      exit(EXIT_FAILURE);
+    }
   }
 
   return 0;
