@@ -8,36 +8,36 @@
 #define PORT 8080
 
 int main() {
+  int sockfd, in_fd;
+  struct sockaddr_in servaddr;
+  struct sockaddr in_addr;
 
-  int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-  if (sockfd == -1) {
-    printf("failed to create socket\n");
-    exit(1);
+  if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+    perror("failed to create socket");
+    exit(EXIT_FAILURE);
   }
 
-  struct sockaddr_in servaddr;
+  memset(&servaddr, 0, sizeof(servaddr));
+
   servaddr.sin_family = AF_INET;
   servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
   servaddr.sin_port = htons(PORT);
 
-  int err = bind(sockfd, (struct sockaddr*) &servaddr, sizeof(servaddr));
-  if (err != 0) {
-      printf("failed to bind socket\n");
-      return err;
+  if (bind(sockfd, (struct sockaddr*) &servaddr, sizeof(servaddr)) < 0) {
+      perror("failed to bind socket");
+      exit(EXIT_FAILURE);
   }
 
-  if (listen(sockfd, 511) != 0) {
-    printf("failed to listen\n");
-    exit(1);
+  if (listen(sockfd, 511) < 0) {
+    perror("failed to listen");
+    exit(EXIT_FAILURE);
   }
 
-  struct sockaddr in_addr;
   socklen_t in_len = sizeof(in_addr);
 
-  int in_fd = accept(sockfd, &in_addr, &in_len);
-  if (in_fd < 0) {
-    printf("failed to accept");
-    exit(0);
+  if ((in_fd = accept(sockfd, &in_addr, &in_len)) < 0) {
+    perror("failed to accept");
+    exit(EXIT_FAILURE);
   }
 
   return 0;
