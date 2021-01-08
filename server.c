@@ -6,6 +6,7 @@
 #include <netinet/ip.h>
 
 #define PORT 8080
+#define TCP_BACKLOG 511
 
 int main() {
   int sockfd, in_fd;
@@ -28,7 +29,7 @@ int main() {
       exit(EXIT_FAILURE);
   }
 
-  if (listen(sockfd, 511) < 0) {
+  if (listen(sockfd, TCP_BACKLOG) < 0) {
     perror("failed to listen");
     exit(EXIT_FAILURE);
   }
