@@ -4,14 +4,17 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/ip.h>
+#include <unistd.h>
 
 #define PORT 8080
 #define TCP_BACKLOG 11
 
 int main() {
-  int serv_fd, in_fd;
+  int serv_fd, in_fd, val_read;
   struct sockaddr_in serv_addr, in_addr;
   int in_len = sizeof(in_addr);
+
+  char *pong = "PONG\n";
 
   if ((serv_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
@@ -41,6 +44,13 @@ int main() {
       perror("failed to accept");
       exit(EXIT_FAILURE);
     }
+
+    char buffer[30000] = {0};
+    val_read = read(in_fd, buffer, 30000);
+    printf("%s\n", buffer);
+
+    write(in_fd, pong, strlen(pong));
+    close(in_fd);
   }
 
   return 0;
