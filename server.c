@@ -9,11 +9,11 @@
 #define TCP_BACKLOG 11
 
 int main() {
-  int sock_fd, in_fd;
+  int serv_fd, in_fd;
   struct sockaddr_in serv_addr, in_addr;
   int in_len = sizeof(in_addr);
 
-  if ((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+  if ((serv_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
     exit(EXIT_FAILURE);
   }
@@ -24,12 +24,12 @@ int main() {
   serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
   serv_addr.sin_port = htons(PORT);
 
-  if (bind(sock_fd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
+  if (bind(serv_fd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
       perror("failed to bind socket");
       exit(EXIT_FAILURE);
   }
 
-  if (listen(sock_fd, TCP_BACKLOG) < 0) {
+  if (listen(serv_fd, TCP_BACKLOG) < 0) {
     perror("failed to listen");
     exit(EXIT_FAILURE);
   }
@@ -37,7 +37,7 @@ int main() {
   while (1) {
     printf("--- listening for connections ---\n\n");
 
-    if ((in_fd = accept(sock_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
+    if ((in_fd = accept(serv_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
       perror("failed to accept");
       exit(EXIT_FAILURE);
     }
