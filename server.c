@@ -54,14 +54,10 @@ int main() {
     }
 
     memset(client_buffer, 0, sizeof(client_buffer));
-    read_size = recv(in_fd, client_buffer, buff_size, 0);
-    if (read_size < 0) {
-      perror("read error");
-      exit(EXIT_FAILURE);
+    while ((read_size = recv(in_fd, client_buffer, buff_size, 0)) > 0) {
+      printf("%s\n", client_buffer);
+      memset(client_buffer, 0, sizeof(client_buffer));
     }
-
-    printf("%s\n", client_buffer);
-    close(in_fd);
   }
 
   return 0;
