@@ -10,7 +10,7 @@
 #define TCP_BACKLOG 11
 
 int main() {
-  int serv_fd, in_fd, read_size;
+  int serv_fd, cli_fd, read_size;
   struct sockaddr_in serv_addr, in_addr;
   int in_len = sizeof(in_addr);
 
@@ -48,13 +48,13 @@ int main() {
 
   while (1) {
     printf("--- waiting for clients ---\n");
-    if ((in_fd = accept(serv_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
+    if ((cli_fd = accept(serv_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
       perror("failed to accept");
       exit(EXIT_FAILURE);
     }
 
     memset(client_buffer, 0, sizeof(client_buffer));
-    while ((read_size = recv(in_fd, client_buffer, buff_size, 0)) > 0) {
+    while ((read_size = recv(cli_fd, client_buffer, buff_size, 0)) > 0) {
       printf("%s\n", client_buffer);
       memset(client_buffer, 0, sizeof(client_buffer));
     }
