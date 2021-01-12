@@ -1,15 +1,15 @@
 #include "server.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <netinet/ip.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
 
-server_t* create_server() {
-  server_t* server = malloc(sizeof(*server));
+server_t *create_server() {
+  server_t *server = malloc(sizeof(*server));
 
   if (server == NULL) {
     perror("failed to allocate memory for server");
@@ -21,14 +21,15 @@ server_t* create_server() {
   return server;
 }
 
-int server_listen(server_t* server) {
+int server_listen(server_t *server) {
   if ((server->master_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
     return 1;
   }
 
   int enable = 1;
-  if (setsockopt(server->master_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) < 0) {
+  if (setsockopt(server->master_fd, SOL_SOCKET, SO_REUSEADDR, &enable,
+                 sizeof(enable)) < 0) {
     perror("setsockopt(SO_REUSEADDR) failed");
     exit(EXIT_FAILURE);
   }
@@ -39,7 +40,8 @@ int server_listen(server_t* server) {
   serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
   serv_addr.sin_port = htons(PORT);
 
-  if (bind(server->master_fd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
+  if (bind(server->master_fd, (struct sockaddr *)&serv_addr,
+           sizeof(serv_addr)) < 0) {
     perror("failed to bind socket");
     return 1;
   }
@@ -77,7 +79,8 @@ int server_listen(server_t* server) {
       if (FD_ISSET(i, &copy_fds)) {
         printf("isset[%d]\n", i);
         if (i == server->master_fd) {
-          if ((cli_fd = accept(server->master_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
+          if ((cli_fd = accept(server->master_fd, (struct sockaddr *)&in_addr,
+                               (socklen_t *)&in_len)) < 0) {
             perror("failed to accept");
             return 1;
           }
@@ -106,7 +109,7 @@ int server_listen(server_t* server) {
   return 0;
 }
 
-int destroy_server(server_t* server) {
+int destroy_server(server_t *server) {
   if (server->master_fd != -1) {
     int err = close(server->master_fd);
     if (err < 0) {
