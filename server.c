@@ -22,14 +22,13 @@ server_t* create_server() {
 }
 
 int server_listen(server_t* server) {
-  int serv_fd = socket(AF_INET, SOCK_STREAM, 0);
-  if (serv_fd < 0) {
+  if ((server->master_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
     return 1;
   }
 
   int enable = 1;
-  if (setsockopt(serv_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) < 0) {
+  if (setsockopt(server->master_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) < 0) {
     perror("setsockopt(SO_REUSEADDR) failed");
     exit(EXIT_FAILURE);
   }
@@ -40,33 +39,67 @@ int server_listen(server_t* server) {
   serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
   serv_addr.sin_port = htons(PORT);
 
-  if (bind(serv_fd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
+  if (bind(server->master_fd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
     perror("failed to bind socket");
     return 1;
   }
 
-  if (listen(serv_fd, TCP_BACKLOG) < 0) {
+  if (listen(server->master_fd, TCP_BACKLOG) < 0) {
     perror("failed to listen");
     return 1;
   }
 
+  FD_ZERO(&server->read_fds);
+  FD_SET(server->master_fd, &server->read_fds);
+  server->max_fd = server->master_fd;
+
+  printf("--- waiting for clients ---\n");
+  printf("max_fd[%d]\n", server->max_fd);
+
   int buff_size = 1024;
   char client_buffer[buff_size];
+  memset(client_buffer, 0, sizeof(client_buffer));
+
   int cli_fd, read_size;
   struct sockaddr_in in_addr;
   int in_len = sizeof(in_addr);
 
   while (1) {
-    printf("--- waiting for clients ---\n");
-    if ((cli_fd = accept(serv_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
-      perror("failed to accept");
+    fd_set copy_fds = server->read_fds;
+
+    if (select(server->max_fd + 1, &copy_fds, NULL, NULL, NULL) < 0) {
+      perror("select error");
       return 1;
     }
 
-    memset(client_buffer, 0, sizeof(client_buffer));
-    while ((read_size = recv(cli_fd, client_buffer, buff_size, 0)) > 0) {
-      printf("%s\n", client_buffer);
-      memset(client_buffer, 0, sizeof(client_buffer));
+    for (int i = 0; i <= server->max_fd; i++) {
+      printf("looping[%d]\n", i);
+      if (FD_ISSET(i, &copy_fds)) {
+        printf("isset[%d]\n", i);
+        if (i == server->master_fd) {
+          if ((cli_fd = accept(server->master_fd, (struct sockaddr*) &in_addr, (socklen_t*) &in_len)) < 0) {
+            perror("failed to accept");
+            return 1;
+          }
+
+          printf("client connected\n");
+
+          FD_SET(cli_fd, &server->read_fds);
+          if (cli_fd > server->max_fd) {
+            server->max_fd = cli_fd;
+          }
+        } else {
+          printf("receiving from [%d]\n", i);
+          if ((read_size = recv(i, client_buffer, buff_size, 0)) > 0) {
+            printf("received[%d] %s\n", read_size, client_buffer);
+            memset(client_buffer, 0, sizeof(client_buffer));
+          } else {
+            printf("client connection closed");
+            close(i);
+            FD_CLR(i, &server->read_fds);
+          }
+        }
+      }
     }
   }
 

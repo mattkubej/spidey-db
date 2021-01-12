@@ -1,11 +1,16 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <sys/time.h>
+
 #define PORT 8080
 #define TCP_BACKLOG 11
+#define MAX_CLIENTS 11
 
 typedef struct spideyServer {
   int master_fd;
+  fd_set read_fds;
+  int max_fd;
 } server_t;
 
 server_t* create_server();
