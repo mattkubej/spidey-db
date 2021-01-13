@@ -56,7 +56,6 @@ int server_listen(server_t *server) {
   server->max_fd = server->master_fd;
 
   printf("--- waiting for clients ---\n");
-  printf("max_fd[%d]\n", server->max_fd);
 
   int buff_size = 1024;
   char client_buffer[buff_size];
@@ -75,9 +74,7 @@ int server_listen(server_t *server) {
     }
 
     for (int i = 0; i <= server->max_fd; i++) {
-      printf("looping[%d]\n", i);
       if (FD_ISSET(i, &copy_fds)) {
-        printf("isset[%d]\n", i);
         if (i == server->master_fd) {
           if ((cli_fd = accept(server->master_fd, (struct sockaddr *)&in_addr,
                                (socklen_t *)&in_len)) < 0) {
@@ -85,19 +82,15 @@ int server_listen(server_t *server) {
             return 1;
           }
 
-          printf("client connected\n");
-
           FD_SET(cli_fd, &server->read_fds);
           if (cli_fd > server->max_fd) {
             server->max_fd = cli_fd;
           }
         } else {
-          printf("receiving from [%d]\n", i);
           if ((read_size = recv(i, client_buffer, buff_size, 0)) > 0) {
-            printf("received[%d] %s\n", read_size, client_buffer);
+            printf("%s\n", client_buffer);
             memset(client_buffer, 0, sizeof(client_buffer));
           } else {
-            printf("client connection closed");
             close(i);
             FD_CLR(i, &server->read_fds);
           }
