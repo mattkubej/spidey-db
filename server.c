@@ -57,8 +57,7 @@ int server_listen(server_t *server) {
 
   printf("--- waiting for clients ---\n");
 
-  int buff_size = 1024;
-  char client_buffer[buff_size];
+  char client_buffer[CLIENT_BUF_SZ];
   memset(client_buffer, 0, sizeof(client_buffer));
 
   int cli_fd, read_size;
@@ -87,7 +86,7 @@ int server_listen(server_t *server) {
             server->max_fd = cli_fd;
           }
         } else {
-          if ((read_size = recv(i, client_buffer, buff_size, 0)) > 0) {
+          if ((read_size = recv(i, client_buffer, CLIENT_BUF_SZ, 0)) > 0) {
             printf("%s\n", client_buffer);
             memset(client_buffer, 0, sizeof(client_buffer));
           } else {
