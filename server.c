@@ -86,8 +86,9 @@ int server_listen(server_t *server) {
             server->max_fd = cli_fd;
           }
         } else {
-          if ((read_size = recv(i, client_buffer, CLIENT_BUF_SZ, 0)) > 0) {
-            printf("%s\n", client_buffer);
+          if ((read_size = recv(i, client_buffer, CLIENT_BUF_SZ - 1, 0)) > 0) {
+            client_buffer[read_size] = '\0';
+            printf("%s", client_buffer);
             memset(client_buffer, 0, sizeof(client_buffer));
           } else {
             close(i);
