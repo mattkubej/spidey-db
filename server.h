@@ -6,7 +6,7 @@
 #define PORT 8080
 #define TCP_BACKLOG 11
 #define MAX_CLIENTS 11
-#define CLIENT_BUF_SZ 1024
+#define CLT_BUF_SZ 1024
 
 typedef struct spideyServer {
   int master_fd;

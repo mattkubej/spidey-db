@@ -26,7 +26,7 @@ int accept_connection(server_t *server) {
   int in_len = sizeof(in_addr);
 
   int clt_fd = accept(server->master_fd, (struct sockaddr *)&in_addr,
-                       (socklen_t *)&in_len);
+                      (socklen_t *)&in_len);
 
   if (clt_fd < 0) {
     perror("failed to accept");
@@ -36,6 +36,24 @@ int accept_connection(server_t *server) {
   FD_SET(clt_fd, &server->read_fds);
   if (clt_fd > server->max_fd) {
     server->max_fd = clt_fd;
+  }
+
+  return 0;
+}
+
+int recv_clt_msg(server_t *server, int clt_fd) {
+  char clt_buf[CLT_BUF_SZ];
+  memset(clt_buf, 0, sizeof(clt_buf));
+
+  int read_size;
+
+  if ((read_size = recv(clt_fd, clt_buf, CLT_BUF_SZ - 1, 0)) > 0) {
+    clt_buf[read_size] = '\0';
+    printf("%s", clt_buf);
+    memset(clt_buf, 0, sizeof(clt_buf));
+  } else {
+    close(clt_fd);
+    FD_CLR(clt_fd, &server->read_fds);
   }
 
   return 0;
@@ -77,11 +95,6 @@ int server_listen(server_t *server) {
 
   printf("--- waiting for clients ---\n");
 
-  char client_buffer[CLIENT_BUF_SZ];
-  memset(client_buffer, 0, sizeof(client_buffer));
-
-  int read_size;
-
   while (1) {
     fd_set copy_fds = server->read_fds;
 
@@ -95,14 +108,7 @@ int server_listen(server_t *server) {
         if (i == server->master_fd) {
           accept_connection(server);
         } else {
-          if ((read_size = recv(i, client_buffer, CLIENT_BUF_SZ - 1, 0)) > 0) {
-            client_buffer[read_size] = '\0';
-            printf("%s", client_buffer);
-            memset(client_buffer, 0, sizeof(client_buffer));
-          } else {
-            close(i);
-            FD_CLR(i, &server->read_fds);
-          }
+          recv_clt_msg(server, i);
         }
       }
     }
@@ -121,6 +127,8 @@ int destroy_server(server_t *server) {
 
     server->master_fd = -1;
   }
+
+  // TODO: close all client fds?
 
   return 0;
 }
