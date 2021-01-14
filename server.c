@@ -93,9 +93,7 @@ int server_listen(server_t *server) {
     for (int i = 0; i <= server->max_fd; i++) {
       if (FD_ISSET(i, &copy_fds)) {
         if (i == server->master_fd) {
-          if (accept_connection(server) < 0) {
-            return 1;
-          }
+          accept_connection(server);
         } else {
           if ((read_size = recv(i, client_buffer, CLIENT_BUF_SZ - 1, 0)) > 0) {
             client_buffer[read_size] = '\0';
