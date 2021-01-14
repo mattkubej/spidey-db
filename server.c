@@ -21,6 +21,26 @@ server_t *create_server() {
   return server;
 }
 
+int accept_connection(server_t *server) {
+  struct sockaddr_in in_addr;
+  int in_len = sizeof(in_addr);
+
+  int clt_fd = accept(server->master_fd, (struct sockaddr *)&in_addr,
+                       (socklen_t *)&in_len);
+
+  if (clt_fd < 0) {
+    perror("failed to accept");
+    return 1;
+  }
+
+  FD_SET(clt_fd, &server->read_fds);
+  if (clt_fd > server->max_fd) {
+    server->max_fd = clt_fd;
+  }
+
+  return 0;
+}
+
 int server_listen(server_t *server) {
   if ((server->master_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
@@ -60,9 +80,7 @@ int server_listen(server_t *server) {
   char client_buffer[CLIENT_BUF_SZ];
   memset(client_buffer, 0, sizeof(client_buffer));
 
-  int cli_fd, read_size;
-  struct sockaddr_in in_addr;
-  int in_len = sizeof(in_addr);
+  int read_size;
 
   while (1) {
     fd_set copy_fds = server->read_fds;
@@ -75,16 +93,7 @@ int server_listen(server_t *server) {
     for (int i = 0; i <= server->max_fd; i++) {
       if (FD_ISSET(i, &copy_fds)) {
         if (i == server->master_fd) {
-          if ((cli_fd = accept(server->master_fd, (struct sockaddr *)&in_addr,
-                               (socklen_t *)&in_len)) < 0) {
-            perror("failed to accept");
-            return 1;
-          }
-
-          FD_SET(cli_fd, &server->read_fds);
-          if (cli_fd > server->max_fd) {
-            server->max_fd = cli_fd;
-          }
+          accept_connection(server);
         } else {
           if ((read_size = recv(i, client_buffer, CLIENT_BUF_SZ - 1, 0)) > 0) {
             client_buffer[read_size] = '\0';
