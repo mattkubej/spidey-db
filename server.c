@@ -93,8 +93,7 @@ int server_listen(server_t *server) {
     for (int i = 0; i <= server->max_fd; i++) {
       if (FD_ISSET(i, &copy_fds)) {
         if (i == server->master_fd) {
-          int err = accept_connection(server);
-          if (err < 0) {
+          if (accept_connection(server) < 0) {
             return 1;
           }
         } else {
