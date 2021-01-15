@@ -41,15 +41,32 @@ int accept_connection(server_t *server) {
   return 0;
 }
 
+int parse(char *msg) {
+  int len = 0;
+
+  msg++;
+
+  while (*msg != '\r') {
+    len = (len * 10) + (*msg - '0');
+    msg++;
+  }
+
+  printf("%d\n", len);
+
+  return 0;
+}
+
 int recv_clt_msg(server_t *server, int clt_fd) {
+  int read_size;
+
   char clt_buf[CLT_BUF_SZ];
   memset(clt_buf, 0, sizeof(clt_buf));
 
-  int read_size;
-
   if ((read_size = recv(clt_fd, clt_buf, CLT_BUF_SZ - 1, 0)) > 0) {
     clt_buf[read_size] = '\0';
-    printf("%s", clt_buf);
+
+    parse(clt_buf);
+
     memset(clt_buf, 0, sizeof(clt_buf));
   } else {
     close(clt_fd);
