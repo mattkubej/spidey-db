@@ -1,6 +1,18 @@
 #include "server.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+
+#define COMMAND_ARRAY '*'
+#define COMMAND_BULKSTRING '$'
+
+typedef struct command {
+  char *buf;
+  size_t offset;
+} command;
+
+void processCommandType(command *cmd) {
+}
 
 int getLength(char *buf) {
   int len = 0;
@@ -31,12 +43,29 @@ void processBulkString(char *buf) {
   printf("%s\n", cmd);
 }
 
+void processArray(command *cmd) {
+  printf("%s\n", cmd->buf);
+}
+
 void processBuffer(char *buf) {
-  printf("%s\n", buf);
-  printf("---\n");
+  command *cmd = malloc(sizeof(command));
+  cmd->buf = buf;
+  cmd->offset = 0;
+
+  char type = buf[0];
+
+  switch(type) {
+    case COMMAND_ARRAY:
+      processArray(cmd);
+      break;
+    default:
+      break;
+  }
 
   int len = getLength(buf);
   printf("%d\n", len);
 
   processBulkString(buf);
+
+  free(cmd);
 }
