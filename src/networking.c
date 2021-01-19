@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-void processBuffer(char *buf) {
+int getLength(char *buf) {
   int len = 0;
 
   buf++;
@@ -12,5 +12,31 @@ void processBuffer(char *buf) {
     buf++;
   }
 
+  return len;
+}
+
+void processBulkString(char *buf) {
+  printf("%s\n", buf);
+  printf("---\n");
+
+  int len = getLength(buf);
+
+  char cmd[len];
+
+  for (int i = 0; i < len; i++) {
+    cmd[i] = buf[i];
+    buf++;
+  }
+
+  printf("%s\n", cmd);
+}
+
+void processBuffer(char *buf) {
+  printf("%s\n", buf);
+  printf("---\n");
+
+  int len = getLength(buf);
   printf("%d\n", len);
+
+  processBulkString(buf);
 }
