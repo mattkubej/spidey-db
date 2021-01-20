@@ -1,3 +1,4 @@
+#include "networking.h"
 #include "server.h"
 
 #include <stdio.h>
@@ -6,66 +7,67 @@
 #define COMMAND_ARRAY '*'
 #define COMMAND_BULKSTRING '$'
 
-typedef struct command {
-  char *buf;
-  size_t offset;
-} command;
-
-void processCommandType(command *cmd) {
-}
-
-int getLength(char *buf) {
+int readLength(command *cmd) {
   int len = 0;
 
-  buf++;
-
-  while (*buf != '\r') {
-    len = (len * 10) + (*buf - '0');
-    buf++;
+  while (cmd->buf[cmd->offset] != '\r') {
+    len = (len * 10) + (cmd->buf[cmd->offset] - '0');
+    cmd->offset++;
   }
+
+  // iterate passed "\r\n"
+  cmd->offset += 2;
 
   return len;
 }
 
-void processBulkString(char *buf) {
-  printf("%s\n", buf);
-  printf("---\n");
+void processBulkString(command *cmd) {
+  int length = readLength(cmd);
+  char bulkString[length];
 
-  int len = getLength(buf);
-
-  char cmd[len];
-
-  for (int i = 0; i < len; i++) {
-    cmd[i] = buf[i];
-    buf++;
+  for (int i = 0; i < length; i++) {
+    bulkString[i] = cmd->buf[cmd->offset];
+    cmd->offset++;
   }
 
-  printf("%s\n", cmd);
+  printf("bulk: %s\n", bulkString);
 }
 
 void processArray(command *cmd) {
-  printf("%s\n", cmd->buf);
+  int items = readLength(cmd);
+
+  for (int i = 0; i < items; i++) {
+    parse(cmd);
+  }
 }
 
-void processBuffer(char *buf) {
-  command *cmd = malloc(sizeof(command));
-  cmd->buf = buf;
-  cmd->offset = 0;
-
-  char type = buf[0];
+void parse(command *cmd) {
+  char type = cmd->buf[cmd->offset];
+  cmd->offset++;
 
   switch(type) {
     case COMMAND_ARRAY:
       processArray(cmd);
       break;
+    case COMMAND_BULKSTRING:
+      processBulkString(cmd);
+      break;
     default:
       break;
   }
+}
 
-  int len = getLength(buf);
-  printf("%d\n", len);
+void processBuffer(char *buf) {
+  printf("--- received ---\n");
+  printf("%s", buf);
+  printf("----------------\n\n");
 
-  processBulkString(buf);
+  command *cmd = malloc(sizeof(command));
+  cmd->buf = buf;
+  cmd->offset = 0;
+
+  parse(cmd);
+  printf("done parsing\n");
 
   free(cmd);
 }
