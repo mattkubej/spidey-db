@@ -3,9 +3,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define COMMAND_ARRAY '*'
 #define COMMAND_BULKSTRING '$'
+
+void addArg(command *cmd, char *arg) {
+  char c_arg[sizeof(arg)];
+  strcpy(c_arg, arg);
+
+  cmd->args[cmd->arg_length] = c_arg;
+  cmd->arg_length++;
+}
 
 int readLength(command *cmd) {
   int len = 0;
@@ -30,7 +39,7 @@ void processBulkString(command *cmd) {
     cmd->offset++;
   }
 
-  printf("bulk: %s\n", bulkString);
+  addArg(cmd, bulkString);
 }
 
 void processArray(command *cmd) {
@@ -65,9 +74,16 @@ void processBuffer(char *buf) {
   command *cmd = malloc(sizeof(command));
   cmd->buf = buf;
   cmd->offset = 0;
+  cmd->arg_length = 0;
 
   parse(cmd);
-  printf("done parsing\n");
+  printf("done parsing\n\n");
+
+  printf("--- args ---\n");
+  for (int i = 0; i < cmd->arg_length; i++) {
+    printf(" %s\n", cmd->args[i]);
+  }
+  printf("------------\n");
 
   free(cmd);
 }
