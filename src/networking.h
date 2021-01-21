@@ -7,5 +7,5 @@ typedef struct command {
   int arg_length;
 } command;
 
-void processBuffer(char *buf);
+void processBuffer(char *buf, int clt_fd);
 void parse(command *cmd);

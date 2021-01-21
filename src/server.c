@@ -51,7 +51,8 @@ int recv_clt_msg(server_t *server, int clt_fd) {
   if ((read_size = recv(clt_fd, clt_buf, CLT_BUF_SZ - 1, 0)) > 0) {
     clt_buf[read_size] = '\0';
 
-    processBuffer(clt_buf);
+    // TODO: processBuffer to return cmd? send cmd to reply?
+    processBuffer(clt_buf, clt_fd);
 
     memset(clt_buf, 0, sizeof(clt_buf));
   } else {

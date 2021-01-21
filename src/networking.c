@@ -4,12 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/socket.h>
 
 #define COMMAND_ARRAY '*'
 #define COMMAND_BULKSTRING '$'
 
 void addArg(command *cmd, char *arg) {
-  char c_arg[sizeof(arg)];
+  char *c_arg = malloc(strlen(arg) + 1);
   strcpy(c_arg, arg);
 
   cmd->args[cmd->arg_length] = c_arg;
@@ -66,7 +67,20 @@ void parse(command *cmd) {
   }
 }
 
-void processBuffer(char *buf) {
+void processCmd(command *cmd, int clt_fd) {
+  printf("--- args ---\n");
+  for (int i = 0; i < cmd->arg_length; i++) {
+    printf(" %s\n", cmd->args[i]);
+  }
+  printf("------------\n");
+
+  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+stale\r\n:0\r\n:0\r\n:0\r\n";
+  int len = strlen(msg);
+
+  send(clt_fd, msg, len, 0);
+}
+
+void processBuffer(char *buf, int clt_fd) {
   printf("--- received ---\n");
   printf("%s", buf);
   printf("----------------\n\n");
@@ -79,11 +93,9 @@ void processBuffer(char *buf) {
   parse(cmd);
   printf("done parsing\n\n");
 
-  printf("--- args ---\n");
-  for (int i = 0; i < cmd->arg_length; i++) {
-    printf(" %s\n", cmd->args[i]);
-  }
-  printf("------------\n");
+  processCmd(cmd, clt_fd);
+
+  // TODO: free cmd->args?
 
   free(cmd);
 }
