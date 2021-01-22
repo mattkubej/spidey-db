@@ -10,7 +10,7 @@ typedef void commandExec(command *cmd);
 struct item {
   struct item *next;
   char *key;
-  commandExec *exec;
+  commandExec *exec; // TODO: can this be generic?
 };
 
 struct dict {
