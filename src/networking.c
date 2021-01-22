@@ -9,6 +9,15 @@
 #define COMMAND_ARRAY '*'
 #define COMMAND_BULKSTRING '$'
 
+void commandCommand(command *cmd, int clt_fd) {
+  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+stale\r\n:0\r\n:0\r\n:0\r\n";
+  int len = strlen(msg);
+
+  send(clt_fd, msg, len, 0);
+}
+
+// --- buffer processing ---
+
 void addArg(command *cmd, char *arg) {
   char *c_arg = malloc(strlen(arg) + 1);
   strcpy(c_arg, arg);
@@ -74,10 +83,7 @@ void processCmd(command *cmd, int clt_fd) {
   }
   printf("------------\n");
 
-  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+stale\r\n:0\r\n:0\r\n:0\r\n";
-  int len = strlen(msg);
-
-  send(clt_fd, msg, len, 0);
+  commandCommand(cmd, clt_fd);
 }
 
 void processBuffer(char *buf, int clt_fd) {
