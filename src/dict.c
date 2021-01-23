@@ -85,3 +85,13 @@ void insertDictItem(Dict d, char *key, commandExec *exec) {
   d->table[hkey] = it;
   d->count++;
 }
+
+commandExec *getDictItem(Dict d, char *key) {
+  for (Item it = d->table[hash(key)]; it != 0; it = it->next) {
+    if (!strcmp(it->key, key)) {
+      return it->exec;
+    }
+  }
+
+  return NULL;
+}
