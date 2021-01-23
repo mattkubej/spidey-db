@@ -37,7 +37,17 @@ Dict createDict() {
 }
 
 void destroyDict(Dict d) {
-  // iterate through items
+  for (int i = 0; i < d->size; i++) {
+    Item next;
+
+    for (Item it = d->table[i]; it != 0; it = next) {
+      next = it->next;
+
+      free(it->key);
+      free(it->exec);
+      free(it);
+    }
+  }
 
   free(d->table);
   free(d);
