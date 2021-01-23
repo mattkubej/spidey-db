@@ -1,5 +1,7 @@
 #include "networking.h"
 
+#include <string.h>
+
 // https://www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)HashTables.html
 
 #define INITIAL_SIZE 32
@@ -22,10 +24,10 @@ struct dict {
 typedef struct dict *Dict;
 typedef struct item *Item;
 
-Dict createDict() {
+Dict internalCreateDict(int size) {
   Dict d = malloc(sizeof(Dict));
 
-  d->size = INITIAL_SIZE;
+  d->size = size;
   d->count = 0;
   d->table = malloc(sizeof(Item) * d->size);
 
@@ -34,6 +36,10 @@ Dict createDict() {
   }
 
   return d;
+}
+
+Dict createDict() {
+  return internalCreateDict(INITIAL_SIZE);
 }
 
 void destroyDict(Dict d) {
@@ -63,4 +69,19 @@ int hash(char *str) {
   }
 
   return hash;
+}
+
+void insertDictItem(Dict d, char *key, commandExec *exec) {
+  Item it = malloc(sizeof(Item));
+
+  char *c_key = malloc(strlen(key) + 1);
+  strcpy(c_key, key);
+  it->key = key;
+  it->exec = exec;
+
+  int hkey = hash(key);
+
+  it->next = d->table[hkey];
+  d->table[hkey] = it;
+  d->count++;
 }
