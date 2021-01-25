@@ -1,28 +1,8 @@
-#include "networking.h"
+#include "dict.h"
 
 #include <string.h>
 
 // https://www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)HashTables.html
-
-#define INITIAL_SIZE 32
-#define GROWTH_FACTOR 2
-
-typedef void commandExec(command *cmd);
-
-struct item {
-  struct item *next;
-  char *key;
-  commandExec *exec; // TODO: can this be generic?
-};
-
-struct dict {
-  int size;
-  int count;
-  struct item **table;
-};
-
-typedef struct dict *Dict;
-typedef struct item *Item;
 
 Dict internalCreateDict(int size) {
   Dict d = malloc(sizeof(Dict));
