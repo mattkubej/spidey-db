@@ -51,6 +51,22 @@ int hash(char *str) {
   return hash;
 }
 
+void grow(Dict d) {
+  Dict temp = internalCreateDict(d->size * GROWTH_FACTOR);
+
+  for (int i = 0; i < d->size; i++) {
+    for (Item it = d->table[i]; it != 0; it = it->next) {
+      insertDictItem(temp, it->key, it->exec);
+    }
+  }
+
+  Dict swap = d;
+  d = temp;
+  temp = swap;
+
+  destroyDict(temp);
+}
+
 void insertDictItem(Dict d, char *key, commandExec *exec) {
   Item it = malloc(sizeof(Item));
 
@@ -64,6 +80,10 @@ void insertDictItem(Dict d, char *key, commandExec *exec) {
   it->next = d->table[hkey];
   d->table[hkey] = it;
   d->count++;
+
+  if (d->count >= d->size) {
+    grow(d);
+  }
 }
 
 commandExec *getDictItem(Dict d, char *key) {
