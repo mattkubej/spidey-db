@@ -30,7 +30,7 @@ void destroyDict(Dict d) {
       next = it->next;
 
       free(it->key);
-      free(it->exec);
+      free(it->value);
       free(it);
     }
   }
@@ -56,7 +56,7 @@ void grow(Dict d) {
 
   for (int i = 0; i < d->size; i++) {
     for (Item it = d->table[i]; it != 0; it = it->next) {
-      insertDictItem(temp, it->key, it->exec);
+      insertDictItem(temp, it->key, it->value);
     }
   }
 
@@ -67,13 +67,13 @@ void grow(Dict d) {
   destroyDict(temp);
 }
 
-void insertDictItem(Dict d, char *key, commandExec *exec) {
+void insertDictItem(Dict d, char *key, void *value) {
   Item it = malloc(sizeof(Item));
 
   char *c_key = malloc(strlen(key) + 1);
   strcpy(c_key, key);
   it->key = key;
-  it->exec = exec;
+  it->value = value;
 
   int hkey = hash(key);
 
@@ -86,10 +86,10 @@ void insertDictItem(Dict d, char *key, commandExec *exec) {
   }
 }
 
-commandExec *getDictItem(Dict d, char *key) {
+Item getDictItem(Dict d, char *key) {
   for (Item it = d->table[hash(key)]; it != 0; it = it->next) {
     if (!strcmp(it->key, key)) {
-      return it->exec;
+      return it;
     }
   }
 
@@ -103,7 +103,7 @@ void deleteDictItem(Dict d, char *key) {
       it = match->next;
 
       free(match->key);
-      free(match->exec);
+      free(match->value);
       free(match);
 
       return;
