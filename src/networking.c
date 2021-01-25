@@ -10,7 +10,8 @@
 #define COMMAND_BULKSTRING '$'
 
 void commandCommand(command *cmd, int clt_fd) {
-  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+stale\r\n:0\r\n:0\r\n:0\r\n";
+  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+"
+              "stale\r\n:0\r\n:0\r\n:0\r\n";
   int len = strlen(msg);
 
   send(clt_fd, msg, len, 0);
@@ -64,15 +65,15 @@ void parse(command *cmd) {
   char type = cmd->buf[cmd->offset];
   cmd->offset++;
 
-  switch(type) {
-    case COMMAND_ARRAY:
-      processArray(cmd);
-      break;
-    case COMMAND_BULKSTRING:
-      processBulkString(cmd);
-      break;
-    default:
-      break;
+  switch (type) {
+  case COMMAND_ARRAY:
+    processArray(cmd);
+    break;
+  case COMMAND_BULKSTRING:
+    processBulkString(cmd);
+    break;
+  default:
+    break;
   }
 }
 

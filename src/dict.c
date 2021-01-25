@@ -18,9 +18,7 @@ Dict internalCreateDict(int size) {
   return d;
 }
 
-Dict createDict() {
-  return internalCreateDict(INITIAL_SIZE);
-}
+Dict createDict() { return internalCreateDict(INITIAL_SIZE); }
 
 void destroyDict(Dict d) {
   for (int i = 0; i < d->size; i++) {
