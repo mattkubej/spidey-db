@@ -95,3 +95,18 @@ commandExec *getDictItem(Dict d, char *key) {
 
   return NULL;
 }
+
+void deleteDictItem(Dict d, char *key) {
+  for (Item it = d->table[hash(key)]; it != 0; it = it->next) {
+    if (!strcmp(it->key, key)) {
+      Item match = it;
+      it = match->next;
+
+      free(match->key);
+      free(match->exec);
+      free(match);
+
+      return;
+    }
+  }
+}
