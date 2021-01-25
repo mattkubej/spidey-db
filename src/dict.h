@@ -1,3 +1,6 @@
+#ifndef DICT_H
+#define DICT_H
+
 #include "networking.h"
 
 #define INITIAL_SIZE 32
@@ -24,3 +27,5 @@ void insertDictItem(Dict d, char *key, void *value);
 Item getDictItem(Dict d, char *key);
 void *getDictItemValue(Dict d, char *key);
 void deleteDictItem(Dict d, char *key);
+
+#endif

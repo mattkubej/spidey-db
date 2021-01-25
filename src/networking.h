@@ -1,3 +1,6 @@
+#ifndef NETWORKING_H
+#define NETWORKING_H
+
 #include <stdlib.h>
 
 typedef struct command {
@@ -9,3 +12,5 @@ typedef struct command {
 
 void processBuffer(char *buf, int clt_fd);
 void parse(command *cmd);
+
+#endif
