@@ -96,6 +96,11 @@ Item getDictItem(Dict d, char *key) {
   return NULL;
 }
 
+void *getDictItemValue(Dict d, char *key) {
+  Item it = getDictItem(d, key);
+  return it ? it->value : NULL;
+}
+
 void deleteDictItem(Dict d, char *key) {
   for (Item it = d->table[hash(key)]; it != 0; it = it->next) {
     if (!strcmp(it->key, key)) {

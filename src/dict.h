@@ -22,4 +22,5 @@ Dict createDict();
 void destroyDict(Dict d);
 void insertDictItem(Dict d, char *key, void *value);
 Item getDictItem(Dict d, char *key);
+void *getDictItemValue(Dict d, char *key);
 void deleteDictItem(Dict d, char *key);
