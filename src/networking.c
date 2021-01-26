@@ -1,5 +1,4 @@
 #include "networking.h"
-#include "server.h"
 
 #include <stdio.h>
 #include <stdlib.h>

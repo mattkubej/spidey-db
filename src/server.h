@@ -1,6 +1,8 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include "dict.h"
+
 #include <sys/time.h>
 #include <time.h>
 
@@ -13,6 +15,7 @@ typedef struct spideyServer {
   int master_fd;
   fd_set read_fds;
   int max_fd;
+  Dict commands;
 } server_t;
 
 server_t *create_server();
