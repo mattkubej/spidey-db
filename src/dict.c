@@ -73,7 +73,7 @@ void insertDictItem(Dict d, char *key, void *value) {
   it->key = key;
   it->value = value;
 
-  int hkey = hash(key);
+  int hkey = hash(key) % d->size;
 
   it->next = d->table[hkey];
   d->table[hkey] = it;

@@ -1,4 +1,5 @@
 #include "server.h"
+#include "dict.h"
 #include "networking.h"
 
 #include <netinet/ip.h>
@@ -9,6 +10,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+void commandCommand(Request req, int clt_fd) {
+  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+"
+              "stale\r\n:0\r\n:0\r\n:0\r\n";
+  int len = strlen(msg);
+
+  send(clt_fd, msg, len, 0);
+}
+
 server_t *create_server() {
   server_t *server = malloc(sizeof(*server));
 
@@ -17,7 +26,11 @@ server_t *create_server() {
     return NULL;
   }
 
+  Dict cmd_dict = createDict();
+  insertDictItem(cmd_dict, "command", commandCommand);
+
   server->master_fd = -1;
+  server->commands = cmd_dict;
 
   return server;
 }
@@ -51,8 +64,10 @@ int recv_clt_msg(server_t *server, int clt_fd) {
   if ((read_size = recv(clt_fd, clt_buf, CLT_BUF_SZ - 1, 0)) > 0) {
     clt_buf[read_size] = '\0';
 
-    // TODO: processBuffer to return cmd? send cmd to reply?
-    processBuffer(clt_buf, clt_fd);
+    Request req = buildRequest(clt_buf);
+    void (*req_cmd)(Request, int) = getDictItemValue(server->commands, "command");
+    req_cmd(req, clt_fd);
+    destroyRequest(req);
 
     memset(clt_buf, 0, sizeof(clt_buf));
   } else {

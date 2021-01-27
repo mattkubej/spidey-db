@@ -3,14 +3,17 @@
 
 #include <stdlib.h>
 
-typedef struct command {
+struct request {
   char *buf;
   size_t offset;
   char *args[16];
   int arg_length;
-} command;
+};
 
-void processBuffer(char *buf, int clt_fd);
-void parse(command *cmd);
+typedef struct request *Request;
+
+Request buildRequest(char *buf);
+void destroyRequest(Request request);
+void parse(Request req);
 
 #endif
