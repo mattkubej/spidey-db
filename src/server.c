@@ -1,6 +1,5 @@
 #include "server.h"
 #include "networking.h"
-#include "commands.h"
 
 #include <netinet/ip.h>
 #include <stdio.h>
@@ -19,10 +18,6 @@ server_t *create_server() {
   }
 
   server->master_fd = -1;
-
-  Dict cmd_dict = createDict();
-  insertDictItem(cmd_dict, "command", commandCommand);
-  server->commands = cmd_dict;
 
   return server;
 }
