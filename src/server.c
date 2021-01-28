@@ -11,6 +11,16 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <ctype.h>
+
+char* toLower(char *s) {
+  for (char *l=s; *l; l++) {
+    *l = tolower(*l);
+  }
+
+  return s;
+}
+
 server_t *create_server() {
   server_t *server = malloc(sizeof(*server));
 
@@ -58,8 +68,13 @@ int recv_clt_msg(server_t *server, int clt_fd) {
     clt_buf[read_size] = '\0';
 
     Request req = buildRequest(clt_buf);
-    void (*req_cmd)(Request, int) = getDictItemValue(server->commands, "command");
-    req_cmd(req, clt_fd);
+    char *command = req->args[0];
+
+    if (command != NULL) {
+      void (*req_cmd)(Request, int) = getDictItemValue(server->commands, toLower(command));
+      req_cmd(req, clt_fd);
+    }
+
     destroyRequest(req);
 
     memset(clt_buf, 0, sizeof(clt_buf));
