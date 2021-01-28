@@ -67,12 +67,17 @@ int recv_clt_msg(server_t *server, int clt_fd) {
   if ((read_size = recv(clt_fd, clt_buf, CLT_BUF_SZ - 1, 0)) > 0) {
     clt_buf[read_size] = '\0';
 
+    // TODO: abstract this out somewhere
     Request req = buildRequest(clt_buf);
-    char *command = req->args[0];
 
-    if (command != NULL) {
+    if (req->args[0] != NULL) {
+      char *command = toLower(req->args[0]);
       void (*req_cmd)(Request, int) = getDictItemValue(server->commands, toLower(command));
-      req_cmd(req, clt_fd);
+
+      // TODO: handle unknown command
+      if (req_cmd != NULL) {
+        req_cmd(req, clt_fd);
+      }
     }
 
     destroyRequest(req);
