@@ -1,6 +1,7 @@
 #include "server.h"
 #include "dict.h"
 #include "networking.h"
+#include "commands.h"
 
 #include <netinet/ip.h>
 #include <stdio.h>
@@ -9,14 +10,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-void commandCommand(Request req, int clt_fd) {
-  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+"
-              "stale\r\n:0\r\n:0\r\n:0\r\n";
-  int len = strlen(msg);
-
-  send(clt_fd, msg, len, 0);
-}
 
 server_t *create_server() {
   server_t *server = malloc(sizeof(*server));
