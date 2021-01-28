@@ -70,10 +70,11 @@ void insertDictItem(Dict d, char *key, void *value) {
 
   char *c_key = malloc(strlen(key) + 1);
   strcpy(c_key, key);
-  it->key = key;
+
+  it->key = c_key;
   it->value = value;
 
-  int hkey = hash(key) % d->size;
+  int hkey = hash(c_key) % d->size;
 
   it->next = d->table[hkey];
   d->table[hkey] = it;

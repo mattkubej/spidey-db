@@ -31,9 +31,10 @@ server_t *create_server() {
 
   Dict cmd_dict = createDict();
   insertDictItem(cmd_dict, "command", commandCommand);
+  insertDictItem(cmd_dict, "ping", commandPing);
 
-  server->master_fd = -1;
   server->commands = cmd_dict;
+  server->master_fd = -1;
 
   return server;
 }
@@ -72,9 +73,12 @@ int recv_clt_msg(server_t *server, int clt_fd) {
 
     if (req->args[0] != NULL) {
       char *command = toLower(req->args[0]);
+
+      printf("command --> '%s'\n", command);
+      printf("length --> '%ld'\n", strlen(command));
+
       void (*req_cmd)(Request, int) = getDictItemValue(server->commands, toLower(command));
 
-      // TODO: handle unknown command
       if (req_cmd != NULL) {
         req_cmd(req, clt_fd);
       }

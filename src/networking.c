@@ -32,12 +32,14 @@ int readLength(Request req) {
 
 void processBulkString(Request req) {
   int length = readLength(req);
-  char bulkString[length];
+  char bulkString[length + 1];
 
   for (int i = 0; i < length; i++) {
     bulkString[i] = req->buf[req->offset];
     req->offset++;
   }
+
+  bulkString[length] = '\0';
 
   addArg(req, bulkString);
 }
