@@ -68,16 +68,6 @@ void parse(Request req) {
   }
 }
 
-/*void processCmd(command *cmd, int clt_fd) {*/
-  /*printf("--- args ---\n");*/
-  /*for (int i = 0; i < cmd->arg_length; i++) {*/
-    /*printf(" %s\n", cmd->args[i]);*/
-  /*}*/
-  /*printf("------------\n");*/
-
-  /*commandCommand(cmd, clt_fd);*/
-/*}*/
-
 Request buildRequest(char *buf) {
   printf("--- received ---\n");
   printf("%s", buf);
