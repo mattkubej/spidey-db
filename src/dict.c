@@ -85,7 +85,7 @@ void insertDictItem(Dict d, char *key, void *value) {
 }
 
 Item getDictItem(Dict d, char *key) {
-  for (Item it = d->table[hash(key)]; it != 0; it = it->next) {
+  for (Item it = d->table[hash(key) % d->size]; it != 0; it = it->next) {
     if (!strcmp(it->key, key)) {
       return it;
     }
