@@ -1,7 +1,7 @@
 #include "server.h"
+#include "commands.h"
 #include "dict.h"
 #include "networking.h"
-#include "commands.h"
 
 #include <netinet/ip.h>
 #include <stdio.h>
@@ -13,8 +13,8 @@
 
 #include <ctype.h>
 
-char* toLower(char *s) {
-  for (char *l=s; *l; l++) {
+char *toLower(char *s) {
+  for (char *l = s; *l; l++) {
     *l = tolower(*l);
   }
 
@@ -65,7 +65,8 @@ void proc_clt_buf(char *clt_buf, server_t *server, int clt_fd) {
   if (req->args[0] != NULL) {
     char *command = toLower(req->args[0]);
 
-    void (*req_cmd)(Request, int) = getDictItemValue(server->commands, toLower(command));
+    void (*req_cmd)(Request, int) =
+        getDictItemValue(server->commands, toLower(command));
 
     if (req_cmd != NULL) {
       req_cmd(req, clt_fd);
