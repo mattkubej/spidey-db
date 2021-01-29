@@ -74,9 +74,6 @@ int recv_clt_msg(server_t *server, int clt_fd) {
     if (req->args[0] != NULL) {
       char *command = toLower(req->args[0]);
 
-      printf("command --> '%s'\n", command);
-      printf("length --> '%ld'\n", strlen(command));
-
       void (*req_cmd)(Request, int) = getDictItemValue(server->commands, toLower(command));
 
       if (req_cmd != NULL) {

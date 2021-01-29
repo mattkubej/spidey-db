@@ -79,7 +79,6 @@ Request buildRequest(char *buf) {
   req->arg_length = 0;
 
   parse(req);
-  printf("done parsing\n\n");
 
   return req;
 }
