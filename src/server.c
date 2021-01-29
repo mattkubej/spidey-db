@@ -59,6 +59,22 @@ int accept_connection(server_t *server) {
   return 0;
 }
 
+void proc_clt_buf(char *clt_buf, server_t *server, int clt_fd) {
+  Request req = buildRequest(clt_buf);
+
+  if (req->args[0] != NULL) {
+    char *command = toLower(req->args[0]);
+
+    void (*req_cmd)(Request, int) = getDictItemValue(server->commands, toLower(command));
+
+    if (req_cmd != NULL) {
+      req_cmd(req, clt_fd);
+    }
+  }
+
+  destroyRequest(req);
+}
+
 int recv_clt_msg(server_t *server, int clt_fd) {
   int read_size;
 
@@ -68,20 +84,7 @@ int recv_clt_msg(server_t *server, int clt_fd) {
   if ((read_size = recv(clt_fd, clt_buf, CLT_BUF_SZ - 1, 0)) > 0) {
     clt_buf[read_size] = '\0';
 
-    // TODO: abstract this out somewhere
-    Request req = buildRequest(clt_buf);
-
-    if (req->args[0] != NULL) {
-      char *command = toLower(req->args[0]);
-
-      void (*req_cmd)(Request, int) = getDictItemValue(server->commands, toLower(command));
-
-      if (req_cmd != NULL) {
-        req_cmd(req, clt_fd);
-      }
-    }
-
-    destroyRequest(req);
+    proc_clt_buf(clt_buf, server, clt_fd);
 
     memset(clt_buf, 0, sizeof(clt_buf));
   } else {
