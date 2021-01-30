@@ -33,6 +33,7 @@ server_t *create_server() {
   insertDictItem(cmd_dict, "command", commandCommand);
   insertDictItem(cmd_dict, "ping", commandPing);
   insertDictItem(cmd_dict, "setvertex", commandSetVertex);
+  insertDictItem(cmd_dict, "getvertex", commandGetVertex);
 
   server->commands = cmd_dict;
   server->master_fd = -1;
