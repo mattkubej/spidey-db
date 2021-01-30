@@ -32,6 +32,7 @@ server_t *create_server() {
   Dict cmd_dict = createDict();
   insertDictItem(cmd_dict, "command", commandCommand);
   insertDictItem(cmd_dict, "ping", commandPing);
+  insertDictItem(cmd_dict, "setvertex", commandSetVertex);
 
   server->commands = cmd_dict;
   server->master_fd = -1;
