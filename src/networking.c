@@ -40,14 +40,16 @@ void processBulkString(Request req) {
   }
 
   bulkString[length] = '\0';
-
   addArg(req, bulkString);
+
+  // iterate passed "\r\n"
+  req->offset += 2;
 }
 
 void processArray(Request req) {
   int items = readLength(req);
 
-  for (int i = 0; i < items; i++) {
+  for (int i = 0; i <= items; i++) {
     parse(req);
   }
 }
