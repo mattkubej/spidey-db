@@ -21,6 +21,22 @@ void commandPing(Request req, int clt_fd) {
   send(clt_fd, msg, len, 0);
 }
 
+void commandSetEdge(Request req, int clt_fd) {
+  char *msg = "+SET EDGE\r\n";
+
+  int len = strlen(msg);
+
+  send(clt_fd, msg, len, 0);
+}
+
+void commandGetEdge(Request req, int clt_fd) {
+  char *msg = "+GET EDGE\r\n";
+
+  int len = strlen(msg);
+
+  send(clt_fd, msg, len, 0);
+}
+
 void commandSetVertex(Request req, int clt_fd) {
   char *msg = "+SET VERTEX\r\n";
 
