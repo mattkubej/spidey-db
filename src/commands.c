@@ -47,7 +47,6 @@ void commandSetVertex(Request req, int clt_fd) {
 
 void commandGetVertex(Request req, int clt_fd) {
   char *msg = "+GET VERTEX\r\n";
-  printf("value :: %s\n", req->args[1]);
 
   int len = strlen(msg);
 
