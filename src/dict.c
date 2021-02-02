@@ -4,7 +4,7 @@
 
 // https://www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)HashTables.html
 
-Dict internalCreateDict(int size) {
+Dict internalCreateDict(unsigned int size) {
   Dict d = malloc(sizeof(Dict));
 
   d->size = size;
@@ -38,7 +38,7 @@ void destroyDict(Dict d) {
 }
 
 // djb2 - http://www.cse.yorku.ca/~oz/hash.html
-int hash(char *str) {
+unsigned int hash(char *str, unsigned int size) {
   unsigned long hash = 5381;
   int c;
 
@@ -46,7 +46,7 @@ int hash(char *str) {
     hash = ((hash << 5) + hash) + c;
   }
 
-  return hash;
+  return hash % size;
 }
 
 void grow(Dict d) {
@@ -74,7 +74,7 @@ void insertDictItem(Dict d, char *key, void *value) {
   it->key = c_key;
   it->value = value;
 
-  int hkey = hash(c_key) % d->size;
+  int hkey = hash(c_key, d->size);
 
   it->next = d->table[hkey];
   d->table[hkey] = it;
@@ -86,7 +86,7 @@ void insertDictItem(Dict d, char *key, void *value) {
 }
 
 Item getDictItem(Dict d, char *key) {
-  for (Item it = d->table[hash(key) % d->size]; it != 0; it = it->next) {
+  for (Item it = d->table[hash(key, d->size)]; it != 0; it = it->next) {
     if (!strcmp(it->key, key)) {
       return it;
     }
@@ -101,7 +101,7 @@ void *getDictItemValue(Dict d, char *key) {
 }
 
 void deleteDictItem(Dict d, char *key) {
-  for (Item it = d->table[hash(key)]; it != 0; it = it->next) {
+  for (Item it = d->table[hash(key, d->size)]; it != 0; it = it->next) {
     if (!strcmp(it->key, key)) {
       Item match = it;
       it = match->next;

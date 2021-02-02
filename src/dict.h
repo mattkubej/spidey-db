@@ -13,7 +13,7 @@ struct item {
 };
 
 struct dict {
-  int size;
+  unsigned int size;
   int count;
   struct item **table;
 };
