@@ -1,38 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// based on https://www.geeksforgeeks.org/graph-and-its-representations/
-
-struct ListNode {
-  int dest;
-  struct ListNode *next;
+struct Node {
+  int vertex;
+  struct Node *next;
 };
 
 struct List {
-  struct ListNode *head;
+  struct Node *head;
 };
 
 struct Graph {
-  int V;
+  int size;
   struct List *array;
 };
 
-struct ListNode *createListNode(int dest) {
-  struct ListNode *node = malloc(sizeof(struct ListNode));
+struct Node *createNode(int vertex) {
+  struct Node *node = malloc(sizeof(struct Node));
 
-  node->dest = dest;
+  node->vertex = vertex;
   node->next = NULL;
 
   return node;
 }
 
-struct Graph *createGraph(int V) {
+struct Graph *createGraph(int size) {
   struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
 
-  graph->V = V;
-  graph->array = (struct List*) malloc(V * sizeof(struct List));
+  graph->size= size;
+  graph->array = (struct List*) malloc(size* sizeof(struct List));
 
-  for (int i = 0; i < V; i++) {
+  for (int i = 0; i < size; i++) {
     graph->array[i].head = NULL;
   }
 
@@ -40,11 +38,11 @@ struct Graph *createGraph(int V) {
 }
 
 void addEdge(struct Graph *graph, int src, int dest) {
-  struct ListNode *node = createListNode(dest);
+  struct Node *node = createNode(dest);
   node->next = graph->array[src].head;
   graph->array[src].head = node;
 
-  node = createListNode(src);
+  node = createNode(src);
   node->next = graph->array[dest].head;
   graph->array[dest].head = node;
 }
