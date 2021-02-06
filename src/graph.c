@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 struct Node {
-  int vertex;
+  int key;
   struct Node *next;
 };
 
@@ -15,10 +15,10 @@ struct Graph {
   struct List *list;
 };
 
-struct Node *createNode(int vertex) {
+struct Node *createNode(int key) {
   struct Node *node = malloc(sizeof(struct Node));
 
-  node->vertex = vertex;
+  node->key = key;
   node->next = NULL;
 
   return node;
