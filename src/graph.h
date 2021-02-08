@@ -3,20 +3,19 @@
 
 #include "dict.h"
 
-struct Vertex {
+struct vertex {
   char *key;
-  struct Vertex *next;
+  struct vertex *next;
 };
 
-struct List {
-  struct Vertex *head;
-};
-
-struct Graph {
+struct graph {
   Dict v_dict;
 };
 
-struct Graph *createGraph();
-struct Vertex *getVertex(struct Graph *graph, char *key);
+typedef struct vertex *Vertex;
+typedef struct graph *Graph;
+
+Graph createGraph();
+Vertex getVertex(Graph graph, char *key);
 
 #endif
