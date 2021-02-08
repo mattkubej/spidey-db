@@ -70,7 +70,7 @@ void parse(Request req) {
   }
 }
 
-Request buildRequest(char *buf) {
+Request buildRequest(char *buf, int clt_fd) {
   printf("--- received ---\n");
   printf("%s", buf);
   printf("----------------\n\n");
@@ -79,6 +79,7 @@ Request buildRequest(char *buf) {
   req->buf = buf;
   req->offset = 0;
   req->arg_length = 0;
+  req->clt_fd = clt_fd;
 
   parse(req);
 

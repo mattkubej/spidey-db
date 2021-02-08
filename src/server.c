@@ -65,8 +65,7 @@ int accept_connection(server_t *server) {
 }
 
 void proc_clt_buf(char *clt_buf, server_t *server, int clt_fd) {
-  // TODO: consider adding clt_fd to request
-  Request req = buildRequest(clt_buf);
+  Request req = buildRequest(clt_buf, clt_fd);
 
   if (req->args[0] != NULL) {
     char *command = toLower(req->args[0]);
