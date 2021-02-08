@@ -5,50 +5,50 @@
 
 #include <stdio.h>
 
-void commandCommand(Request req, int clt_fd) {
+void commandCommand(Request req) {
   char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+"
               "stale\r\n:0\r\n:0\r\n:0\r\n";
   int len = strlen(msg);
 
-  send(clt_fd, msg, len, 0);
+  send(req->clt_fd, msg, len, 0);
 }
 
-void commandPing(Request req, int clt_fd) {
+void commandPing(Request req) {
   char *msg = "+PONG\r\n";
 
   int len = strlen(msg);
 
-  send(clt_fd, msg, len, 0);
+  send(req->clt_fd, msg, len, 0);
 }
 
-void commandSetEdge(Request req, int clt_fd) {
+void commandSetEdge(Request req) {
   char *msg = "+SET EDGE\r\n";
 
   int len = strlen(msg);
 
-  send(clt_fd, msg, len, 0);
+  send(req->clt_fd, msg, len, 0);
 }
 
-void commandGetEdge(Request req, int clt_fd) {
+void commandGetEdge(Request req) {
   char *msg = "+GET EDGE\r\n";
 
   int len = strlen(msg);
 
-  send(clt_fd, msg, len, 0);
+  send(req->clt_fd, msg, len, 0);
 }
 
-void commandSetVertex(Request req, int clt_fd) {
+void commandSetVertex(Request req) {
   char *msg = "+SET VERTEX\r\n";
 
   int len = strlen(msg);
 
-  send(clt_fd, msg, len, 0);
+  send(req->clt_fd, msg, len, 0);
 }
 
-void commandGetVertex(Request req, int clt_fd) {
+void commandGetVertex(Request req) {
   char *msg = "+GET VERTEX\r\n";
 
   int len = strlen(msg);
 
-  send(clt_fd, msg, len, 0);
+  send(req->clt_fd, msg, len, 0);
 }

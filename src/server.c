@@ -70,11 +70,11 @@ void proc_clt_buf(char *clt_buf, server_t *server, int clt_fd) {
   if (req->args[0] != NULL) {
     char *command = toLower(req->args[0]);
 
-    void (*req_cmd)(Request, int) =
+    void (*req_cmd)(Request) =
         getDictItemValue(server->commands, toLower(command));
 
     if (req_cmd != NULL) {
-      req_cmd(req, clt_fd);
+      req_cmd(req);
     }
   }
 
