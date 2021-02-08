@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include "dict.h"
+#include "graph.h"
 
 #include <sys/time.h>
 #include <time.h>
@@ -16,6 +17,7 @@ typedef struct spideyServer {
   fd_set read_fds;
   int max_fd;
   Dict commands;
+  Graph graph;
 } server_t;
 
 server_t *create_server();

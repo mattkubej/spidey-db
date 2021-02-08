@@ -39,6 +39,7 @@ server_t *create_server() {
 
   server->commands = cmd_dict;
   server->master_fd = -1;
+  server->graph = createGraph();
 
   return server;
 }
