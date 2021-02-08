@@ -1,48 +1,28 @@
+#include "graph.h"
+#include "dict.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
-  int key;
-  struct Node *next;
-};
+void addVertex(struct Graph *graph, char *key) {
+  struct Vertex *vertex = malloc(sizeof(struct Vertex));
 
-struct List {
-  struct Node *head;
-};
+  vertex->key = key;
+  vertex->next = NULL;
 
-struct Graph {
-  int size;
-  struct List *list;
-};
-
-struct Node *createNode(int key) {
-  struct Node *node = malloc(sizeof(struct Node));
-
-  node->key = key;
-  node->next = NULL;
-
-  return node;
+  insertDictItem(graph->v_dict, key, vertex);
 }
 
-struct Graph *createGraph(int size) {
+struct Vertex *getVertex(struct Graph *graph, char *key) {
+  struct Vertex *vertex = getDictItemValue(graph->v_dict, key);
+
+  return vertex;
+}
+
+struct Graph *createGraph() {
   struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
 
-  graph->size= size;
-  graph->list = (struct List*) malloc(size* sizeof(struct List));
-
-  for (int i = 0; i < size; i++) {
-    graph->list[i].head = NULL;
-  }
+  graph->v_dict = createDict();
 
   return graph;
-}
-
-void addEdge(struct Graph *graph, int src, int dest) {
-  struct Node *node = createNode(dest);
-  node->next = graph->list[src].head;
-  graph->list[src].head = node;
-
-  node = createNode(src);
-  node->next = graph->list[dest].head;
-  graph->list[dest].head = node;
 }
