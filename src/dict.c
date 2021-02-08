@@ -1,5 +1,6 @@
 #include "dict.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 // https://www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)HashTables.html

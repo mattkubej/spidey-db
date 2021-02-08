@@ -1,8 +1,6 @@
 #ifndef DICT_H
 #define DICT_H
 
-#include "networking.h"
-
 #define INITIAL_SIZE 32
 #define GROWTH_FACTOR 2
 
