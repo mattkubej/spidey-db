@@ -1,13 +1,17 @@
 #include "graph.h"
 #include "dict.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 void addVertex(Graph graph, char *key) {
   Vertex vertex = malloc(sizeof(Vertex));
 
-  vertex->key = key;
+  char *c_key = malloc(strlen(key) + 1);
+  strcpy(c_key, key);
+
+  vertex->key = c_key;
   vertex->next = NULL;
 
   insertDictItem(graph->v_dict, key, vertex);
