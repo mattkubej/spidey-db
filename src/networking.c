@@ -70,7 +70,7 @@ void parse(Request req) {
   }
 }
 
-Request buildRequest(char *buf, int clt_fd) {
+Request buildRequest(char *buf, int clt_fd, Graph graph) {
   printf("--- received ---\n");
   printf("%s", buf);
   printf("----------------\n\n");
@@ -80,6 +80,7 @@ Request buildRequest(char *buf, int clt_fd) {
   req->offset = 0;
   req->arg_length = 0;
   req->clt_fd = clt_fd;
+  req->graph = graph;
 
   parse(req);
 

@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "graph.h"
 
 #include <string.h>
 #include <sys/socket.h>
@@ -38,7 +39,9 @@ void commandGetEdge(Request req) {
 }
 
 void commandSetVertex(Request req) {
-  char *msg = "+SET VERTEX\r\n";
+  addVertex(req->graph, "matt");
+
+  char *msg = "+OK\r\n";
 
   int len = strlen(msg);
 
@@ -46,7 +49,12 @@ void commandSetVertex(Request req) {
 }
 
 void commandGetVertex(Request req) {
-  char *msg = "+GET VERTEX\r\n";
+  Vertex v = getVertex(req->graph, "matt");
+
+  char msg[80];
+  strcpy(msg, "+");
+  strcat(msg, v->key);
+  strcat(msg, "\r\n");
 
   int len = strlen(msg);
 
