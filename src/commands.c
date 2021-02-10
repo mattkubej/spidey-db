@@ -39,7 +39,7 @@ void commandGetEdge(Request req) {
 }
 
 void commandSetVertex(Request req) {
-  addVertex(req->graph, "matt");
+  addVertex(req->graph, req->args[1]);
 
   char *msg = "+OK\r\n";
 
@@ -49,7 +49,7 @@ void commandSetVertex(Request req) {
 }
 
 void commandGetVertex(Request req) {
-  Vertex v = getVertex(req->graph, "matt");
+  Vertex v = getVertex(req->graph, req->args[1]);
 
   char msg[80];
   strcpy(msg, "+");
