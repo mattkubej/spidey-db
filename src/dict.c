@@ -12,7 +12,7 @@ Dict internalCreateDict(unsigned int size) {
   d->count = 0;
   d->table = malloc(sizeof(Item) * d->size);
 
-  for (int i = 0; i < d->size; i++) {
+  for (size_t i = 0; i < d->size; i++) {
     d->table[i] = 0;
   }
 
@@ -22,7 +22,7 @@ Dict internalCreateDict(unsigned int size) {
 Dict createDict() { return internalCreateDict(INITIAL_SIZE); }
 
 void destroyDict(Dict d) {
-  for (int i = 0; i < d->size; i++) {
+  for (size_t i = 0; i < d->size; i++) {
     Item next;
 
     for (Item it = d->table[i]; it != 0; it = next) {
@@ -53,7 +53,7 @@ unsigned int hash(char *str, unsigned int size) {
 void grow(Dict d) {
   Dict temp = internalCreateDict(d->size * GROWTH_FACTOR);
 
-  for (int i = 0; i < d->size; i++) {
+  for (size_t i = 0; i < d->size; i++) {
     for (Item it = d->table[i]; it != 0; it = it->next) {
       insertDictItem(temp, it->key, it->value);
     }

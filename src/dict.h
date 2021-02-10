@@ -1,6 +1,8 @@
 #ifndef DICT_H
 #define DICT_H
 
+#include <stdlib.h>
+
 #define INITIAL_SIZE 32
 #define GROWTH_FACTOR 2
 
@@ -11,8 +13,8 @@ struct item {
 };
 
 struct dict {
-  unsigned int size;
-  int count;
+  size_t size;
+  size_t count;
   struct item **table;
 };
 
