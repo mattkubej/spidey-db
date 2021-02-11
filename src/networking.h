@@ -8,7 +8,7 @@
 struct request {
   char *buf;
   size_t offset;
-  char *args[16];
+  char **args;
   int arg_length;
   int clt_fd;
   Graph graph;

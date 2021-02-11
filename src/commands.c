@@ -39,7 +39,7 @@ void commandGetEdge(Request req) {
 }
 
 void commandSetVertex(Request req) {
-  addVertex(req->graph, req->args[1]);
+  addVertex(req->graph, req->args[1], req->args[2]);
 
   char *msg = "+OK\r\n";
 
