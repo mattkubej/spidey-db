@@ -53,7 +53,7 @@ void commandGetVertex(Request req) {
 
   char msg[80];
   strcpy(msg, "+");
-  strcat(msg, v->key);
+  strcat(msg, v->value);
   strcat(msg, "\r\n");
 
   int len = strlen(msg);
