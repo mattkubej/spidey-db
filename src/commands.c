@@ -32,14 +32,6 @@ void commandSetEdge(Request req) {
   send(req->clt_fd, msg, len, 0);
 }
 
-void commandGetEdge(Request req) {
-  char *msg = "+GET EDGE\r\n";
-
-  int len = strlen(msg);
-
-  send(req->clt_fd, msg, len, 0);
-}
-
 void commandSetVertex(Request req) {
   addVertex(req->graph, req->args[1], req->args[2]);
 
