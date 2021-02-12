@@ -23,7 +23,9 @@ void commandPing(Request req) {
 }
 
 void commandSetEdge(Request req) {
-  char *msg = "+SET EDGE\r\n";
+  addEdge(req->graph, req->args[1], req->args[2]);
+
+  char *msg = "+OK\r\n";
 
   int len = strlen(msg);
 
