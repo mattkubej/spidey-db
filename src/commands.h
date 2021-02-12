@@ -5,3 +5,4 @@ void commandPing(Request req);
 void commandSetEdge(Request req);
 void commandSetVertex(Request req);
 void commandGetVertex(Request req);
+void commandGetNeighbors(Request req);

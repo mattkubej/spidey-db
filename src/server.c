@@ -33,9 +33,9 @@ server_t *create_server() {
   insertDictItem(cmd_dict, "command", commandCommand);
   insertDictItem(cmd_dict, "ping", commandPing);
   insertDictItem(cmd_dict, "setedge", commandSetEdge);
-  insertDictItem(cmd_dict, "getedge", commandGetEdge);
   insertDictItem(cmd_dict, "setvertex", commandSetVertex);
   insertDictItem(cmd_dict, "getvertex", commandGetVertex);
+  insertDictItem(cmd_dict, "getneighbors", commandGetNeighbors);
 
   server->commands = cmd_dict;
   server->master_fd = -1;

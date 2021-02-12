@@ -55,3 +55,13 @@ void commandGetVertex(Request req) {
 
   send(req->clt_fd, msg, len, 0);
 }
+
+void commandGetNeighbors(Request req) {
+  getNeighbors(req->graph, req->args[1], 1);
+
+  char *msg = "+OK\r\n";
+
+  int len = strlen(msg);
+
+  send(req->clt_fd, msg, len, 0);
+}

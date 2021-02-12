@@ -52,6 +52,16 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
+void getNeighbors(Graph graph, char *key, int distance) {
+  Vertex v = getVertex(graph, key);
+  Vertex temp = v->next;
+
+  while (temp != NULL) {
+    printf("{%s, %s}\n", v->key, temp->key);
+    temp = temp->next;
+  }
+}
+
 Graph createGraph() {
   Graph graph = (Graph) malloc(sizeof(Graph));
 
