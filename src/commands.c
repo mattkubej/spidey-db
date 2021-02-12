@@ -51,6 +51,7 @@ void commandSetVertex(Request req) {
 void commandGetVertex(Request req) {
   Vertex v = getVertex(req->graph, req->args[1]);
 
+  // TODO: more intelligently return this
   char msg[80];
   strcpy(msg, "+");
   strcat(msg, v->value);
