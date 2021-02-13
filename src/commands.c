@@ -1,5 +1,5 @@
-#include "networking.h"
 #include "graph.h"
+#include "networking.h"
 
 #include <string.h>
 #include <sys/socket.h>

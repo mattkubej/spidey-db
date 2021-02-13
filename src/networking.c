@@ -78,7 +78,7 @@ Request buildRequest(char *buf, int clt_fd, Graph graph) {
   Request req = malloc(sizeof(Request));
   req->buf = buf;
   req->offset = 0;
-  req->args = malloc(sizeof(char*) * 16); // TODO: do this better
+  req->args = malloc(sizeof(char *) * 16); // TODO: do this better
   req->arg_length = 0;
   req->clt_fd = clt_fd;
   req->graph = graph;

@@ -1,9 +1,9 @@
 #include "graph.h"
 #include "dict.h"
 
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void addVertex(Graph graph, char *key, char *value) {
   Vertex vertex = malloc(sizeof(Vertex));
@@ -63,7 +63,7 @@ void getNeighbors(Graph graph, char *key, int distance) {
 }
 
 Graph createGraph() {
-  Graph graph = (Graph) malloc(sizeof(Graph));
+  Graph graph = (Graph)malloc(sizeof(Graph));
 
   graph->v_dict = createDict();
 
