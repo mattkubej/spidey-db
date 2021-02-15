@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 
-struct request {
+struct client {
   char *buf;
   size_t offset;
   char **args;
@@ -14,10 +14,10 @@ struct request {
   Graph graph;
 };
 
-typedef struct request *Request;
+typedef struct client *Client;
 
-Request buildRequest(char *buf, int clt_fd, Graph graph);
-void destroyRequest(Request request);
-void parse(Request req);
+Client buildClient(char *buf, int clt_fd, Graph graph);
+void destroyClient(Client client);
+void parse(Client client);
 
 #endif

@@ -65,20 +65,20 @@ int accept_connection(server_t *server) {
 }
 
 void proc_clt_buf(char *clt_buf, server_t *server, int clt_fd) {
-  Request req = buildRequest(clt_buf, clt_fd, server->graph);
+  Client client = buildClient(clt_buf, clt_fd, server->graph);
 
-  if (req->args[0] != NULL) {
-    char *command = toLower(req->args[0]);
+  if (client->args[0] != NULL) {
+    char *command = toLower(client->args[0]);
 
-    void (*req_cmd)(Request) =
+    void (*req_cmd)(Client) =
         getDictItemValue(server->commands, toLower(command));
 
     if (req_cmd != NULL) {
-      req_cmd(req);
+      req_cmd(client);
     }
   }
 
-  destroyRequest(req);
+  destroyClient(client);
 }
 
 int recv_clt_msg(server_t *server, int clt_fd) {

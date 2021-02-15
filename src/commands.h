@@ -1,8 +1,8 @@
 #include "networking.h"
 
-void commandCommand(Request req);
-void commandPing(Request req);
-void commandSetEdge(Request req);
-void commandSetVertex(Request req);
-void commandGetVertex(Request req);
-void commandGetNeighbors(Request req);
+void commandCommand(Client client);
+void commandPing(Client client);
+void commandSetEdge(Client client);
+void commandSetVertex(Client client);
+void commandGetVertex(Client client);
+void commandGetNeighbors(Client client);

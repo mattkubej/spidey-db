@@ -8,88 +8,88 @@
 #define COMMAND_ARRAY '*'
 #define COMMAND_BULKSTRING '$'
 
-void addArg(Request req, char *arg) {
+void addArg(Client client, char *arg) {
   char *c_arg = malloc(strlen(arg) + 1);
   strcpy(c_arg, arg);
 
-  req->args[req->arg_length] = c_arg;
-  req->arg_length++;
+  client->args[client->arg_length] = c_arg;
+  client->arg_length++;
 }
 
-int readLength(Request req) {
+int readLength(Client client) {
   int len = 0;
 
-  while (req->buf[req->offset] != '\r') {
-    len = (len * 10) + (req->buf[req->offset] - '0');
-    req->offset++;
+  while (client->buf[client->offset] != '\r') {
+    len = (len * 10) + (client->buf[client->offset] - '0');
+    client->offset++;
   }
 
   // iterate passed "\r\n"
-  req->offset += 2;
+  client->offset += 2;
 
   return len;
 }
 
-void processBulkString(Request req) {
-  int length = readLength(req);
+void processBulkString(Client client) {
+  int length = readLength(client);
   char bulkString[length + 1];
 
   for (int i = 0; i < length; i++) {
-    bulkString[i] = req->buf[req->offset];
-    req->offset++;
+    bulkString[i] = client->buf[client->offset];
+    client->offset++;
   }
 
   bulkString[length] = '\0';
-  addArg(req, bulkString);
+  addArg(client, bulkString);
 
   // iterate passed "\r\n"
-  req->offset += 2;
+  client->offset += 2;
 }
 
-void processArray(Request req) {
-  int items = readLength(req);
+void processArray(Client client) {
+  int items = readLength(client);
 
   for (int i = 0; i <= items; i++) {
-    parse(req);
+    parse(client);
   }
 }
 
-void parse(Request req) {
-  char type = req->buf[req->offset];
-  req->offset++;
+void parse(Client client) {
+  char type = client->buf[client->offset];
+  client->offset++;
 
   switch (type) {
   case COMMAND_ARRAY:
-    processArray(req);
+    processArray(client);
     break;
   case COMMAND_BULKSTRING:
-    processBulkString(req);
+    processBulkString(client);
     break;
   default:
     break;
   }
 }
 
-Request buildRequest(char *buf, int clt_fd, Graph graph) {
+Client buildClient(char *buf, int clt_fd, Graph graph) {
   printf("--- received ---\n");
   printf("%s", buf);
   printf("----------------\n\n");
 
-  Request req = malloc(sizeof(Request));
-  req->buf = buf;
-  req->offset = 0;
-  req->args = malloc(sizeof(char *) * 16); // TODO: do this better
-  req->arg_length = 0;
-  req->clt_fd = clt_fd;
-  req->graph = graph;
+  Client client = malloc(sizeof(Client));
+  client->buf = buf;
+  client->offset = 0;
+  client->args = malloc(sizeof(char *) * 16); // TODO: do this better
+  client->arg_length = 0;
+  client->clt_fd = clt_fd;
+  client->graph = graph;
 
-  parse(req);
+  parse(client);
 
-  return req;
+  return client;
 }
 
-void destroyRequest(Request req) {
+void destroyClient(Client client) {
   // TODO: free cmd->args?
 
-  free(req);
+  free(client);
 }
