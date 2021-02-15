@@ -82,6 +82,7 @@ Client buildClient(char *buf, int clt_fd, Graph graph) {
   client->req_arg_length = 0;
   client->fd = clt_fd;
   client->graph = graph;
+  client->resp_offset = 0;
 
   parse(client);
 
@@ -92,4 +93,19 @@ void destroyClient(Client client) {
   // TODO: free cmd->args?
 
   free(client);
+}
+
+int addReply(Client client, char *str, size_t str_len) {
+  memcpy(client->resp_buf + client->resp_offset, str, str_len);
+  client->resp_offset += str_len;
+
+  return 0;
+}
+
+int addSimpleStringReply(Client client, char *str) {
+  addReply(client, "+", 1);
+  addReply(client, str, strlen(str));
+  addReply(client, "\r\n", 4);
+
+  return 0;
 }

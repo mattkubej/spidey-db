@@ -5,6 +5,8 @@
 
 #include <stdlib.h>
 
+#define RESPONSE_BUFFER_LENGTH (16*1024)
+
 struct client {
   char *req_buf;
   size_t req_offset;
@@ -12,6 +14,8 @@ struct client {
   int req_arg_length;
   int fd;
   Graph graph;
+  char resp_buf[RESPONSE_BUFFER_LENGTH];
+  int resp_offset;
 };
 
 typedef struct client *Client;
@@ -19,5 +23,6 @@ typedef struct client *Client;
 Client buildClient(char *req_buf, int clt_fd, Graph graph);
 void destroyClient(Client client);
 void parse(Client client);
+int addSimpleStringReply(Client client, char *str);
 
 #endif

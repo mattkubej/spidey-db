@@ -15,11 +15,9 @@ void commandCommand(Client client) {
 }
 
 void commandPing(Client client) {
-  char *msg = "+PONG\r\n";
+  addSimpleStringReply(client, "PONG");
 
-  int len = strlen(msg);
-
-  send(client->fd, msg, len, 0);
+  send(client->fd, client->resp_buf, client->req_offset, 0);
 }
 
 void commandSetEdge(Client client) {
