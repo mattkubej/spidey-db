@@ -16,28 +16,21 @@ void commandCommand(Client client) {
 
 void commandPing(Client client) {
   addSimpleStringReply(client, "PONG");
-
   send(client->fd, client->resp_buf, client->req_offset, 0);
 }
 
 void commandSetEdge(Client client) {
   addEdge(client->graph, client->req_args[1], client->req_args[2]);
 
-  char *msg = "+OK\r\n";
-
-  int len = strlen(msg);
-
-  send(client->fd, msg, len, 0);
+  addSimpleStringReply(client, "OK");
+  send(client->fd, client->resp_buf, client->req_offset, 0);
 }
 
 void commandSetVertex(Client client) {
   addVertex(client->graph, client->req_args[1], client->req_args[2]);
 
-  char *msg = "+OK\r\n";
-
-  int len = strlen(msg);
-
-  send(client->fd, msg, len, 0);
+  addSimpleStringReply(client, "OK");
+  send(client->fd, client->resp_buf, client->req_offset, 0);
 }
 
 void commandGetVertex(Client client) {
@@ -57,9 +50,6 @@ void commandGetVertex(Client client) {
 void commandGetNeighbors(Client client) {
   getNeighbors(client->graph, client->req_args[1], 1);
 
-  char *msg = "+OK\r\n";
-
-  int len = strlen(msg);
-
-  send(client->fd, msg, len, 0);
+  addSimpleStringReply(client, "OK");
+  send(client->fd, client->resp_buf, client->req_offset, 0);
 }
