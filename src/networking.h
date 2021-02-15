@@ -6,17 +6,17 @@
 #include <stdlib.h>
 
 struct client {
-  char *buf;
-  size_t offset;
-  char **args;
-  int arg_length;
-  int clt_fd;
+  char *req_buf;
+  size_t req_offset;
+  char **req_args;
+  int req_arg_length;
+  int fd;
   Graph graph;
 };
 
 typedef struct client *Client;
 
-Client buildClient(char *buf, int clt_fd, Graph graph);
+Client buildClient(char *req_buf, int clt_fd, Graph graph);
 void destroyClient(Client client);
 void parse(Client client);
 

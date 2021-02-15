@@ -8,24 +8,24 @@
 #define COMMAND_ARRAY '*'
 #define COMMAND_BULKSTRING '$'
 
-void addArg(Client client, char *arg) {
-  char *c_arg = malloc(strlen(arg) + 1);
-  strcpy(c_arg, arg);
+void addReqArg(Client client, char *req_arg) {
+  char *c_req_arg = malloc(strlen(req_arg) + 1);
+  strcpy(c_req_arg, req_arg);
 
-  client->args[client->arg_length] = c_arg;
-  client->arg_length++;
+  client->req_args[client->req_arg_length] = c_req_arg;
+  client->req_arg_length++;
 }
 
 int readLength(Client client) {
   int len = 0;
 
-  while (client->buf[client->offset] != '\r') {
-    len = (len * 10) + (client->buf[client->offset] - '0');
-    client->offset++;
+  while (client->req_buf[client->req_offset] != '\r') {
+    len = (len * 10) + (client->req_buf[client->req_offset] - '0');
+    client->req_offset++;
   }
 
   // iterate passed "\r\n"
-  client->offset += 2;
+  client->req_offset += 2;
 
   return len;
 }
@@ -35,15 +35,15 @@ void processBulkString(Client client) {
   char bulkString[length + 1];
 
   for (int i = 0; i < length; i++) {
-    bulkString[i] = client->buf[client->offset];
-    client->offset++;
+    bulkString[i] = client->req_buf[client->req_offset];
+    client->req_offset++;
   }
 
   bulkString[length] = '\0';
-  addArg(client, bulkString);
+  addReqArg(client, bulkString);
 
   // iterate passed "\r\n"
-  client->offset += 2;
+  client->req_offset += 2;
 }
 
 void processArray(Client client) {
@@ -55,8 +55,8 @@ void processArray(Client client) {
 }
 
 void parse(Client client) {
-  char type = client->buf[client->offset];
-  client->offset++;
+  char type = client->req_buf[client->req_offset];
+  client->req_offset++;
 
   switch (type) {
   case COMMAND_ARRAY:
@@ -76,11 +76,11 @@ Client buildClient(char *buf, int clt_fd, Graph graph) {
   printf("----------------\n\n");
 
   Client client = malloc(sizeof(Client));
-  client->buf = buf;
-  client->offset = 0;
-  client->args = malloc(sizeof(char *) * 16); // TODO: do this better
-  client->arg_length = 0;
-  client->clt_fd = clt_fd;
+  client->req_buf = buf;
+  client->req_offset = 0;
+  client->req_args = malloc(sizeof(char *) * 16); // TODO: do this better
+  client->req_arg_length = 0;
+  client->fd = clt_fd;
   client->graph = graph;
 
   parse(client);

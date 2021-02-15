@@ -67,8 +67,8 @@ int accept_connection(server_t *server) {
 void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
   Client client = buildClient(clt_buf, clt_fd, server->graph);
 
-  if (client->args[0] != NULL) {
-    char *command = toLower(client->args[0]);
+  if (client->req_args[0] != NULL) {
+    char *command = toLower(client->req_args[0]);
 
     void (*clt_req_cmd)(Client) =
         getDictItemValue(server->commands, toLower(command));
