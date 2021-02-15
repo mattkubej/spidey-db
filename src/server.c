@@ -64,7 +64,7 @@ int accept_connection(server_t *server) {
   return 0;
 }
 
-void proc_clt_buf(char *clt_buf, server_t *server, int clt_fd) {
+void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
   Client client = buildClient(clt_buf, clt_fd, server->graph);
 
   if (client->args[0] != NULL) {
@@ -90,7 +90,7 @@ int recv_clt_msg(server_t *server, int clt_fd) {
   if ((read_size = recv(clt_fd, clt_buf, CLT_BUF_SZ - 1, 0)) > 0) {
     clt_buf[read_size] = '\0';
 
-    proc_clt_buf(clt_buf, server, clt_fd);
+    proc_clt_buf(server, clt_fd, clt_buf);
 
     memset(clt_buf, 0, sizeof(clt_buf));
   } else {
