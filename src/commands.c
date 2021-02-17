@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 void commandCommand(Client client) {
+  // cheating here, so redis-cli responds back
   addArrayLength(client, 1);
   addArrayLength(client, 6);
   addBulkString(client, "command");
