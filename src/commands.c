@@ -7,30 +7,37 @@
 #include <stdio.h>
 
 void commandCommand(Client client) {
-  char *msg = "*1\r\n*6\r\n$7\r\ncommand\r\n:-1\r\n*2\r\n+loading\r\n+"
-              "stale\r\n:0\r\n:0\r\n:0\r\n";
-  int len = strlen(msg);
+  addArrayLength(client, 1);
+  addArrayLength(client, 6);
+  addBulkString(client, "command");
+  addInteger(client, -1);
+  addArrayLength(client, 2);
+  addSimpleStringReply(client, "loading");
+  addSimpleStringReply(client, "stale");
+  addInteger(client, 0);
+  addInteger(client, 0);
+  addInteger(client, 0);
 
-  send(client->fd, msg, len, 0);
+  send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
 
 void commandPing(Client client) {
   addSimpleStringReply(client, "PONG");
-  send(client->fd, client->resp_buf, client->req_offset, 0);
+  send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
 
 void commandSetEdge(Client client) {
   addEdge(client->graph, client->req_args[1], client->req_args[2]);
 
   addSimpleStringReply(client, "OK");
-  send(client->fd, client->resp_buf, client->req_offset, 0);
+  send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
 
 void commandSetVertex(Client client) {
   addVertex(client->graph, client->req_args[1], client->req_args[2]);
 
   addSimpleStringReply(client, "OK");
-  send(client->fd, client->resp_buf, client->req_offset, 0);
+  send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
 
 void commandGetVertex(Client client) {
@@ -51,5 +58,5 @@ void commandGetNeighbors(Client client) {
   getNeighbors(client->graph, client->req_args[1], 1);
 
   addSimpleStringReply(client, "OK");
-  send(client->fd, client->resp_buf, client->req_offset, 0);
+  send(client->fd, client->resp_buf, client->resp_offset, 0);
 }

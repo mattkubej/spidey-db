@@ -105,7 +105,77 @@ int addReply(Client client, char *str, size_t str_len) {
 int addSimpleStringReply(Client client, char *str) {
   addReply(client, "+", 1);
   addReply(client, str, strlen(str));
-  addReply(client, "\r\n", 4);
+  addReply(client, "\r\n", 2);
+
+  return 0;
+}
+
+// https://stackoverflow.com/a/29544416/14610143
+
+void reverse(char s[]) {
+  char c;
+  int i, j;
+
+  for (i = 0, j = strlen(s) - 1; i < j; i++, j--) {
+    c = s[i];
+    s[i] = s[j];
+    s[j] = c;
+  }
+}
+
+void itoa(int n, char s[]) {
+  int sign = n;
+
+  if (sign < 0) {
+    n = -n;
+  }
+
+  int i = 0;
+
+  do {
+    s[i++] = n % 10 + '0';
+  } while ((n / 10) > 0);
+
+  if (sign < 0) {
+    s[i++] = '-';
+  }
+
+  s[i] = '\0';
+
+  reverse(s);
+}
+
+int addArrayLength(Client client, int length) {
+  char buf[1024];
+  itoa(length, buf);
+
+  addReply(client, "*", 1);
+  addReply(client, buf, strlen(buf));
+  addReply(client, "\r\n", 2);
+
+  return 0;
+}
+
+int addBulkString(Client client, char *str) {
+  char buf[1024];
+  itoa(strlen(str), buf);
+
+  addReply(client, "$", 1);
+  addReply(client, buf, strlen(buf));
+  addReply(client, "\r\n", 2);
+  addReply(client, str, strlen(str));
+  addReply(client, "\r\n", 2);
+
+  return 0;
+}
+
+int addInteger(Client client, int num) {
+  char buf[1024];
+  itoa(num, buf);
+
+  addReply(client, ":", 1);
+  addReply(client, buf, strlen(buf));
+  addReply(client, "\r\n", 2);
 
   return 0;
 }
