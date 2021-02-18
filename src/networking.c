@@ -1,9 +1,12 @@
 #include "networking.h"
+#include "util.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+
+// --- client construction and resp request processing ---
 
 void addReqArg(Client client, char *req_arg) {
   char *c_req_arg = malloc(strlen(req_arg) + 1);
@@ -92,6 +95,8 @@ void destroyClient(Client client) {
   free(client);
 }
 
+// --- resp reply handling ---
+
 int addReply(Client client, char *str, size_t str_len) {
   memcpy(client->resp_buf + client->resp_offset, str, str_len);
   client->resp_offset += str_len;
@@ -105,41 +110,6 @@ int addSimpleStringReply(Client client, char *str) {
   addReply(client, CRLF, 2);
 
   return 0;
-}
-
-// https://stackoverflow.com/a/29544416/14610143
-
-void reverse(char s[]) {
-  char c;
-  int i, j;
-
-  for (i = 0, j = strlen(s) - 1; i < j; i++, j--) {
-    c = s[i];
-    s[i] = s[j];
-    s[j] = c;
-  }
-}
-
-void itoa(int n, char s[]) {
-  int sign = n;
-
-  if (sign < 0) {
-    n = -n;
-  }
-
-  int i = 0;
-
-  do {
-    s[i++] = n % 10 + '0';
-  } while ((n / 10) > 0);
-
-  if (sign < 0) {
-    s[i++] = '-';
-  }
-
-  s[i] = '\0';
-
-  reverse(s);
 }
 
 int addArrayLength(Client client, int length) {
