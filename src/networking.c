@@ -71,6 +71,7 @@ void parse(Client client) {
 }
 
 Client buildClient(char *buf, int clt_fd, Graph graph) {
+  // TODO: remove this printing
   printf("--- received ---\n");
   printf("%s", buf);
   printf("----------------\n\n");
@@ -113,6 +114,7 @@ int addSimpleStringReply(Client client, char *str) {
 }
 
 int addArrayLength(Client client, int length) {
+  // TODO: abstract out the buf size
   char buf[1024];
   itoa(length, buf);
 
@@ -124,6 +126,7 @@ int addArrayLength(Client client, int length) {
 }
 
 int addBulkString(Client client, char *str) {
+  // TODO: abstract out the buf size
   char buf[1024];
   itoa(strlen(str), buf);
 
@@ -137,6 +140,7 @@ int addBulkString(Client client, char *str) {
 }
 
 int addInteger(Client client, int num) {
+  // TODO: abstract out the buf size
   char buf[1024];
   itoa(num, buf);
 
