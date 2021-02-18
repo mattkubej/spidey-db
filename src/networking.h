@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #define RESPONSE_BUFFER_LENGTH (16*1024)
+#define CRLF "\r\n"
 #define RESPONSE_OK "OK"
 
 struct client {

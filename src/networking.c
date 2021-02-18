@@ -105,7 +105,7 @@ int addReply(Client client, char *str, size_t str_len) {
 int addSimpleStringReply(Client client, char *str) {
   addReply(client, "+", 1);
   addReply(client, str, strlen(str));
-  addReply(client, "\r\n", 2);
+  addReply(client, CRLF, 2);
 
   return 0;
 }
@@ -151,7 +151,7 @@ int addArrayLength(Client client, int length) {
 
   addReply(client, "*", 1);
   addReply(client, buf, strlen(buf));
-  addReply(client, "\r\n", 2);
+  addReply(client, CRLF, 2);
 
   return 0;
 }
@@ -162,9 +162,9 @@ int addBulkString(Client client, char *str) {
 
   addReply(client, "$", 1);
   addReply(client, buf, strlen(buf));
-  addReply(client, "\r\n", 2);
+  addReply(client, CRLF, 2);
   addReply(client, str, strlen(str));
-  addReply(client, "\r\n", 2);
+  addReply(client, CRLF, 2);
 
   return 0;
 }
@@ -175,7 +175,7 @@ int addInteger(Client client, int num) {
 
   addReply(client, ":", 1);
   addReply(client, buf, strlen(buf));
-  addReply(client, "\r\n", 2);
+  addReply(client, CRLF, 2);
 
   return 0;
 }

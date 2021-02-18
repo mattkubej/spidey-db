@@ -48,7 +48,7 @@ void commandGetVertex(Client client) {
   char msg[80];
   strcpy(msg, "+");
   strcat(msg, v->value);
-  strcat(msg, "\r\n");
+  strcat(msg, CRLF);
 
   int len = strlen(msg);
 
