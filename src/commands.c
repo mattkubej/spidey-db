@@ -56,7 +56,14 @@ void commandGetVertex(Client client) {
 }
 
 void commandGetNeighbors(Client client) {
-  getNeighbors(client->graph, client->req_args[1], 1);
+  Edge e = getNeighbors(client->graph, client->req_args[1], 1);
+
+  while (e != NULL) {
+    printf("{%s, %s}\n", e->src_key, e->dest_key);
+    e = e->next;
+  }
+
+  // free edges?
 
   addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->resp_buf, client->resp_offset, 0);

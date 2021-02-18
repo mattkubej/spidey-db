@@ -52,14 +52,35 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
-void getNeighbors(Graph graph, char *key, int distance) {
-  Vertex v = getVertex(graph, key);
-  Vertex temp = v->next;
+Edge getNeighbors(Graph graph, char *key, int distance) {
+  Edge e = malloc(sizeof(Edge));
+  Edge e_prev = e;
 
-  while (temp != NULL) {
-    printf("{%s, %s}\n", v->key, temp->key);
-    temp = temp->next;
+  Vertex v = getVertex(graph, key);
+  Vertex dest = v->next;
+
+  while (dest != NULL) {
+    Edge e = malloc(sizeof(Edge));
+
+    char *c_src_key = malloc(strlen(v->key) + 1);
+    strcpy(c_src_key, v->key);
+    e->src_key = c_src_key;
+
+    char *c_dest_key = malloc(strlen(dest->key) + 1);
+    strcpy(c_dest_key, dest->key);
+    e->dest_key = c_dest_key;
+
+    if (e_prev == NULL) {
+      e_prev = e;
+    } else {
+      e_prev->next = e;
+      e_prev = e;
+    }
+
+    dest = dest->next;
   }
+
+  return e->next;
 }
 
 Graph createGraph() {

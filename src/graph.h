@@ -9,17 +9,24 @@ struct vertex {
   struct vertex *next;
 };
 
+struct edge {
+  char *src_key;
+  char *dest_key;
+  struct edge *next;
+};
+
 struct graph {
   Dict v_dict;
 };
 
 typedef struct vertex *Vertex;
+typedef struct edge *Edge;
 typedef struct graph *Graph;
 
 Graph createGraph();
 void addVertex(Graph graph, char *key, char *value);
 Vertex getVertex(Graph graph, char *key);
 void addEdge(Graph graph, char *v1_key, char *v2_key);
-void getNeighbors(Graph graph, char *key, int distance);
+Edge getNeighbors(Graph graph, char *key, int distance);
 
 #endif
