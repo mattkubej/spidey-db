@@ -5,9 +5,6 @@
 #include <string.h>
 #include <sys/socket.h>
 
-#define COMMAND_ARRAY '*'
-#define COMMAND_BULKSTRING '$'
-
 void addReqArg(Client client, char *req_arg) {
   char *c_req_arg = malloc(strlen(req_arg) + 1);
   strcpy(c_req_arg, req_arg);
