@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Dict implementation based on
 // https://www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)HashTables.html
 
 Dict internalCreateDict(unsigned int size) {
@@ -38,7 +39,7 @@ void destroyDict(Dict d) {
   free(d);
 }
 
-// djb2 - http://www.cse.yorku.ca/~oz/hash.html
+// djb2 hash function - http://www.cse.yorku.ca/~oz/hash.html
 unsigned int hash(char *str, unsigned int size) {
   unsigned long hash = 5381;
   int c;
