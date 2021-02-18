@@ -2,6 +2,7 @@
 #include "commands.h"
 #include "dict.h"
 #include "networking.h"
+#include "util.h"
 
 #include <netinet/ip.h>
 #include <stdio.h>
@@ -10,16 +11,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-#include <ctype.h>
-
-char *toLower(char *s) {
-  for (char *l = s; *l; l++) {
-    *l = tolower(*l);
-  }
-
-  return s;
-}
 
 server_t *create_server() {
   server_t *server = malloc(sizeof(*server));

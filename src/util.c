@@ -1,4 +1,13 @@
+#include <ctype.h>
 #include <string.h>
+
+char *toLower(char *s) {
+  for (char *l = s; *l; l++) {
+    *l = tolower(*l);
+  }
+
+  return s;
+}
 
 // --- integer to string ---
 // Based on the implementation in https://stackoverflow.com/a/29544416/14610143
