@@ -1,5 +1,6 @@
 #include <string.h>
 
+// --- integer to string ---
 // Based on the implementation in https://stackoverflow.com/a/29544416/14610143
 
 void reverse(char s[]) {
