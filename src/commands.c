@@ -30,14 +30,14 @@ void commandPing(Client client) {
 void commandSetEdge(Client client) {
   addEdge(client->graph, client->req_args[1], client->req_args[2]);
 
-  addSimpleStringReply(client, "OK");
+  addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
 
 void commandSetVertex(Client client) {
   addVertex(client->graph, client->req_args[1], client->req_args[2]);
 
-  addSimpleStringReply(client, "OK");
+  addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
 
@@ -58,6 +58,6 @@ void commandGetVertex(Client client) {
 void commandGetNeighbors(Client client) {
   getNeighbors(client->graph, client->req_args[1], 1);
 
-  addSimpleStringReply(client, "OK");
+  addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
