@@ -56,7 +56,8 @@ void commandGetVertex(Client client) {
 }
 
 void commandGetNeighbors(Client client) {
-  Edge e = getNeighbors(client->graph, client->req_args[1], 1);
+  EdgeList el = getNeighbors(client->graph, client->req_args[1], 1);
+  Edge e = el->head;
 
   while (e != NULL) {
     printf("{%s, %s}\n", e->src_key, e->dest_key);

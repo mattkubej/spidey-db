@@ -52,9 +52,12 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
-Edge getNeighbors(Graph graph, char *key, int distance) {
-  Edge e = malloc(sizeof(Edge));
-  Edge e_prev = e;
+EdgeList getNeighbors(Graph graph, char *key, int distance) {
+  EdgeList el = malloc(sizeof(EdgeList));
+  el->count = 0;
+  el->head = NULL;
+
+  Edge e_prev = NULL;
 
   Vertex v = getVertex(graph, key);
   Vertex dest = v->next;
@@ -70,7 +73,8 @@ Edge getNeighbors(Graph graph, char *key, int distance) {
     strcpy(c_dest_key, dest->key);
     e->dest_key = c_dest_key;
 
-    if (e_prev == NULL) {
+    if (el->head == NULL) {
+      el->head = e;
       e_prev = e;
     } else {
       e_prev->next = e;
@@ -80,7 +84,7 @@ Edge getNeighbors(Graph graph, char *key, int distance) {
     dest = dest->next;
   }
 
-  return e->next;
+  return el;
 }
 
 Graph createGraph() {
