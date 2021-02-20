@@ -1,10 +1,10 @@
 #include "graph.h"
 #include "dict.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 void addVertex(Graph graph, char *key, char *value) {
   Vertex vertex = malloc(sizeof(Vertex));

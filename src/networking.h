@@ -9,7 +9,7 @@
 #define COMMAND_BULKSTRING '$'
 
 #define CRLF "\r\n"
-#define RESPONSE_BUFFER_LENGTH (16*1024)
+#define RESPONSE_BUFFER_LENGTH (16 * 1024)
 #define RESPONSE_OK "OK"
 
 struct client {
