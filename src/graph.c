@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 void addVertex(Graph graph, char *key, char *value) {
   Vertex vertex = malloc(sizeof(Vertex));
@@ -83,6 +84,18 @@ EdgeList getNeighbors(Graph graph, char *key, int distance) {
 
     dest = dest->next;
   }
+
+  return el;
+}
+
+EdgeList bfs(Graph graph, char *key, int distance) {
+  EdgeList el = malloc(sizeof(EdgeList));
+  Vertex v = getVertex(graph, key);
+  Dict visited_dict = createDict();
+
+  bool *has_visited = malloc(sizeof(bool));
+  *has_visited = true;
+  insertDictItem(visited_dict, v->key, has_visited);
 
   return el;
 }
