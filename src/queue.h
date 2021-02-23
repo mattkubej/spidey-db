@@ -6,7 +6,7 @@
 #define GROWTH_FACTOR 2
 
 struct queue {
-  int front, rear, count;
+  size_t front, rear, count;
   size_t size;
   char **array;
 };
