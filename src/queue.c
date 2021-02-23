@@ -38,7 +38,7 @@ void grow(Queue queue) {
   queue = temp;
   temp = swap;
 
-  // TODO: destroy
+  destroyQueue(temp);
 }
 
 void enqueue(Queue queue, char *item) {
