@@ -1,12 +1,8 @@
+#include "queue.h"
+
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-struct Queue {
-  int front, rear, count;
-  size_t size;
-  char **array;
-};
 
 struct Queue *createQueue(size_t size) {
   struct Queue *queue = (struct Queue *)malloc(sizeof(struct Queue));
@@ -22,11 +18,29 @@ struct Queue *createQueue(size_t size) {
 
 int isQueueEmpty(struct Queue *queue) { return queue->count == 0; }
 
-// TODO: build grow functionality into this
+// TODO: introduce growth factor
+void grow(struct Queue *queue) {
+  struct Queue *temp = createQueue(queue->size * 2);
+
+  for (size_t i = 0; i < queue->count; i++) {
+    enqueue(temp, dequeue(queue));
+  }
+
+  struct Queue *swap = queue;
+  queue = temp;
+  temp = swap;
+
+  // TODO: destroy
+}
+
 void enqueue(struct Queue *queue, char *item) {
   queue->rear = (queue->rear + 1) % queue->size;
   queue->array[queue->rear] = item;
   queue->count = queue->count + 1;
+
+  if (queue->count >= queue->size) {
+    grow(queue);
+  }
 }
 
 char *dequeue(struct Queue *queue) {
