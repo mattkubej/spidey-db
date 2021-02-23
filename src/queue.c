@@ -16,6 +16,15 @@ Queue createQueue(size_t size) {
   return queue;
 }
 
+void destroyQueue(Queue queue) {
+  for (size_t i = 0; i < queue->count; i++) {
+    char *item = dequeue(queue);
+    free(item);
+  }
+
+  free(queue);
+}
+
 int isQueueEmpty(Queue queue) { return queue->count == 0; }
 
 void grow(Queue queue) {

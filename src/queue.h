@@ -14,6 +14,7 @@ struct queue {
 typedef struct queue *Queue;
 
 Queue createQueue(size_t size);
+void destroyQueue(Queue queue);
 int isQueueEmpty(Queue queue);
 void enqueue(Queue queue, char *item);
 char *dequeue(Queue queue);
