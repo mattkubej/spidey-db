@@ -51,7 +51,7 @@ unsigned int hash(char *str, unsigned int size) {
   return hash % size;
 }
 
-void grow(Dict d) {
+void growDict(Dict d) {
   Dict temp = internalCreateDict(d->size * GROWTH_FACTOR);
 
   for (size_t i = 0; i < d->size; i++) {
@@ -83,7 +83,7 @@ void insertDictItem(Dict d, char *key, void *value) {
   d->count++;
 
   if (d->count >= d->size) {
-    grow(d);
+    growDict(d);
   }
 }
 

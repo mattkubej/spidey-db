@@ -27,7 +27,7 @@ void destroyQueue(Queue queue) {
 
 int isQueueEmpty(Queue queue) { return queue->count == 0; }
 
-void grow(Queue queue) {
+void growQueue(Queue queue) {
   Queue temp = createQueue(queue->size * GROWTH_FACTOR);
 
   for (size_t i = 0; i < queue->count; i++) {
@@ -47,7 +47,7 @@ void enqueue(Queue queue, char *item) {
   queue->count = queue->count + 1;
 
   if (queue->count >= queue->size) {
-    grow(queue);
+    growQueue(queue);
   }
 }
 
