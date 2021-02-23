@@ -5,13 +5,13 @@
 #include <stdlib.h>
 
 Queue createQueue(size_t size) {
-  Queue queue = malloc(sizeof(Queue));
+  Queue queue = malloc(sizeof(*queue));
 
-  queue->size = size;
+  queue->size = 16;
   queue->front = queue->count = 0;
+  queue->rear = queue->size - 1;
 
-  queue->rear = size - 1;
-  queue->array = malloc(queue->size * sizeof(char *));
+  queue->array = malloc(sizeof(char*) * 16);
 
   return queue;
 }

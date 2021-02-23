@@ -56,13 +56,15 @@ void commandGetVertex(Client client) {
 }
 
 void commandGetNeighbors(Client client) {
-  EdgeList el = getNeighbors(client->graph, client->req_args[1], 1);
-  Edge e = el->head;
+  /*EdgeList el = getNeighbors(client->graph, client->req_args[1], 1);*/
+  /*Edge e = el->head;*/
 
-  while (e != NULL) {
-    printf("{%s, %s}\n", e->src_key, e->dest_key);
-    e = e->next;
-  }
+  /*while (e != NULL) {*/
+    /*printf("{%s, %s}\n", e->src_key, e->dest_key);*/
+    /*e = e->next;*/
+  /*}*/
+
+  bfs(client->graph, client->req_args[1], 1);
 
   // free edges?
 

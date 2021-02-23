@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "dict.h"
+#include "queue.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -96,6 +97,8 @@ EdgeList bfs(Graph graph, char *key, int distance) {
   bool *has_visited = malloc(sizeof(bool));
   *has_visited = true;
   insertDictItem(visited_dict, v->key, has_visited);
+
+  createQueue(16);
 
   return el;
 }
