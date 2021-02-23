@@ -18,9 +18,8 @@ Queue createQueue(size_t size) {
 
 int isQueueEmpty(Queue queue) { return queue->count == 0; }
 
-// TODO: introduce growth factor
 void grow(Queue queue) {
-  Queue temp = createQueue(queue->size * 2);
+  Queue temp = createQueue(queue->size * GROWTH_FACTOR);
 
   for (size_t i = 0; i < queue->count; i++) {
     enqueue(temp, dequeue(queue));
