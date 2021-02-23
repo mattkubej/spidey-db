@@ -3,17 +3,19 @@
 
 #include <stdlib.h>
 
-struct Queue {
+struct queue {
   int front, rear, count;
   size_t size;
   char **array;
 };
 
-struct Queue *createQueue(size_t size);
-int isQueueEmpty(struct Queue *queue);
-void enqueue(struct Queue *queue, char *item);
-char *dequeue(struct Queue *queue);
-char *front(struct Queue *queue);
-char *rear(struct Queue *queue);
+typedef struct queue *Queue;
+
+Queue createQueue(size_t size);
+int isQueueEmpty(Queue queue);
+void enqueue(Queue queue, char *item);
+char *dequeue(Queue queue);
+char *front(Queue queue);
+char *rear(Queue queue);
 
 #endif

@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Queue *createQueue(size_t size) {
-  struct Queue *queue = (struct Queue *)malloc(sizeof(struct Queue));
+Queue createQueue(size_t size) {
+  Queue queue = malloc(sizeof(Queue));
 
   queue->size = size;
   queue->front = queue->count = 0;
@@ -16,24 +16,24 @@ struct Queue *createQueue(size_t size) {
   return queue;
 }
 
-int isQueueEmpty(struct Queue *queue) { return queue->count == 0; }
+int isQueueEmpty(Queue queue) { return queue->count == 0; }
 
 // TODO: introduce growth factor
-void grow(struct Queue *queue) {
-  struct Queue *temp = createQueue(queue->size * 2);
+void grow(Queue queue) {
+  Queue temp = createQueue(queue->size * 2);
 
   for (size_t i = 0; i < queue->count; i++) {
     enqueue(temp, dequeue(queue));
   }
 
-  struct Queue *swap = queue;
+  Queue swap = queue;
   queue = temp;
   temp = swap;
 
   // TODO: destroy
 }
 
-void enqueue(struct Queue *queue, char *item) {
+void enqueue(Queue queue, char *item) {
   queue->rear = (queue->rear + 1) % queue->size;
   queue->array[queue->rear] = item;
   queue->count = queue->count + 1;
@@ -43,7 +43,7 @@ void enqueue(struct Queue *queue, char *item) {
   }
 }
 
-char *dequeue(struct Queue *queue) {
+char *dequeue(Queue queue) {
   if (isQueueEmpty(queue)) {
     return NULL;
   }
@@ -56,7 +56,7 @@ char *dequeue(struct Queue *queue) {
   return item;
 }
 
-char *front(struct Queue *queue) {
+char *front(Queue queue) {
   if (isQueueEmpty(queue)) {
     return NULL;
   }
@@ -64,7 +64,7 @@ char *front(struct Queue *queue) {
   return queue->array[queue->front];
 }
 
-char *rear(struct Queue *queue) {
+char *rear(Queue queue) {
   if (isQueueEmpty(queue)) {
     return NULL;
   }
