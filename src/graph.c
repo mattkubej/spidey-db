@@ -54,43 +54,8 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
-EdgeList getNeighbors(Graph graph, char *key, int distance) {
-  EdgeList el = malloc(sizeof(EdgeList));
-  el->count = 0;
-  el->head = NULL;
-
-  Edge e_prev = NULL;
-
-  Vertex v = getVertex(graph, key);
-  Vertex dest = v->next;
-
-  while (dest != NULL) {
-    Edge e = malloc(sizeof(Edge));
-
-    char *c_src_key = malloc(strlen(v->key) + 1);
-    strcpy(c_src_key, v->key);
-    e->src_key = c_src_key;
-
-    char *c_dest_key = malloc(strlen(dest->key) + 1);
-    strcpy(c_dest_key, dest->key);
-    e->dest_key = c_dest_key;
-
-    if (el->head == NULL) {
-      el->head = e;
-      e_prev = e;
-    } else {
-      e_prev->next = e;
-      e_prev = e;
-    }
-
-    dest = dest->next;
-  }
-
-  return el;
-}
-
 // TODO: clean this code up
-EdgeList bfs(Graph graph, char *key, int distance) {
+EdgeList getNeighbors(Graph graph, char *key, int distance) {
   EdgeList el = malloc(sizeof(EdgeList));
   Vertex v = getVertex(graph, key);
   Dict visited_dict = createDict();
