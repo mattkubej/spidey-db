@@ -64,7 +64,13 @@ void commandGetNeighbors(Client client) {
     /*e = e->next;*/
   /*}*/
 
-  bfs(client->graph, client->req_args[1], 1);
+  EdgeList el = bfs(client->graph, client->req_args[1], 1);
+  Edge e = el->head;
+
+  while (e != NULL) {
+    printf("{%s, %s}\n", e->src_key, e->dest_key);
+    e = e->next;
+  }
 
   // free edges?
 
