@@ -34,6 +34,5 @@ void addVertex(Graph graph, char *key, char *value);
 Vertex getVertex(Graph graph, char *key);
 void addEdge(Graph graph, char *v1_key, char *v2_key);
 EdgeList getNeighbors(Graph graph, char *key, int distance);
-EdgeList bfs(Graph graph, char *key, int distance);
 
 #endif
