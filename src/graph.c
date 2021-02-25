@@ -56,18 +56,22 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
 
 // TODO: clean this code up
 EdgeList getNeighbors(Graph graph, char *key, int distance) {
-  EdgeList el = malloc(sizeof(EdgeList));
   Vertex v = getVertex(graph, key);
-  Dict visited_dict = createDict();
 
+  // maintain visited neighbors
+  Dict visited_dict = createDict();
   bool *has_visited = malloc(sizeof(bool));
   *has_visited = true;
   insertDictItem(visited_dict, v->key, has_visited);
 
+  // queue of neighbors to visit
   Queue queue = createQueue(1024);
   char *v_key = malloc(strlen(v->key) + 1);
   strcpy(v_key, v->key);
   enqueue(queue, v_key);
+
+  // list of neighbors
+  EdgeList el = malloc(sizeof(EdgeList));
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(queue)) {
@@ -96,6 +100,7 @@ EdgeList getNeighbors(Graph graph, char *key, int distance) {
         e_prev = e;
       }
 
+      // add unvisited neighbor to queue
       if (!getDictItemValue(visited_dict, c_dest_key)) {
         char *vstd_key = malloc(strlen(c_dest_key) + 1);
         strcpy(vstd_key, c_dest_key);
