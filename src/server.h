@@ -20,8 +20,8 @@ typedef struct spideyServer {
   Graph graph;
 } server_t;
 
-server_t *create_server();
-int server_listen(server_t *server);
-int destroy_server(server_t *server);
+server_t *createServer();
+int serverListen(server_t *server);
+int destroyServer(server_t *server);
 
 #endif

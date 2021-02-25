@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-server_t *create_server() {
+server_t *createServer() {
   server_t *server = malloc(sizeof(*server));
 
   if (server == NULL) {
@@ -92,7 +92,7 @@ int recv_clt_msg(server_t *server, int clt_fd) {
   return 0;
 }
 
-int server_listen(server_t *server) {
+int serverListen(server_t *server) {
   if ((server->master_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
     return 1;
@@ -150,7 +150,7 @@ int server_listen(server_t *server) {
   return 0;
 }
 
-int destroy_server(server_t *server) {
+int destroyServer(server_t *server) {
   if (server->master_fd != -1) {
     int err = close(server->master_fd);
     if (err < 0) {
