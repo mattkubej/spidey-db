@@ -116,7 +116,7 @@ int addSimpleStringReply(Client client, char *str) {
 int addArrayLength(Client client, int length) {
   // TODO: abstract out the buf size
   char buf[1024];
-  itoa(length, buf);
+  intToString(length, buf);
 
   addReply(client, "*", 1);
   addReply(client, buf, strlen(buf));
@@ -128,7 +128,7 @@ int addArrayLength(Client client, int length) {
 int addBulkString(Client client, char *str) {
   // TODO: abstract out the buf size
   char buf[1024];
-  itoa(strlen(str), buf);
+  intToString(strlen(str), buf);
 
   addReply(client, "$", 1);
   addReply(client, buf, strlen(buf));
@@ -142,7 +142,7 @@ int addBulkString(Client client, char *str) {
 int addInteger(Client client, int num) {
   // TODO: abstract out the buf size
   char buf[1024];
-  itoa(num, buf);
+  intToString(num, buf);
 
   addReply(client, ":", 1);
   addReply(client, buf, strlen(buf));

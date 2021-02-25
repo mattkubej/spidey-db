@@ -2,6 +2,6 @@
 #define UTIL_H
 
 char *toLower(char *s);
-void itoa(int n, char s[]);
+void intToString(int n, char s[]);
 
 #endif

@@ -23,7 +23,7 @@ void reverse(char s[]) {
   }
 }
 
-void itoa(int n, char s[]) {
+void intToString(int n, char s[]) {
   int sign = n;
 
   if (sign < 0) {
