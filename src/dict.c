@@ -7,7 +7,7 @@
 // https://www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)HashTables.html
 
 Dict internalCreateDict(unsigned int size) {
-  Dict d = malloc(sizeof(Dict));
+  Dict d = malloc(sizeof(*d));
 
   d->size = size;
   d->count = 0;
