@@ -7,11 +7,11 @@
 Queue createQueue(size_t size) {
   Queue queue = malloc(sizeof(*queue));
 
-  queue->size = 16;
+  queue->size = size;
   queue->front = queue->count = 0;
   queue->rear = queue->size - 1;
 
-  queue->array = malloc(sizeof(char*) * 16);
+  queue->array = malloc(sizeof(char*) * queue->size);
 
   return queue;
 }
