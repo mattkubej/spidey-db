@@ -96,6 +96,7 @@ void destroyClient(Client client) {
   free(client);
 }
 
+// TODO: be consistent, reply vs response
 // --- resp reply handling ---
 
 int addReply(Client client, char *str, size_t str_len) {
