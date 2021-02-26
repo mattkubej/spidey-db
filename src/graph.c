@@ -54,7 +54,6 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
-// TODO: clean this code up
 EdgeList getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
@@ -76,20 +75,20 @@ EdgeList getNeighbors(Graph graph, char *key, int distance) {
 
   while (!isQueueEmpty(queue)) {
     char* item = front(queue);
-    Vertex test = getVertex(graph, item);
+    Vertex v_src = getVertex(graph, item);
     dequeue(queue);
 
-    Vertex dest = test->next;
+    Vertex v_dest = v_src->next;
 
-    while (dest != NULL) {
+    while (v_dest != NULL) {
       Edge e = malloc(sizeof(Edge));
 
-      char *c_src_key = malloc(strlen(test->key) + 1);
-      strcpy(c_src_key, test->key);
+      char *c_src_key = malloc(strlen(v_src->key) + 1);
+      strcpy(c_src_key, v_src->key);
       e->src_key = c_src_key;
 
-      char *c_dest_key = malloc(strlen(dest->key) + 1);
-      strcpy(c_dest_key, dest->key);
+      char *c_dest_key = malloc(strlen(v_dest->key) + 1);
+      strcpy(c_dest_key, v_dest->key);
       e->dest_key = c_dest_key;
 
       if (el->head == NULL) {
@@ -102,13 +101,13 @@ EdgeList getNeighbors(Graph graph, char *key, int distance) {
 
       // add unvisited neighbor to queue
       if (!getDictItemValue(visited_dict, c_dest_key)) {
-        char *vstd_key = malloc(strlen(c_dest_key) + 1);
-        strcpy(vstd_key, c_dest_key);
-        insertDictItem(visited_dict, vstd_key, has_visited);
-        enqueue(queue, vstd_key);
+        char *visited_key = malloc(strlen(c_dest_key) + 1);
+        strcpy(visited_key, c_dest_key);
+        insertDictItem(visited_dict, visited_key, has_visited);
+        enqueue(queue, visited_key);
       }
 
-      dest = dest->next;
+      v_dest = v_dest->next;
     }
   }
 
