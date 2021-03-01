@@ -70,7 +70,8 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   enqueue(queue, v_key);
 
   // list of neighbors
-  Neighbors neighbors = malloc(sizeof(Neighbors));
+  Neighbors neighbors = malloc(sizeof(*neighbors));
+  neighbors->edge_count = 0;
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(queue)) {
@@ -98,6 +99,8 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
         e_prev->next = e;
         e_prev = e;
       }
+
+      neighbors->edge_count++;
 
       // add unvisited neighbor to queue
       if (!getDictItemValue(visited_dict, c_dest_key)) {

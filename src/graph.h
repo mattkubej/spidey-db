@@ -16,6 +16,8 @@ struct edge {
 };
 
 struct neighbors {
+  size_t vertex_count;
+  struct vertex *vertex_head;
   size_t edge_count;
   struct edge *edge_head;
 };
