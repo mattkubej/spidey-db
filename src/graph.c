@@ -72,17 +72,36 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   // list of neighbors
   Neighbors neighbors = malloc(sizeof(*neighbors));
   neighbors->edge_count = 0;
+  neighbors->vertex_count = 0;
+  neighbors->edge_head = NULL;
+  neighbors->vertex_head = NULL;
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(queue)) {
     char* item = front(queue);
     Vertex v_src = getVertex(graph, item);
+
+    Vertex nv = malloc(sizeof(*nv));
+    nv->value = NULL;
+    char* nv_key = malloc(strlen(v_src->key) + 1);
+    strcpy(nv_key, v_src->key);
+    nv->key = nv_key;
+
+    if (neighbors->vertex_head == NULL) {
+      neighbors->vertex_head= nv;
+    } else {
+      Vertex temp = neighbors->vertex_head;
+      neighbors->vertex_head = nv;
+      nv->next = temp;
+    }
+
+    neighbors->vertex_count++;
     dequeue(queue);
 
     Vertex v_dest = v_src->next;
 
     while (v_dest != NULL) {
-      Edge e = malloc(sizeof(Edge));
+      Edge e = malloc(sizeof(*e));
 
       char *c_src_key = malloc(strlen(v_src->key) + 1);
       strcpy(c_src_key, v_src->key);

@@ -57,8 +57,16 @@ void commandGetVertex(Client client) {
 
 void commandGetNeighbors(Client client) {
   Neighbors neighbors = getNeighbors(client->graph, client->req_args[1], 1);
-  Edge e = neighbors->edge_head;
 
+  printf("vertex_c[%ld] edge_c[%ld]\n", neighbors->vertex_count, neighbors->edge_count);
+
+  Vertex v = neighbors->vertex_head;
+  while (v != NULL) {
+    printf("%s\n", v->key);
+    v = v->next;
+  }
+
+  Edge e = neighbors->edge_head;
   while (e != NULL) {
     printf("{%s, %s}\n", e->src_key, e->dest_key);
     e = e->next;
