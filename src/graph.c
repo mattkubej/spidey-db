@@ -54,7 +54,7 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
-EdgeList getNeighbors(Graph graph, char *key, int distance) {
+Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
   // maintain visited neighbors
@@ -70,7 +70,7 @@ EdgeList getNeighbors(Graph graph, char *key, int distance) {
   enqueue(queue, v_key);
 
   // list of neighbors
-  EdgeList el = malloc(sizeof(EdgeList));
+  Neighbors neighbors = malloc(sizeof(Neighbors));
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(queue)) {
@@ -91,8 +91,8 @@ EdgeList getNeighbors(Graph graph, char *key, int distance) {
       strcpy(c_dest_key, v_dest->key);
       e->dest_key = c_dest_key;
 
-      if (el->head == NULL) {
-        el->head = e;
+      if (neighbors->edge_head == NULL) {
+        neighbors->edge_head = e;
         e_prev = e;
       } else {
         e_prev->next = e;
@@ -111,7 +111,7 @@ EdgeList getNeighbors(Graph graph, char *key, int distance) {
     }
   }
 
-  return el;
+  return neighbors;
 }
 
 Graph createGraph() {

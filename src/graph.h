@@ -15,9 +15,11 @@ struct edge {
   struct edge *next;
 };
 
-struct edge_list {
-  size_t count;
-  struct edge *head;
+struct neighbors {
+  size_t vertex_count;
+  struct vertex *vertex_head;
+  size_t edge_count;
+  struct edge *edge_head;
 };
 
 struct graph {
@@ -26,13 +28,13 @@ struct graph {
 
 typedef struct vertex *Vertex;
 typedef struct edge *Edge;
-typedef struct edge_list *EdgeList;
+typedef struct neighbors *Neighbors;
 typedef struct graph *Graph;
 
 Graph createGraph();
 void addVertex(Graph graph, char *key, char *value);
 Vertex getVertex(Graph graph, char *key);
 void addEdge(Graph graph, char *v1_key, char *v2_key);
-EdgeList getNeighbors(Graph graph, char *key, int distance);
+Neighbors getNeighbors(Graph graph, char *key, int distance);
 
 #endif
