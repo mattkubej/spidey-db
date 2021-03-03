@@ -167,6 +167,8 @@ int destroyServer(server_t *server) {
   // TODO: close all client fds?
 
   destroyDict(server->commands);
+  destroyGraph(server->graph);
+  free(server);
 
   return 0;
 }

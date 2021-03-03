@@ -24,7 +24,5 @@ int main() {
     return err;
   }
 
-  free(server);
-
   return 0;
 }

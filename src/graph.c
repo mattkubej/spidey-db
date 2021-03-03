@@ -7,6 +7,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+Graph createGraph() {
+  Graph graph = (Graph)malloc(sizeof(Graph));
+
+  graph->v_dict = createDict();
+
+  return graph;
+}
+
+void destroyGraph(Graph graph) {
+  destroyDict(graph->v_dict);
+  free(graph);
+}
+
 void addVertex(Graph graph, char *key, char *value) {
   Vertex vertex = malloc(sizeof(Vertex));
 
@@ -134,12 +147,4 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   }
 
   return neighbors;
-}
-
-Graph createGraph() {
-  Graph graph = (Graph)malloc(sizeof(Graph));
-
-  graph->v_dict = createDict();
-
-  return graph;
 }
