@@ -78,6 +78,5 @@ void commandGetNeighbors(Client client) {
 
   // free edges?
 
-  addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->resp_buf, client->resp_offset, 0);
 }
