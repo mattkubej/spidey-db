@@ -67,6 +67,7 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
+// TODO: destroy allocated memory (queue and dict)
 Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
