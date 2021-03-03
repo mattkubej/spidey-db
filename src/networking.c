@@ -151,3 +151,11 @@ int addInteger(Client client, int num) {
 
   return 0;
 }
+
+int addError(Client client, char *err) {
+  addReply(client, "-", 1);
+  addReply(client, err, strlen(err));
+  addReply(client, CRLF, 2);
+
+  return 0;
+}

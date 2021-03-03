@@ -32,5 +32,6 @@ int addSimpleStringReply(Client client, char *str);
 int addArrayLength(Client client, int length);
 int addBulkString(Client client, char *str);
 int addInteger(Client client, int num);
+int addError(Client client, char *err);
 
 #endif
