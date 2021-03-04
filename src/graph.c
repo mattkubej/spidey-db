@@ -68,6 +68,8 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
+// --- getNeighbors and helpers ---
+
 Neighbors createNeighbors() {
   Neighbors neighbors = malloc(sizeof(*neighbors));
 
