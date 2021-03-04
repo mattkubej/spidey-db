@@ -153,7 +153,7 @@ int serverListen(server_t *server) {
   return 0;
 }
 
-int destroyServer(server_t *server) {
+int destroyServer(SpideyServer server) {
   if (server->master_fd != -1) {
     int err = close(server->master_fd);
     if (err < 0) {

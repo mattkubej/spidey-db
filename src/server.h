@@ -24,6 +24,6 @@ typedef struct spideyServer *SpideyServer;
 
 SpideyServer createServer();
 int serverListen(server_t *server);
-int destroyServer(server_t *server);
+int destroyServer(SpideyServer server);
 
 #endif
