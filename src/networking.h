@@ -5,6 +5,8 @@
 
 #include <stdlib.h>
 
+#define MAX_REQUEST_ARGS 16
+
 #define COMMAND_ARRAY '*'
 #define COMMAND_BULKSTRING '$'
 

@@ -81,7 +81,7 @@ Client buildClient(char *buf, int clt_fd, Graph graph) {
   Client client = malloc(sizeof(Client));
   client->req_buf = buf;
   client->req_offset = 0;
-  client->req_args = malloc(sizeof(char *) * 16); // TODO: do this better
+  client->req_args = malloc(sizeof(char *) * MAX_REQUEST_ARGS);
   client->req_arg_length = 0;
   client->fd = clt_fd;
   client->graph = graph;
