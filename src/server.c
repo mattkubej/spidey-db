@@ -67,7 +67,7 @@ void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
     if (clt_req_cmd != NULL) {
       clt_req_cmd(client);
     } else {
-      addError(client, "ERR unknown command");
+      addErrorReply(client, "ERR unknown command");
       send(client->fd, client->reply_buf, client->reply_offset, 0);
     }
   }

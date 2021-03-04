@@ -151,7 +151,7 @@ int addIntegerReply(Client client, int num) {
   return 0;
 }
 
-int addError(Client client, char *err) {
+int addErrorReply(Client client, char *err) {
   addReply(client, "-", 1);
   addReply(client, err, strlen(err));
   addReply(client, CRLF, 2);

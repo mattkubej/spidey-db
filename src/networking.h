@@ -32,6 +32,6 @@ int addSimpleStringReply(Client client, char *str);
 int addArrayLengthReply(Client client, int length);
 int addBulkStringReply(Client client, char *str);
 int addIntegerReply(Client client, int num);
-int addError(Client client, char *err);
+int addErrorReply(Client client, char *err);
 
 #endif
