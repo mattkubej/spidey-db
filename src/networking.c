@@ -125,7 +125,7 @@ int addArrayLengthReply(Client client, int length) {
   return 0;
 }
 
-int addBulkString(Client client, char *str) {
+int addBulkStringReply(Client client, char *str) {
   // TODO: abstract out the buf size
   char buf[1024];
   intToString(strlen(str), buf);
