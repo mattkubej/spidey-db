@@ -6,7 +6,7 @@
 #include <string.h>
 #include <sys/socket.h>
 
-// --- client construction and reply request processing ---
+// --- request processing ---
 
 void addReqArg(Client client, char *req_arg) {
   char *c_req_arg = malloc(strlen(req_arg) + 1);
@@ -69,6 +69,8 @@ void parse(Client client) {
     break;
   }
 }
+
+// --- client construction ---
 
 Client buildClient(char *buf, int clt_fd, Graph graph) {
   // TODO: remove this printing
