@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-server_t *createServer() {
+SpideyServer createServer() {
   server_t *server = malloc(sizeof(*server));
 
   if (server == NULL) {

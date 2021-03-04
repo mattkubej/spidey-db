@@ -6,7 +6,7 @@
 int main() {
   int err;
 
-  server_t *server = createServer();
+  SpideyServer server = createServer();
   if (server == NULL) {
     printf("failed to create server\n");
     return 1;
