@@ -68,7 +68,7 @@ void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
       clt_req_cmd(client);
     } else {
       addError(client, "ERR unknown command");
-      send(client->fd, client->resp_buf, client->resp_offset, 0);
+      send(client->fd, client->reply_buf, client->reply_offset, 0);
     }
   }
 

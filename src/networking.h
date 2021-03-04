@@ -9,7 +9,7 @@
 #define COMMAND_BULKSTRING '$'
 
 #define CRLF "\r\n"
-#define RESPONSE_BUFFER_LENGTH (16 * 1024)
+#define REPLY_BUFFER_LENGTH (16 * 1024)
 #define RESPONSE_OK "OK"
 
 struct client {
@@ -19,8 +19,8 @@ struct client {
   int req_arg_length;
   int fd;
   Graph graph;
-  char resp_buf[RESPONSE_BUFFER_LENGTH];
-  int resp_offset;
+  char reply_buf[REPLY_BUFFER_LENGTH];
+  int reply_offset;
 };
 
 typedef struct client *Client;

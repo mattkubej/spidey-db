@@ -6,7 +6,7 @@
 #include <string.h>
 #include <sys/socket.h>
 
-// --- client construction and resp request processing ---
+// --- client construction and reply request processing ---
 
 void addReqArg(Client client, char *req_arg) {
   char *c_req_arg = malloc(strlen(req_arg) + 1);
@@ -83,7 +83,7 @@ Client buildClient(char *buf, int clt_fd, Graph graph) {
   client->req_arg_length = 0;
   client->fd = clt_fd;
   client->graph = graph;
-  client->resp_offset = 0;
+  client->reply_offset = 0;
 
   parse(client);
 
@@ -96,12 +96,11 @@ void destroyClient(Client client) {
   free(client);
 }
 
-// TODO: be consistent, reply vs response
-// --- resp reply handling ---
+// --- reply handling ---
 
 int addReply(Client client, char *str, size_t str_len) {
-  memcpy(client->resp_buf + client->resp_offset, str, str_len);
-  client->resp_offset += str_len;
+  memcpy(client->reply_buf + client->reply_offset, str, str_len);
+  client->reply_offset += str_len;
 
   return 0;
 }

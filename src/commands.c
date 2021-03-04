@@ -19,26 +19,26 @@ void commandCommand(Client client) {
   addInteger(client, 0);
   addInteger(client, 0);
 
-  send(client->fd, client->resp_buf, client->resp_offset, 0);
+  send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
 void commandPing(Client client) {
   addSimpleStringReply(client, "PONG");
-  send(client->fd, client->resp_buf, client->resp_offset, 0);
+  send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
 void commandSetEdge(Client client) {
   addEdge(client->graph, client->req_args[1], client->req_args[2]);
 
   addSimpleStringReply(client, RESPONSE_OK);
-  send(client->fd, client->resp_buf, client->resp_offset, 0);
+  send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
 void commandSetVertex(Client client) {
   addVertex(client->graph, client->req_args[1], client->req_args[2]);
 
   addSimpleStringReply(client, RESPONSE_OK);
-  send(client->fd, client->resp_buf, client->resp_offset, 0);
+  send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
 void commandGetVertex(Client client) {
@@ -78,5 +78,5 @@ void commandGetNeighbors(Client client) {
 
   // free edges?
 
-  send(client->fd, client->resp_buf, client->resp_offset, 0);
+  send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
