@@ -67,6 +67,17 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
+Neighbors createNeighbors() {
+  Neighbors neighbors = malloc(sizeof(*neighbors));
+
+  neighbors->edge_count = 0;
+  neighbors->vertex_count = 0;
+  neighbors->edge_head = NULL;
+  neighbors->vertex_head = NULL;
+
+  return neighbors;
+}
+
 // TODO: destroy allocated memory (queue and dict)
 Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
@@ -84,11 +95,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   enqueue(queue, v_key);
 
   // list of neighbors
-  Neighbors neighbors = malloc(sizeof(*neighbors));
-  neighbors->edge_count = 0;
-  neighbors->vertex_count = 0;
-  neighbors->edge_head = NULL;
-  neighbors->vertex_head = NULL;
+  Neighbors neighbors = createNeighbors();
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(queue)) {
