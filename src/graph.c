@@ -56,6 +56,7 @@ Vertex createVertexRef(char *key) {
 }
 
 void addEdge(Graph graph, char *v1_key, char *v2_key) {
+  // creates a logical edge with adjacency list
   Vertex v1 = getVertex(graph, v1_key);
   Vertex v2_c = createVertexRef(v2_key);
   v2_c->next = v1->next;
@@ -76,6 +77,20 @@ Neighbors createNeighbors() {
   neighbors->vertex_head = NULL;
 
   return neighbors;
+}
+
+Edge createEdge(Vertex src, Vertex dest) {
+  Edge e = malloc(sizeof(*e));
+
+  char *c_src_key = malloc(strlen(src->key) + 1);
+  strcpy(c_src_key, src->key);
+  e->src_key = c_src_key;
+
+  char *c_dest_key = malloc(strlen(dest->key) + 1);
+  strcpy(c_dest_key, dest->key);
+  e->dest_key = c_dest_key;
+
+  return e;
 }
 
 // TODO: destroy allocated memory (queue and dict)
@@ -122,15 +137,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
     Vertex v_dest = v_src->next;
 
     while (v_dest != NULL) {
-      Edge e = malloc(sizeof(*e));
-
-      char *c_src_key = malloc(strlen(v_src->key) + 1);
-      strcpy(c_src_key, v_src->key);
-      e->src_key = c_src_key;
-
-      char *c_dest_key = malloc(strlen(v_dest->key) + 1);
-      strcpy(c_dest_key, v_dest->key);
-      e->dest_key = c_dest_key;
+      Edge e = createEdge(v_src, v_dest);
 
       if (neighbors->edge_head == NULL) {
         neighbors->edge_head = e;
@@ -143,9 +150,9 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
       neighbors->edge_count++;
 
       // add unvisited neighbor to queue
-      if (!getDictItemValue(visited_dict, c_dest_key)) {
-        char *visited_key = malloc(strlen(c_dest_key) + 1);
-        strcpy(visited_key, c_dest_key);
+      if (!getDictItemValue(visited_dict, v_dest->key)) {
+        char *visited_key = malloc(strlen(v_dest->key) + 1);
+        strcpy(visited_key, v_dest->key);
         insertDictItem(visited_dict, visited_key, has_visited);
         enqueue(queue, visited_key);
       }
