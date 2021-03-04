@@ -95,7 +95,7 @@ int recv_clt_msg(server_t *server, int clt_fd) {
   return 0;
 }
 
-int serverListen(server_t *server) {
+int serverListen(SpideyServer server) {
   if ((server->master_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("failed to create socket");
     return 1;

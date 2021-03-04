@@ -23,7 +23,7 @@ typedef struct spideyServer {
 typedef struct spideyServer *SpideyServer;
 
 SpideyServer createServer();
-int serverListen(server_t *server);
+int serverListen(SpideyServer server);
 int destroyServer(SpideyServer server);
 
 #endif
