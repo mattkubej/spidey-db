@@ -113,7 +113,7 @@ int addSimpleStringReply(Client client, char *str) {
   return 0;
 }
 
-int addArrayLength(Client client, int length) {
+int addArrayLengthReply(Client client, int length) {
   // TODO: abstract out the buf size
   char buf[1024];
   intToString(length, buf);

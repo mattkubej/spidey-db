@@ -8,11 +8,11 @@
 
 void commandCommand(Client client) {
   // cheating here, so redis-cli responds back
-  addArrayLength(client, 1);
-  addArrayLength(client, 6);
+  addArrayLengthReply(client, 1);
+  addArrayLengthReply(client, 6);
   addBulkString(client, "command");
   addInteger(client, -1);
-  addArrayLength(client, 2);
+  addArrayLengthReply(client, 2);
   addSimpleStringReply(client, "loading");
   addSimpleStringReply(client, "stale");
   addInteger(client, 0);
@@ -58,19 +58,19 @@ void commandGetVertex(Client client) {
 void commandGetNeighbors(Client client) {
   Neighbors neighbors = getNeighbors(client->graph, client->req_args[1], 1);
 
-  addArrayLength(client, 2);
+  addArrayLengthReply(client, 2);
 
-  addArrayLength(client, neighbors->vertex_count);
+  addArrayLengthReply(client, neighbors->vertex_count);
   Vertex v = neighbors->vertex_head;
   while (v != NULL) {
     addBulkString(client, v->key);
     v = v->next;
   }
 
-  addArrayLength(client, neighbors->edge_count);
+  addArrayLengthReply(client, neighbors->edge_count);
   Edge e = neighbors->edge_head;
   while (e != NULL) {
-    addArrayLength(client, 2);
+    addArrayLengthReply(client, 2);
     addBulkString(client, e->src_key);
     addBulkString(client, e->dest_key);
     e = e->next;
