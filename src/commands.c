@@ -11,13 +11,13 @@ void commandCommand(Client client) {
   addArrayLengthReply(client, 1);
   addArrayLengthReply(client, 6);
   addBulkStringReply(client, "command");
-  addInteger(client, -1);
+  addIntegerReply(client, -1);
   addArrayLengthReply(client, 2);
   addSimpleStringReply(client, "loading");
   addSimpleStringReply(client, "stale");
-  addInteger(client, 0);
-  addInteger(client, 0);
-  addInteger(client, 0);
+  addIntegerReply(client, 0);
+  addIntegerReply(client, 0);
+  addIntegerReply(client, 0);
 
   send(client->fd, client->reply_buf, client->reply_offset, 0);
 }

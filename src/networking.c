@@ -139,7 +139,7 @@ int addBulkStringReply(Client client, char *str) {
   return 0;
 }
 
-int addInteger(Client client, int num) {
+int addIntegerReply(Client client, int num) {
   // TODO: abstract out the buf size
   char buf[1024];
   intToString(num, buf);

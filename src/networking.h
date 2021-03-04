@@ -31,7 +31,7 @@ void parse(Client client);
 int addSimpleStringReply(Client client, char *str);
 int addArrayLengthReply(Client client, int length);
 int addBulkStringReply(Client client, char *str);
-int addInteger(Client client, int num);
+int addIntegerReply(Client client, int num);
 int addError(Client client, char *err);
 
 #endif
