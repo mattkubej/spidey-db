@@ -106,17 +106,17 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   insertDictItem(visited_dict, v->key, has_visited);
 
   // queue of neighbors to visit
-  Queue queue = createQueue(1024);
+  Queue unvisited_queue = createQueue(1024);
   char *v_key = malloc(strlen(v->key) + 1);
   strcpy(v_key, v->key);
-  enqueue(queue, v_key);
+  enqueue(unvisited_queue, v_key);
 
   // list of neighbors
   Neighbors neighbors = createNeighbors();
   Edge e_prev = NULL;
 
-  while (!isQueueEmpty(queue)) {
-    char* item = front(queue);
+  while (!isQueueEmpty(unvisited_queue)) {
+    char* item = front(unvisited_queue);
     Vertex v_src = getVertex(graph, item);
 
     Vertex nv = malloc(sizeof(*nv));
@@ -134,7 +134,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
     }
 
     neighbors->vertex_count++;
-    dequeue(queue);
+    dequeue(unvisited_queue);
 
     Vertex v_dest = v_src->next;
 
@@ -156,7 +156,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
         char *visited_key = malloc(strlen(v_dest->key) + 1);
         strcpy(visited_key, v_dest->key);
         insertDictItem(visited_dict, visited_key, has_visited);
-        enqueue(queue, visited_key);
+        enqueue(unvisited_queue, visited_key);
       }
 
       v_dest = v_dest->next;
