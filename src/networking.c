@@ -93,7 +93,9 @@ Client buildClient(char *buf, int clt_fd, Graph graph) {
 }
 
 void destroyClient(Client client) {
-  // TODO: free cmd->args?
+  for (int i = 0; i < client->req_arg_length; i++) {
+    free(client->req_args[i]);
+  }
 
   free(client);
 }
