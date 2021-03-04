@@ -116,17 +116,17 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(unvisited_queue)) {
-    char* item = front(unvisited_queue);
+    char *item = front(unvisited_queue);
     Vertex v_src = getVertex(graph, item);
 
     Vertex nv = malloc(sizeof(*nv));
     nv->value = NULL;
-    char* nv_key = malloc(strlen(v_src->key) + 1);
+    char *nv_key = malloc(strlen(v_src->key) + 1);
     strcpy(nv_key, v_src->key);
     nv->key = nv_key;
 
     if (neighbors->vertex_head == NULL) {
-      neighbors->vertex_head= nv;
+      neighbors->vertex_head = nv;
     } else {
       Vertex temp = neighbors->vertex_head;
       neighbors->vertex_head = nv;
