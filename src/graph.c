@@ -131,6 +131,8 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
 
   // list of neighbors
   Neighbors neighbors = createNeighbors();
+
+  // dummy headers
   neighbors->vertex_head = malloc(sizeof(Vertex));
   neighbors->edge_head = malloc(sizeof(Edge));
 
@@ -140,20 +142,21 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   while (!isQueueEmpty(unvisited_queue)) {
     char *unvisited_v_key = dequeue(unvisited_queue);
     Vertex v_src = getVertex(graph, unvisited_v_key);
-    Vertex c_vertex = shallowCopyVertex(v_src);
 
+    // append new vertex
+    Vertex c_vertex = shallowCopyVertex(v_src);
     v_tail->next = c_vertex;
     v_tail = c_vertex;
-
     neighbors->vertex_count++;
+
+    // first neighbor to visit
     Vertex v_dest = v_src->next;
 
     while (v_dest != NULL) {
+      // append new edge
       Edge e = createEdge(v_src, v_dest);
-
       e_tail->next = e;
       e_tail = e;
-
       neighbors->edge_count++;
 
       // if vertex not flagged, then add neighbor to unvisited queue
@@ -162,6 +165,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
         enqueueUnvisitedVertex(v_dest, unvisited_queue);
       }
 
+      // move to next unvisted vertex
       v_dest = v_dest->next;
     }
   }
