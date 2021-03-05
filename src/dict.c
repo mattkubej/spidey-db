@@ -68,7 +68,7 @@ void growDict(Dict d) {
 }
 
 void insertDictItem(Dict d, char *key, void *value) {
-  Item it = malloc(sizeof(Item));
+  Item it = malloc(sizeof(*it));
 
   char *c_key = malloc(strlen(key) + 1);
   strcpy(c_key, key);

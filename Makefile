@@ -6,7 +6,7 @@ SRCS = $(shell find ./src/*.c)
 
 build: $(SRCS)
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) $^ -o ./build/spidey-db
+	$(CC) $(CFLAGS) $^ -g -o ./build/spidey-db
 
 clean:
 	@rm -rf $(BUILD_DIR)
