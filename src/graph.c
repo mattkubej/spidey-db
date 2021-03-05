@@ -102,7 +102,7 @@ void enqueueUnvisitedVertex(Vertex v, Queue unvisited_queue) {
 }
 
 void flagUnvisitedVertex(Vertex v, Dict visited_dict) {
-  bool *flag = malloc(sizeof(bool));
+  bool *flag = malloc(sizeof(*flag));
   *flag = true;
   insertDictItem(visited_dict, v->key, flag);
 }
