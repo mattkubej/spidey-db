@@ -95,7 +95,6 @@ Edge createEdge(Vertex src, Vertex dest) {
   return e;
 }
 
-// TODO: destroy allocated memory (queue and dict)
 Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
@@ -163,6 +162,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
     }
   }
 
+  // TODO: destroy dict
   destroyQueue(unvisited_queue);
 
   return neighbors;
