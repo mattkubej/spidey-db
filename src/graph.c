@@ -95,6 +95,12 @@ Edge createEdge(Vertex src, Vertex dest) {
   return e;
 }
 
+void enqueueUnvisitedVertex(Vertex v, Queue unvisited_queue) {
+  char *v_key = malloc(strlen(v->key) + 1);
+  strcpy(v_key, v->key);
+  enqueue(unvisited_queue, v_key);
+}
+
 Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
@@ -106,9 +112,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
 
   // queue of neighbors to visit
   Queue unvisited_queue = createQueue(1024);
-  char *v_key = malloc(strlen(v->key) + 1);
-  strcpy(v_key, v->key);
-  enqueue(unvisited_queue, v_key);
+  enqueueUnvisitedVertex(v, unvisited_queue);
 
   // list of neighbors
   Neighbors neighbors = createNeighbors();
@@ -155,7 +159,8 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
         char *visited_key = malloc(strlen(v_dest->key) + 1);
         strcpy(visited_key, v_dest->key);
         insertDictItem(visited_dict, visited_key, has_visited);
-        enqueue(unvisited_queue, visited_key);
+
+        enqueueUnvisitedVertex(v_dest, unvisited_queue);
       }
 
       v_dest = v_dest->next;
