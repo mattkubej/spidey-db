@@ -101,18 +101,18 @@ void enqueueUnvisitedVertex(Vertex v, Queue unvisited_queue) {
   enqueue(unvisited_queue, v_key);
 }
 
-void markVisitedVertex(Vertex v, Dict visited_dict) {
-  bool *has_visited = malloc(sizeof(bool));
-  *has_visited = true;
-  insertDictItem(visited_dict, v->key, has_visited);
+void flagUnvisitedVertex(Vertex v, Dict visited_dict) {
+  bool *flag = malloc(sizeof(bool));
+  *flag = true;
+  insertDictItem(visited_dict, v->key, flag);
 }
 
 Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
-  // maintain visited neighbors
-  Dict visited_dict = createDict();
-  markVisitedVertex(v, visited_dict);
+  // flag unvisited vertices, only process once
+  Dict unvisited_dict = createDict();
+  flagUnvisitedVertex(v, unvisited_dict);
 
   // queue of neighbors to visit
   Queue unvisited_queue = createQueue(1024);
@@ -158,9 +158,9 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
 
       neighbors->edge_count++;
 
-      // add unvisited neighbor to queue
-      if (!getDictItemValue(visited_dict, v_dest->key)) {
-        markVisitedVertex(v_dest, visited_dict);
+      // if vertex not flagged, then add neighbor to unvisited queue
+      if (!getDictItemValue(unvisited_dict, v_dest->key)) {
+        flagUnvisitedVertex(v_dest, unvisited_dict);
         enqueueUnvisitedVertex(v_dest, unvisited_queue);
       }
 
