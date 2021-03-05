@@ -131,6 +131,9 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
 
   // list of neighbors
   Neighbors neighbors = createNeighbors();
+  neighbors->vertex_head = malloc(sizeof(Vertex));
+
+  Vertex v_tail = neighbors->vertex_head;
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(unvisited_queue)) {
@@ -138,13 +141,8 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
     Vertex v_src = getVertex(graph, unvisited_v_key);
     Vertex c_vertex = shallowCopyVertex(v_src);
 
-    if (neighbors->vertex_head == NULL) {
-      neighbors->vertex_head = c_vertex;
-    } else {
-      Vertex temp = neighbors->vertex_head;
-      neighbors->vertex_head = c_vertex;
-      c_vertex->next = temp;
-    }
+    v_tail->next = c_vertex;
+    v_tail = c_vertex;
 
     neighbors->vertex_count++;
     Vertex v_dest = v_src->next;
@@ -171,6 +169,11 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
       v_dest = v_dest->next;
     }
   }
+
+  // clean up dummy vertex on header
+  Vertex v_temp = neighbors->vertex_head;
+  neighbors->vertex_head = neighbors->vertex_head->next;
+  free(v_temp);
 
   // TODO: destroy dict
   destroyQueue(unvisited_queue);
