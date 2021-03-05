@@ -107,6 +107,17 @@ void flagUnvisitedVertex(Vertex v, Dict visited_dict) {
   insertDictItem(visited_dict, v->key, flag);
 }
 
+Vertex shallowCopyVertex(Vertex v) {
+  Vertex c_vertex = malloc(sizeof(*c_vertex));
+  c_vertex->value = NULL;
+
+  char *c_v_key = malloc(strlen(v->key) + 1);
+  strcpy(c_v_key, v->key);
+  c_vertex->key = c_v_key;
+
+  return c_vertex;
+}
+
 Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
@@ -123,26 +134,19 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Edge e_prev = NULL;
 
   while (!isQueueEmpty(unvisited_queue)) {
-    char *item = front(unvisited_queue);
-    Vertex v_src = getVertex(graph, item);
-
-    Vertex nv = malloc(sizeof(*nv));
-    nv->value = NULL;
-    char *nv_key = malloc(strlen(v_src->key) + 1);
-    strcpy(nv_key, v_src->key);
-    nv->key = nv_key;
+    char *unvisited_v_key = dequeue(unvisited_queue);
+    Vertex v_src = getVertex(graph, unvisited_v_key);
+    Vertex c_vertex = shallowCopyVertex(v_src);
 
     if (neighbors->vertex_head == NULL) {
-      neighbors->vertex_head = nv;
+      neighbors->vertex_head = c_vertex;
     } else {
       Vertex temp = neighbors->vertex_head;
-      neighbors->vertex_head = nv;
-      nv->next = temp;
+      neighbors->vertex_head = c_vertex;
+      c_vertex->next = temp;
     }
 
     neighbors->vertex_count++;
-    dequeue(unvisited_queue);
-
     Vertex v_dest = v_src->next;
 
     while (v_dest != NULL) {
