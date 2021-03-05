@@ -163,5 +163,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
     }
   }
 
+  destroyQueue(unvisited_queue);
+
   return neighbors;
 }
