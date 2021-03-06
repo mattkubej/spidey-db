@@ -183,7 +183,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   neighbors->edge_head = neighbors->edge_head->next;
   free(e_temp);
 
-  // TODO: destroy dict
+  destroyDict(unvisited_dict);
   destroyQueue(unvisited_queue);
 
   return neighbors;
