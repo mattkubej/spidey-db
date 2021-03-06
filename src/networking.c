@@ -78,7 +78,7 @@ Client buildClient(char *buf, int clt_fd, Graph graph) {
   printf("%s", buf);
   printf("----------------\n\n");
 
-  Client client = malloc(sizeof(Client));
+  Client client = malloc(sizeof(*client));
   client->req_buf = buf;
   client->req_offset = 0;
   client->req_args = malloc(sizeof(char *) * MAX_REQUEST_ARGS);

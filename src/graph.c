@@ -8,7 +8,7 @@
 #include <string.h>
 
 Graph createGraph() {
-  Graph graph = (Graph)malloc(sizeof(Graph));
+  Graph graph = malloc(sizeof(*graph));
 
   graph->v_dict = createDict();
 
@@ -21,7 +21,7 @@ void destroyGraph(Graph graph) {
 }
 
 void addVertex(Graph graph, char *key, char *value) {
-  Vertex vertex = malloc(sizeof(Vertex));
+  Vertex vertex = malloc(sizeof(*vertex));
 
   char *c_key = malloc(strlen(key) + 1);
   strcpy(c_key, key);
@@ -43,7 +43,7 @@ Vertex getVertex(Graph graph, char *key) {
 }
 
 Vertex createVertexRef(char *key) {
-  Vertex ref = malloc(sizeof(Vertex));
+  Vertex ref = malloc(sizeof(*ref));
 
   char *c_key = malloc(strlen(key) + 1);
   strcpy(c_key, key);
@@ -133,8 +133,8 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Neighbors neighbors = createNeighbors();
 
   // dummy headers
-  neighbors->vertex_head = malloc(sizeof(Vertex));
-  neighbors->edge_head = malloc(sizeof(Edge));
+  neighbors->vertex_head = malloc(sizeof(*neighbors->vertex_head));
+  neighbors->edge_head = malloc(sizeof(*neighbors->edge_head));
 
   Vertex v_tail = neighbors->vertex_head;
   Edge e_tail = neighbors->edge_head;
