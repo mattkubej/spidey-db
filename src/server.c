@@ -21,12 +21,42 @@ SpideyServer createServer() {
   }
 
   Dict cmd_dict = createDict();
-  insertDictItem(cmd_dict, "command", commandCommand);
-  insertDictItem(cmd_dict, "ping", commandPing);
-  insertDictItem(cmd_dict, "setedge", commandSetEdge);
-  insertDictItem(cmd_dict, "setvertex", commandSetVertex);
-  insertDictItem(cmd_dict, "getvertex", commandGetVertex);
-  insertDictItem(cmd_dict, "getneighbors", commandGetNeighbors);
+
+  SpideyCommand sc_command = malloc(sizeof(*sc_command));
+  strcpy(sc_command->name, "command");
+  sc_command->arity = 1;
+  sc_command->exec = commandCommand;
+  insertDictItem(cmd_dict, "command", sc_command);
+
+  SpideyCommand sc_ping = malloc(sizeof(*sc_ping));
+  strcpy(sc_ping->name, "ping");
+  sc_ping->arity = 1;
+  sc_ping->exec = commandPing;
+  insertDictItem(cmd_dict, "ping", sc_ping);
+
+  SpideyCommand sc_set_edge = malloc(sizeof(*sc_set_edge));
+  strcpy(sc_set_edge->name, "setedge");
+  sc_set_edge->arity = 3;
+  sc_set_edge->exec = commandSetEdge;
+  insertDictItem(cmd_dict, "setedge", sc_set_edge);
+
+  SpideyCommand sc_set_vertex = malloc(sizeof(*sc_set_vertex));
+  strcpy(sc_set_vertex->name, "setvertex");
+  sc_set_vertex->arity = 3;
+  sc_set_vertex->exec = commandSetVertex;
+  insertDictItem(cmd_dict, "setvertex", sc_set_vertex);
+
+  SpideyCommand sc_get_vertex = malloc(sizeof(*sc_get_vertex));
+  strcpy(sc_get_vertex->name, "getvertex");
+  sc_get_vertex->arity = 3;
+  sc_get_vertex->exec = commandGetVertex;
+  insertDictItem(cmd_dict, "getvertex", sc_get_vertex);
+
+  SpideyCommand sc_get_neighbors = malloc(sizeof(*sc_get_neighbors));
+  strcpy(sc_get_neighbors->name, "getneighbors");
+  sc_get_neighbors->arity = 2;
+  sc_get_neighbors->exec = commandGetNeighbors;
+  insertDictItem(cmd_dict, "getneighbors", sc_get_neighbors);
 
   server->commands = cmd_dict;
   server->master_fd = -1;
@@ -61,14 +91,17 @@ void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
   if (client->req_args[0] != NULL) {
     char *command = toLower(client->req_args[0]);
 
-    void (*clt_req_cmd)(Client) =
-        getDictItemValue(server->commands, toLower(command));
+    SpideyCommand spidey_cmd =
+      getDictItemValue(server->commands, command);
 
-    if (clt_req_cmd != NULL) {
-      clt_req_cmd(client);
-    } else {
+    if (spidey_cmd == NULL) {
       addErrorReply(client, "ERR unknown command");
       send(client->fd, client->reply_buf, client->reply_offset, 0);
+    } else if (spidey_cmd->arity != client->req_arg_length) {
+      addErrorReply(client, "ERR wrong number of arguments");
+      send(client->fd, client->reply_buf, client->reply_offset, 0);
+    } else {
+      spidey_cmd->exec(client);
     }
   }
 

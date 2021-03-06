@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -pedantic
 BUILD_DIR = build
 
 SRCS = $(shell find ./src/*.c)
