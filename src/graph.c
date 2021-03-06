@@ -83,6 +83,7 @@ Neighbors createNeighbors() {
 
 Edge createEdge(Vertex src, Vertex dest) {
   Edge e = malloc(sizeof(*e));
+  memset(e, 0, sizeof(*e));
 
   char *c_src_key = malloc(strlen(src->key) + 1);
   strcpy(c_src_key, src->key);
@@ -109,6 +110,8 @@ void flagUnvisitedVertex(Vertex v, Dict visited_dict) {
 
 Vertex shallowCopyVertex(Vertex v) {
   Vertex c_vertex = malloc(sizeof(*c_vertex));
+  memset(c_vertex, 0, sizeof(*c_vertex));
+
   c_vertex->value = NULL;
 
   char *c_v_key = malloc(strlen(v->key) + 1);

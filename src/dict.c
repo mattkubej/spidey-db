@@ -11,11 +11,9 @@ Dict internalCreateDict(unsigned int size) {
 
   d->size = size;
   d->count = 0;
-  d->table = malloc(sizeof(Item) * d->size);
 
-  for (size_t i = 0; i < d->size; i++) {
-    d->table[i] = 0;
-  }
+  d->table = malloc(sizeof(Item) * d->size);
+  memset(d->table, 0, sizeof(Item) * d->size);
 
   return d;
 }
