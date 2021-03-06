@@ -1,6 +1,6 @@
 #include "networking.h"
 
-typedef void (* voidfunc)(Client);
+typedef void (*voidfunc)(Client);
 
 struct spideyCommand {
   char name[32];

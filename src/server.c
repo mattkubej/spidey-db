@@ -91,8 +91,7 @@ void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
   if (client->req_args[0] != NULL) {
     char *command = toLower(client->req_args[0]);
 
-    SpideyCommand spidey_cmd =
-      getDictItemValue(server->commands, command);
+    SpideyCommand spidey_cmd = getDictItemValue(server->commands, command);
 
     if (spidey_cmd == NULL) {
       addErrorReply(client, "ERR unknown command");
