@@ -12,16 +12,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-// TODO: abstract this out to commands.c
-struct spideyCommand spideyCommandTable[] = {
-  {"command", 1, commandCommand},
-  {"ping", 1, commandPing},
-  {"setedge", 3, commandSetEdge},
-  {"setvertex", 3, commandSetVertex},
-  {"getvertex", 2, commandGetVertex},
-  {"getneighbors", 3, commandGetNeighbors}
-};
-
 SpideyServer createServer() {
   server_t *server = malloc(sizeof(*server));
 
@@ -31,7 +21,8 @@ SpideyServer createServer() {
   }
 
   Dict cmd_dict = createDict();
-  int command_count = sizeof(spideyCommandTable) / sizeof(struct spideyCommand);
+  struct spideyCommand *spideyCommandTable = getSpideyCommandTable();
+  int command_count = sizeof(*spideyCommandTable) / sizeof(SpideyCommand);
 
   for (int i = 0; i < command_count; i++) {
     SpideyCommand sc = spideyCommandTable + i;

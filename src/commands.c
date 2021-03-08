@@ -1,3 +1,4 @@
+#include "commands.h"
 #include "graph.h"
 #include "networking.h"
 
@@ -5,6 +6,15 @@
 #include <sys/socket.h>
 
 #include <stdio.h>
+
+struct spideyCommand spideyCommandTable[] = {
+  {"command", 1, commandCommand},
+  {"ping", 1, commandPing},
+  {"setedge", 3, commandSetEdge},
+  {"setvertex", 3, commandSetVertex},
+  {"getvertex", 2, commandGetVertex},
+  {"getneighbors", 3, commandGetNeighbors}
+};
 
 void commandCommand(Client client) {
   // cheating here, so redis-cli responds back
@@ -79,4 +89,8 @@ void commandGetNeighbors(Client client) {
   // free edges?
 
   send(client->fd, client->reply_buf, client->reply_offset, 0);
+}
+
+struct spideyCommand* getSpideyCommandTable() {
+  return spideyCommandTable;
 }
