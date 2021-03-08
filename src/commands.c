@@ -8,13 +8,12 @@
 #include <stdio.h>
 
 struct spideyCommand spideyCommandTable[] = {
-  {"command", 1, commandCommand},
-  {"ping", 1, commandPing},
-  {"setedge", 3, commandSetEdge},
-  {"setvertex", 3, commandSetVertex},
-  {"getvertex", 2, commandGetVertex},
-  {"getneighbors", 3, commandGetNeighbors}
-};
+    {"command", 1, commandCommand},
+    {"ping", 1, commandPing},
+    {"setedge", 3, commandSetEdge},
+    {"setvertex", 3, commandSetVertex},
+    {"getvertex", 2, commandGetVertex},
+    {"getneighbors", 3, commandGetNeighbors}};
 
 void commandCommand(Client client) {
   // cheating here, so redis-cli responds back
@@ -66,7 +65,8 @@ void commandGetVertex(Client client) {
 
 void commandGetNeighbors(Client client) {
   int distance = atoi(client->req_args[2]);
-  Neighbors neighbors = getNeighbors(client->graph, client->req_args[1], distance);
+  Neighbors neighbors =
+      getNeighbors(client->graph, client->req_args[1], distance);
 
   addArrayLengthReply(client, 2);
 
@@ -91,6 +91,6 @@ void commandGetNeighbors(Client client) {
   send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
-struct spideyCommand* getSpideyCommandTable() {
+struct spideyCommand *getSpideyCommandTable() {
   return spideyCommandTable;
 }
