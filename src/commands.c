@@ -44,8 +44,7 @@ void commandSetVertex(Client client) {
 void commandGetVertex(Client client) {
   Vertex v = getVertex(client->graph, client->req_args[1]);
 
-  // TODO: more intelligently return this
-  char msg[80];
+  char msg[strlen(v->value) + 4];
   strcpy(msg, "+");
   strcat(msg, v->value);
   strcat(msg, CRLF);
