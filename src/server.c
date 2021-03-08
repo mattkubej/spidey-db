@@ -18,7 +18,7 @@ struct spideyCommand spideyCommandTable[] = {
   {"ping", 1, commandPing},
   {"setedge", 3, commandSetEdge},
   {"setvertex", 3, commandSetVertex},
-  {"getvertex", 3, commandGetVertex},
+  {"getvertex", 2, commandGetVertex},
   {"getneighbors", 3, commandGetNeighbors}
 };
 
