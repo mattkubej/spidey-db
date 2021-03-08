@@ -135,9 +135,13 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   // list of neighbors
   Neighbors neighbors = createNeighbors();
 
-  // dummy headers
+  // dummy vertex header
   neighbors->vertex_head = malloc(sizeof(*neighbors->vertex_head));
+  memset(neighbors->vertex_head, 0, sizeof(*neighbors->vertex_head));
+
+  // dummy edge header
   neighbors->edge_head = malloc(sizeof(*neighbors->edge_head));
+  memset(neighbors->edge_head, 0, sizeof(*neighbors->edge_head));
 
   Vertex v_tail = neighbors->vertex_head;
   Edge e_tail = neighbors->edge_head;
