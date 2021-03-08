@@ -12,6 +12,15 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+struct spideyCommand spideyCommandTable[] = {
+  {"command", 1, commandCommand},
+  {"ping", 1, commandPing},
+  {"setedge", 3, commandSetEdge},
+  {"setvertex", 3, commandSetVertex},
+  {"getvertex", 3, commandGetVertex},
+  {"getneighbors", 2, commandGetNeighbors}
+};
+
 SpideyServer createServer() {
   server_t *server = malloc(sizeof(*server));
 
@@ -21,42 +30,12 @@ SpideyServer createServer() {
   }
 
   Dict cmd_dict = createDict();
+  int command_count = sizeof(spideyCommandTable) / sizeof(struct spideyCommand);
 
-  SpideyCommand sc_command = malloc(sizeof(*sc_command));
-  strcpy(sc_command->name, "command");
-  sc_command->arity = 1;
-  sc_command->exec = commandCommand;
-  insertDictItem(cmd_dict, "command", sc_command);
-
-  SpideyCommand sc_ping = malloc(sizeof(*sc_ping));
-  strcpy(sc_ping->name, "ping");
-  sc_ping->arity = 1;
-  sc_ping->exec = commandPing;
-  insertDictItem(cmd_dict, "ping", sc_ping);
-
-  SpideyCommand sc_set_edge = malloc(sizeof(*sc_set_edge));
-  strcpy(sc_set_edge->name, "setedge");
-  sc_set_edge->arity = 3;
-  sc_set_edge->exec = commandSetEdge;
-  insertDictItem(cmd_dict, "setedge", sc_set_edge);
-
-  SpideyCommand sc_set_vertex = malloc(sizeof(*sc_set_vertex));
-  strcpy(sc_set_vertex->name, "setvertex");
-  sc_set_vertex->arity = 3;
-  sc_set_vertex->exec = commandSetVertex;
-  insertDictItem(cmd_dict, "setvertex", sc_set_vertex);
-
-  SpideyCommand sc_get_vertex = malloc(sizeof(*sc_get_vertex));
-  strcpy(sc_get_vertex->name, "getvertex");
-  sc_get_vertex->arity = 3;
-  sc_get_vertex->exec = commandGetVertex;
-  insertDictItem(cmd_dict, "getvertex", sc_get_vertex);
-
-  SpideyCommand sc_get_neighbors = malloc(sizeof(*sc_get_neighbors));
-  strcpy(sc_get_neighbors->name, "getneighbors");
-  sc_get_neighbors->arity = 2;
-  sc_get_neighbors->exec = commandGetNeighbors;
-  insertDictItem(cmd_dict, "getneighbors", sc_get_neighbors);
+  for (int i = 0; i < command_count; i++) {
+    SpideyCommand sc = spideyCommandTable + i;
+    insertDictItem(cmd_dict, sc->name, sc);
+  }
 
   server->commands = cmd_dict;
   server->master_fd = -1;
