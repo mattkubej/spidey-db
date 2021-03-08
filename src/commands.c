@@ -56,7 +56,8 @@ void commandGetVertex(Client client) {
 }
 
 void commandGetNeighbors(Client client) {
-  Neighbors neighbors = getNeighbors(client->graph, client->req_args[1], 2);
+  int distance = atoi(client->req_args[2]);
+  Neighbors neighbors = getNeighbors(client->graph, client->req_args[1], distance);
 
   addArrayLengthReply(client, 2);
 

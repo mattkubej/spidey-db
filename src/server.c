@@ -19,7 +19,7 @@ struct spideyCommand spideyCommandTable[] = {
   {"setedge", 3, commandSetEdge},
   {"setvertex", 3, commandSetVertex},
   {"getvertex", 3, commandGetVertex},
-  {"getneighbors", 2, commandGetNeighbors}
+  {"getneighbors", 3, commandGetNeighbors}
 };
 
 SpideyServer createServer() {
