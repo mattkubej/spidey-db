@@ -73,7 +73,6 @@ void parse(Client client) {
 // --- client construction ---
 
 Client buildClient(char *buf, int clt_fd, Graph graph) {
-  // TODO: remove this printing
   printf("--- received ---\n");
   printf("%s", buf);
   printf("----------------\n\n");
