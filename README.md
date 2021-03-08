@@ -22,7 +22,7 @@ will work or you can communicate over TCP
 
 * COMMAND
 * PING
-* SETEDGE _[source-vertex-id]_ _[destination-vertex-id]_
+* SETEDGE _[vertex-id]_ _[vertex-id]_
 * SETVERTEX _[id]_ _[value]_
 * GETVERTEX _[id]_
 * GETNEIGHBORS _[vertex-id]_ _[distance]_
