@@ -141,8 +141,9 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
 
   Vertex v_tail = neighbors->vertex_head;
   Edge e_tail = neighbors->edge_head;
+  int distance_from_root = 0;
 
-  while (!isQueueEmpty(unvisited_queue)) {
+  while (!isQueueEmpty(unvisited_queue) && distance_from_root <= distance) {
     char *unvisited_v_key = dequeue(unvisited_queue);
     Vertex v_src = getVertex(graph, unvisited_v_key);
 
@@ -171,6 +172,8 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
       // move to next unvisted vertex
       v_dest = v_dest->next;
     }
+
+    distance_from_root++;
   }
 
   // clean up dummy vertex on head
