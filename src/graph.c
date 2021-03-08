@@ -1,5 +1,5 @@
-#include "dict.h"
 #include "graph.h"
+#include "dict.h"
 #include "queue.h"
 
 #include <stdbool.h>
