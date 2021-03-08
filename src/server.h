@@ -7,7 +7,7 @@
 #include <sys/time.h>
 #include <time.h>
 
-#define PORT 8080
+#define PORT 6425
 #define TCP_BACKLOG 11
 #define MAX_CLIENTS 11
 #define CLT_BUF_SZ 1024

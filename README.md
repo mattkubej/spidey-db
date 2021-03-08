@@ -7,7 +7,7 @@ Simple in-memory graph database
 1. `make build`
 2. `./build/spidey-db`
 
-Spidey listens on port ...
+Spidey listens on port 6425
 
 ## How to communicate
 
@@ -16,7 +16,7 @@ will work or you can communicate over TCP
 
 ### With redis-cli
 
-`redis-cli -p ...`
+`redis-cli -p 6425`
 
 ### Supported Commands
 
