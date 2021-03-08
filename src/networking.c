@@ -1,7 +1,6 @@
 #include "networking.h"
 #include "util.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -73,10 +72,6 @@ void parse(Client client) {
 // --- client construction ---
 
 Client buildClient(char *buf, int clt_fd, Graph graph) {
-  printf("--- received ---\n");
-  printf("%s", buf);
-  printf("----------------\n\n");
-
   Client client = malloc(sizeof(*client));
   client->req_buf = buf;
   client->req_offset = 0;
