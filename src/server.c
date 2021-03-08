@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+// TODO: abstract this out to commands.c
 struct spideyCommand spideyCommandTable[] = {
   {"command", 1, commandCommand},
   {"ping", 1, commandPing},
