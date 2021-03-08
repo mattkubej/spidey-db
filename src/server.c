@@ -167,8 +167,6 @@ int destroyServer(SpideyServer server) {
     server->master_fd = -1;
   }
 
-  // TODO: close all client fds?
-
   destroyDict(server->commands);
   destroyGraph(server->graph);
   free(server);
