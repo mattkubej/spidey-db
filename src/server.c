@@ -1,7 +1,7 @@
-#include "server.h"
 #include "commands.h"
 #include "dict.h"
 #include "networking.h"
+#include "server.h"
 #include "util.h"
 
 #include <netinet/ip.h>
