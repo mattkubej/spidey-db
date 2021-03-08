@@ -5,8 +5,6 @@
 #include <string.h>
 #include <sys/socket.h>
 
-#include <stdio.h>
-
 struct spideyCommand spideyCommandTable[] = {
     {"command", 1, commandCommand},
     {"ping", 1, commandPing},
