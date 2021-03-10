@@ -86,6 +86,7 @@ void destroyNeighbors(Neighbors neighbors) {
     Vertex v = neighbors->vertex_head;
     neighbors->vertex_head = neighbors->vertex_head->next;
 
+    free(v->key);
     free(v->value);
     free(v);
   }
