@@ -5,6 +5,8 @@
 #include <string.h>
 #include <sys/socket.h>
 
+#include <stdio.h>
+
 // --- request processing ---
 
 void addReqArg(Client client, char *req_arg) {
@@ -72,6 +74,10 @@ void parse(Client client) {
 // --- client construction ---
 
 Client buildClient(char *buf, int clt_fd, Graph graph) {
+  printf("---- received ----\n");
+  printf("%s", buf);
+  printf("------------------\n");
+
   Client client = malloc(sizeof(*client));
   client->req_buf = buf;
   client->req_offset = 0;
