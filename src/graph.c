@@ -172,6 +172,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   while (!isQueueEmpty(unvisited_queue) && distance_from_root <= distance) {
     char *unvisited_v_key = dequeue(unvisited_queue);
     Vertex v_src = getVertex(graph, unvisited_v_key);
+    free(unvisited_v_key);
 
     // append new vertex
     Vertex c_vertex = shallowCopyVertex(v_src);
