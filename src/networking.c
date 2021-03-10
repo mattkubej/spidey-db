@@ -125,6 +125,7 @@ void destroyClient(Client client) {
       free(clt_req->req_args[i]);
     }
 
+    free(clt_req->req_args);
     free(clt_req);
   }
 
