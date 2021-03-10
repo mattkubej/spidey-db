@@ -92,7 +92,7 @@ void commandGetNeighbors(Client client) {
     e = e->next;
   }
 
-  // free edges?
+  destroyNeighbors(neighbors);
 
   send(client->fd, client->reply_buf, client->reply_offset, 0);
 }

@@ -81,6 +81,27 @@ Neighbors createNeighbors() {
   return neighbors;
 }
 
+void destroyNeighbors(Neighbors neighbors) {
+  while (neighbors->vertex_head != NULL) {
+    Vertex v = neighbors->vertex_head;
+    neighbors->vertex_head = neighbors->vertex_head->next;
+
+    free(v->value);
+    free(v);
+  }
+
+  while (neighbors->edge_head != NULL) {
+    Edge e = neighbors->edge_head;
+    neighbors->edge_head = neighbors->edge_head->next;
+
+    free(e->src_key);
+    free(e->dest_key);
+    free(e);
+  }
+
+  free(neighbors);
+}
+
 Edge createEdge(Vertex src, Vertex dest) {
   Edge e = malloc(sizeof(*e));
   memset(e, 0, sizeof(*e));
