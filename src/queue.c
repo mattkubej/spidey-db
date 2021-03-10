@@ -22,6 +22,7 @@ void destroyQueue(Queue queue) {
     free(item);
   }
 
+  free(queue->array);
   free(queue);
 }
 
