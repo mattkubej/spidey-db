@@ -13,8 +13,10 @@ void addReqArg(Client client, char *req_arg) {
   char *c_req_arg = malloc(strlen(req_arg) + 1);
   strcpy(c_req_arg, req_arg);
 
-  client->req_args[client->req_arg_length] = c_req_arg;
-  client->req_arg_length++;
+  ClientRequest clt_req = client->clt_req_last;
+
+  clt_req->req_args[clt_req->req_arg_length] = c_req_arg;
+  clt_req->req_arg_length++;
 }
 
 int readLength(Client client) {
@@ -50,6 +52,17 @@ void processBulkString(Client client) {
 void processArray(Client client) {
   int items = readLength(client);
 
+  ClientRequest clt_req = malloc(sizeof(*clt_req));
+  memset(clt_req, 0, sizeof(*clt_req));
+
+  clt_req->req_args = malloc(sizeof(char *) * MAX_REQUEST_ARGS);
+  clt_req->req_arg_length = 0;
+  clt_req->next = NULL;
+
+  // set clt_req on client
+  client->clt_req_last->next = clt_req;
+  client->clt_req_last = clt_req;
+
   for (int i = 0; i <= items; i++) {
     parse(client);
   }
@@ -81,20 +94,38 @@ Client buildClient(char *buf, int clt_fd, Graph graph) {
   Client client = malloc(sizeof(*client));
   client->req_buf = buf;
   client->req_offset = 0;
-  client->req_args = malloc(sizeof(char *) * MAX_REQUEST_ARGS);
-  client->req_arg_length = 0;
   client->fd = clt_fd;
   client->graph = graph;
   client->reply_offset = 0;
 
+  // dummy
+  ClientRequest clt_req = malloc(sizeof(*clt_req));
+  memset(clt_req, 0, sizeof(*clt_req));
+  client->clt_req = clt_req;
+  client->clt_req_last = clt_req;
+
   parse(client);
+
+  // ditch dummy
+  client->clt_req = client->clt_req->next;
+  free(clt_req);
+
+  // reset last to beginning for processing
+  client->clt_req_last = client->clt_req;
 
   return client;
 }
 
 void destroyClient(Client client) {
-  for (int i = 0; i < client->req_arg_length; i++) {
-    free(client->req_args[i]);
+  while (client->clt_req != NULL) {
+    ClientRequest clt_req = client->clt_req;
+    client->clt_req = client->clt_req->next;
+
+    for (int i = 0; i < clt_req->req_arg_length; i++) {
+      free(clt_req->req_args[i]);
+    }
+
+    free(clt_req);
   }
 
   free(client);

@@ -58,21 +58,24 @@ int accept_connection(server_t *server) {
 
 void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
   Client client = buildClient(clt_buf, clt_fd, server->graph);
+  ClientRequest client_request = client->clt_req_last;
 
-  if (client->req_args[0] != NULL) {
-    char *command = toLower(client->req_args[0]);
+  if (client_request != NULL) {
+    char *command = toLower(client_request->req_args[0]);
 
     SpideyCommand spidey_cmd = getDictItemValue(server->commands, command);
 
     if (spidey_cmd == NULL) {
       addErrorReply(client, "ERR unknown command");
       send(client->fd, client->reply_buf, client->reply_offset, 0);
-    } else if (spidey_cmd->arity != client->req_arg_length) {
+    } else if (spidey_cmd->arity != client_request->req_arg_length) {
       addErrorReply(client, "ERR wrong number of arguments");
       send(client->fd, client->reply_buf, client->reply_offset, 0);
     } else {
       spidey_cmd->exec(client);
     }
+
+    client->clt_req_last = client->clt_req_last->next;
   }
 
   destroyClient(client);

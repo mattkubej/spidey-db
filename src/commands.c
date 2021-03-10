@@ -35,21 +35,27 @@ void commandPing(Client client) {
 }
 
 void commandSetEdge(Client client) {
-  addEdge(client->graph, client->req_args[1], client->req_args[2]);
+  ClientRequest clt_req = client->clt_req;
+
+  addEdge(client->graph, clt_req->req_args[1], clt_req->req_args[2]);
 
   addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
 void commandSetVertex(Client client) {
-  addVertex(client->graph, client->req_args[1], client->req_args[2]);
+  ClientRequest clt_req = client->clt_req;
+
+  addVertex(client->graph, clt_req->req_args[1], clt_req->req_args[2]);
 
   addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
 void commandGetVertex(Client client) {
-  Vertex v = getVertex(client->graph, client->req_args[1]);
+  ClientRequest clt_req = client->clt_req;
+
+  Vertex v = getVertex(client->graph, clt_req->req_args[1]);
 
   char msg[strlen(v->value) + 4];
   strcpy(msg, "+");
@@ -62,9 +68,11 @@ void commandGetVertex(Client client) {
 }
 
 void commandGetNeighbors(Client client) {
-  int distance = atoi(client->req_args[2]);
+  ClientRequest clt_req = client->clt_req;
+
+  int distance = atoi(clt_req->req_args[2]);
   Neighbors neighbors =
-      getNeighbors(client->graph, client->req_args[1], distance);
+      getNeighbors(client->graph, clt_req->req_args[1], distance);
 
   addArrayLengthReply(client, 2);
 

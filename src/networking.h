@@ -14,18 +14,24 @@
 #define REPLY_BUFFER_LENGTH (16 * 1024)
 #define RESPONSE_OK "OK"
 
+struct clientRequest {
+  char **req_args;
+  int req_arg_length;
+  struct clientRequest *next;
+};
+
 struct client {
   char *req_buf;
   size_t req_offset;
-  char **req_args;
-  int req_arg_length;
   int fd;
   Graph graph;
   char reply_buf[REPLY_BUFFER_LENGTH];
   int reply_offset;
+  struct clientRequest *clt_req, *clt_req_last;
 };
 
 typedef struct client *Client;
+typedef struct clientRequest *ClientRequest;
 
 Client buildClient(char *req_buf, int clt_fd, Graph graph);
 void destroyClient(Client client);
