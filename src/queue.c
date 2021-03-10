@@ -17,7 +17,7 @@ Queue createQueue(size_t size) {
 }
 
 void destroyQueue(Queue queue) {
-  for (size_t i = 0; i < queue->count; i++) {
+  while (!isQueueEmpty(queue)) {
     char *item = dequeue(queue);
     free(item);
   }
