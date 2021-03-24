@@ -28,7 +28,6 @@ void destroyDict(Dict d) {
       next = it->next;
 
       free(it->key);
-      free(it->value);
       free(it);
     }
   }
@@ -58,9 +57,9 @@ void growDict(Dict d) {
     }
   }
 
-  Dict swap = d;
-  d = temp;
-  temp = swap;
+  struct dict swap = *d;
+  *d = *temp;
+  *temp = swap;
 
   destroyDict(temp);
 }
