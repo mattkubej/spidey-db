@@ -1,11 +1,10 @@
 #include "networking.h"
 #include "util.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-
-#include <stdio.h>
 
 // --- request processing ---
 
