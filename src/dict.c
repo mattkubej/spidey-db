@@ -11,7 +11,7 @@ Dict internalCreateDict(unsigned int size) {
 
   d->size = size;
   d->count = 0;
-  d->flags |= DICT_DEFAULT;
+  d->flags |= DICT_PROTECT_VALUES;
 
   d->table = malloc(sizeof(Item) * d->size);
   memset(d->table, 0, sizeof(Item) * d->size);

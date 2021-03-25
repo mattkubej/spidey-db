@@ -7,7 +7,7 @@
 #define INITIAL_SIZE 32
 #define GROWTH_FACTOR 2
 
-#define DICT_DEFAULT (1<<0)
+#define DICT_PROTECT_VALUES (1<<0)
 #define DICT_FREE_VALUES (1<<1)
 
 struct item {
