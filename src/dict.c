@@ -11,6 +11,7 @@ Dict internalCreateDict(unsigned int size) {
 
   d->size = size;
   d->count = 0;
+  d->flags |= DICT_DEFAULT;
 
   d->table = malloc(sizeof(Item) * d->size);
   memset(d->table, 0, sizeof(Item) * d->size);
@@ -26,6 +27,10 @@ void destroyDict(Dict d) {
 
     for (Item it = d->table[i]; it != 0; it = next) {
       next = it->next;
+
+      if (d->flags & DICT_FREE_VALUES) {
+        free(it->value);
+      }
 
       free(it->key);
       free(it);

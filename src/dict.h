@@ -2,9 +2,13 @@
 #define DICT_H
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define INITIAL_SIZE 32
 #define GROWTH_FACTOR 2
+
+#define DICT_DEFAULT (1<<0)
+#define DICT_FREE_VALUES (1<<1)
 
 struct item {
   struct item *next;
@@ -15,6 +19,7 @@ struct item {
 struct dict {
   size_t size;
   size_t count;
+  int flags;
   struct item **table;
 };
 

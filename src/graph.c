@@ -148,6 +148,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
 
   // flag unvisited vertices, only process once
   Dict unvisited_dict = createDict();
+  unvisited_dict->flags |= DICT_FREE_VALUES;
   flagUnvisitedVertex(v, unvisited_dict);
 
   // queue of neighbors to visit
