@@ -170,16 +170,16 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   Edge e_tail = neighbors->edge_head;
   int distance_from_root = 0;
 
-  while (!isQueueEmpty(unvisited_queue) && distance_from_root <= distance) {
+  // append root vertex
+  Vertex c_vertex = shallowCopyVertex(v);
+  v_tail->next = c_vertex;
+  v_tail = c_vertex;
+  neighbors->vertex_count++;
+
+  while (!isQueueEmpty(unvisited_queue) && distance_from_root < distance) {
     char *unvisited_v_key = dequeue(unvisited_queue);
     Vertex v_src = getVertex(graph, unvisited_v_key);
     free(unvisited_v_key);
-
-    // append new vertex
-    Vertex c_vertex = shallowCopyVertex(v_src);
-    v_tail->next = c_vertex;
-    v_tail = c_vertex;
-    neighbors->vertex_count++;
 
     // first neighbor to visit
     Vertex v_dest = v_src->next;
@@ -191,10 +191,17 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
       e_tail = e;
       neighbors->edge_count++;
 
-      // if vertex not flagged, then add neighbor to unvisited queue
+      // if vertex not flagged
       if (!getDictItemValue(unvisited_dict, v_dest->key)) {
+        // flag and add neighbor to unvisited queue
         flagUnvisitedVertex(v_dest, unvisited_dict);
         enqueueUnvisitedVertex(v_dest, unvisited_queue);
+
+        // append vertex as neighbor
+        c_vertex = shallowCopyVertex(v_dest);
+        v_tail->next = c_vertex;
+        v_tail = c_vertex;
+        neighbors->vertex_count++;
       }
 
       // move to next unvisted vertex
