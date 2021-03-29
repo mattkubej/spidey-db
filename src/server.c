@@ -81,7 +81,7 @@ void proc_clt_buf(server_t *server, int clt_fd, char *clt_buf) {
   destroyClient(client);
 }
 
-int recv_clt_msg(server_t *server, int clt_fd) {
+int receiveClientMessage(server_t *server, int clt_fd) {
   int read_size;
 
   char clt_buf[CLT_BUF_SZ];
@@ -170,7 +170,7 @@ int serverListen(SpideyServer server) {
         if (i == server->master_fd) {
           acceptConnection(server);
         } else {
-          recv_clt_msg(server, i);
+          receiveClientMessage(server, i);
         }
       }
     }
