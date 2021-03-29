@@ -36,7 +36,7 @@ SpideyServer createServer() {
   return server;
 }
 
-int accept_connection(server_t *server) {
+int acceptConnection(server_t *server) {
   struct sockaddr_in in_addr;
   int in_len = sizeof(in_addr);
 
@@ -168,7 +168,7 @@ int serverListen(SpideyServer server) {
     for (int i = 0; i <= server->max_fd; i++) {
       if (FD_ISSET(i, &copy_fds)) {
         if (i == server->master_fd) {
-          accept_connection(server);
+          acceptConnection(server);
         } else {
           recv_clt_msg(server, i);
         }
