@@ -70,37 +70,37 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
 
 // --- getNeighbors and helpers ---
 
-Neighbors createNeighbors() {
-  Neighbors neighbors = malloc(sizeof(*neighbors));
+VertexEdgeLists createVertexEdgeLists() {
+  VertexEdgeLists vertex_edge_lists = malloc(sizeof(*vertex_edge_lists));
 
-  neighbors->edge_count = 0;
-  neighbors->vertex_count = 0;
-  neighbors->edge_head = NULL;
-  neighbors->vertex_head = NULL;
+  vertex_edge_lists->edge_count = 0;
+  vertex_edge_lists->vertex_count = 0;
+  vertex_edge_lists->edge_head = NULL;
+  vertex_edge_lists->vertex_head = NULL;
 
-  return neighbors;
+  return vertex_edge_lists;
 }
 
-void destroyNeighbors(Neighbors neighbors) {
-  while (neighbors->vertex_head != NULL) {
-    Vertex v = neighbors->vertex_head;
-    neighbors->vertex_head = neighbors->vertex_head->next;
+void destroyVertexEdgeLists(VertexEdgeLists vertex_edge_lists) {
+  while (vertex_edge_lists->vertex_head != NULL) {
+    Vertex v = vertex_edge_lists->vertex_head;
+    vertex_edge_lists->vertex_head = vertex_edge_lists->vertex_head->next;
 
     free(v->key);
     free(v->value);
     free(v);
   }
 
-  while (neighbors->edge_head != NULL) {
-    Edge e = neighbors->edge_head;
-    neighbors->edge_head = neighbors->edge_head->next;
+  while (vertex_edge_lists->edge_head != NULL) {
+    Edge e = vertex_edge_lists->edge_head;
+    vertex_edge_lists->edge_head = vertex_edge_lists->edge_head->next;
 
     free(e->src_key);
     free(e->dest_key);
     free(e);
   }
 
-  free(neighbors);
+  free(vertex_edge_lists);
 }
 
 Edge createEdge(Vertex src, Vertex dest) {
@@ -143,7 +143,7 @@ Vertex shallowCopyVertex(Vertex v) {
   return c_vertex;
 }
 
-Neighbors getNeighbors(Graph graph, char *key, int distance) {
+VertexEdgeLists getNeighbors(Graph graph, char *key, int distance) {
   Vertex v = getVertex(graph, key);
 
   // flag unvisited vertices, only process once
@@ -151,30 +151,30 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   unvisited_dict->flags |= DICT_FREE_VALUES;
   flagUnvisitedVertex(v, unvisited_dict);
 
-  // queue of neighbors to visit
+  // queue of vertex_edge_lists to visit
   Queue unvisited_queue = createQueue(1024);
   enqueueUnvisitedVertex(v, unvisited_queue);
 
-  // list of neighbors
-  Neighbors neighbors = createNeighbors();
+  // list of vertex_edge_lists
+  VertexEdgeLists vertex_edge_lists = createVertexEdgeLists();
 
   // dummy vertex header
-  neighbors->vertex_head = malloc(sizeof(*neighbors->vertex_head));
-  memset(neighbors->vertex_head, 0, sizeof(*neighbors->vertex_head));
+  vertex_edge_lists->vertex_head = malloc(sizeof(*vertex_edge_lists->vertex_head));
+  memset(vertex_edge_lists->vertex_head, 0, sizeof(*vertex_edge_lists->vertex_head));
 
   // dummy edge header
-  neighbors->edge_head = malloc(sizeof(*neighbors->edge_head));
-  memset(neighbors->edge_head, 0, sizeof(*neighbors->edge_head));
+  vertex_edge_lists->edge_head = malloc(sizeof(*vertex_edge_lists->edge_head));
+  memset(vertex_edge_lists->edge_head, 0, sizeof(*vertex_edge_lists->edge_head));
 
-  Vertex v_tail = neighbors->vertex_head;
-  Edge e_tail = neighbors->edge_head;
+  Vertex v_tail = vertex_edge_lists->vertex_head;
+  Edge e_tail = vertex_edge_lists->edge_head;
   int distance_from_root = 0;
 
   // append root vertex
   Vertex c_vertex = shallowCopyVertex(v);
   v_tail->next = c_vertex;
   v_tail = c_vertex;
-  neighbors->vertex_count++;
+  vertex_edge_lists->vertex_count++;
 
   while (!isQueueEmpty(unvisited_queue) && distance_from_root < distance) {
     char *unvisited_v_key = dequeue(unvisited_queue);
@@ -189,7 +189,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
       Edge e = createEdge(v_src, v_dest);
       e_tail->next = e;
       e_tail = e;
-      neighbors->edge_count++;
+      vertex_edge_lists->edge_count++;
 
       // if vertex not flagged
       if (!getDictItemValue(unvisited_dict, v_dest->key)) {
@@ -201,7 +201,7 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
         c_vertex = shallowCopyVertex(v_dest);
         v_tail->next = c_vertex;
         v_tail = c_vertex;
-        neighbors->vertex_count++;
+        vertex_edge_lists->vertex_count++;
       }
 
       // move to next unvisted vertex
@@ -212,17 +212,17 @@ Neighbors getNeighbors(Graph graph, char *key, int distance) {
   }
 
   // clean up dummy vertex on head
-  Vertex v_temp = neighbors->vertex_head;
-  neighbors->vertex_head = neighbors->vertex_head->next;
+  Vertex v_temp = vertex_edge_lists->vertex_head;
+  vertex_edge_lists->vertex_head = vertex_edge_lists->vertex_head->next;
   free(v_temp);
 
   // clean up dummy edge on head
-  Edge e_temp = neighbors->edge_head;
-  neighbors->edge_head = neighbors->edge_head->next;
+  Edge e_temp = vertex_edge_lists->edge_head;
+  vertex_edge_lists->edge_head = vertex_edge_lists->edge_head->next;
   free(e_temp);
 
   destroyDict(unvisited_dict);
   destroyQueue(unvisited_queue);
 
-  return neighbors;
+  return vertex_edge_lists;
 }

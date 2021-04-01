@@ -71,20 +71,20 @@ void commandGetNeighbors(Client client) {
   ClientRequest clt_req = client->clt_req;
 
   int distance = atoi(clt_req->req_args[2]);
-  Neighbors neighbors =
+  VertexEdgeLists vertex_edge_lists =
       getNeighbors(client->graph, clt_req->req_args[1], distance);
 
   addArrayLengthReply(client, 2);
 
-  addArrayLengthReply(client, neighbors->vertex_count);
-  Vertex v = neighbors->vertex_head;
+  addArrayLengthReply(client, vertex_edge_lists->vertex_count);
+  Vertex v = vertex_edge_lists->vertex_head;
   while (v != NULL) {
     addBulkStringReply(client, v->key);
     v = v->next;
   }
 
-  addArrayLengthReply(client, neighbors->edge_count);
-  Edge e = neighbors->edge_head;
+  addArrayLengthReply(client, vertex_edge_lists->edge_count);
+  Edge e = vertex_edge_lists->edge_head;
   while (e != NULL) {
     addArrayLengthReply(client, 2);
     addBulkStringReply(client, e->src_key);
@@ -92,7 +92,7 @@ void commandGetNeighbors(Client client) {
     e = e->next;
   }
 
-  destroyNeighbors(neighbors);
+  destroyVertexEdgeLists(vertex_edge_lists);
 
   send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
