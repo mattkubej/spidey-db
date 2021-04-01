@@ -155,7 +155,7 @@ VertexEdgeLists getNeighbors(Graph graph, char *key, int distance) {
   Queue unvisited_queue = createQueue(1024);
   enqueueUnvisitedVertex(v, unvisited_queue);
 
-  // list of vertex_edge_lists
+  // representation containing neighbors
   VertexEdgeLists vertex_edge_lists = createVertexEdgeLists();
 
   // dummy vertex header
@@ -223,6 +223,59 @@ VertexEdgeLists getNeighbors(Graph graph, char *key, int distance) {
 
   destroyDict(unvisited_dict);
   destroyQueue(unvisited_queue);
+
+  return vertex_edge_lists;
+}
+
+VertexEdgeLists toVertexEdgeLists(Graph graph) {
+  VertexEdgeLists vertex_edge_lists = createVertexEdgeLists();
+
+  // dummy vertex header
+  vertex_edge_lists->vertex_head = malloc(sizeof(*vertex_edge_lists->vertex_head));
+  memset(vertex_edge_lists->vertex_head, 0, sizeof(*vertex_edge_lists->vertex_head));
+
+  // dummy edge header
+  vertex_edge_lists->edge_head = malloc(sizeof(*vertex_edge_lists->edge_head));
+  memset(vertex_edge_lists->edge_head, 0, sizeof(*vertex_edge_lists->edge_head));
+
+  Vertex v_tail = vertex_edge_lists->vertex_head;
+  Edge e_tail = vertex_edge_lists->edge_head;
+
+  Dict v_dict = graph->v_dict;
+
+  for (size_t i = 0; i < v_dict->size; i++) {
+    Item next = v_dict->table[i];
+
+    if (next != 0) {
+      Vertex v = getVertex(graph, next->key);
+      Vertex c_vertex = shallowCopyVertex(v);
+      v_tail->next = c_vertex;
+      v_tail = c_vertex;
+      vertex_edge_lists->vertex_count++;
+
+
+      Vertex neighbor = v->next;
+
+      while (neighbor != NULL) {
+        Edge e = createEdge(v, neighbor);
+        e_tail->next = e;
+        e_tail = e;
+        vertex_edge_lists->edge_count++;
+
+        neighbor = neighbor->next;
+      }
+    }
+  }
+
+  // clean up dummy vertex on head
+  Vertex v_temp = vertex_edge_lists->vertex_head;
+  vertex_edge_lists->vertex_head = vertex_edge_lists->vertex_head->next;
+  free(v_temp);
+
+  // clean up dummy edge on head
+  Edge e_temp = vertex_edge_lists->edge_head;
+  vertex_edge_lists->edge_head = vertex_edge_lists->edge_head->next;
+  free(e_temp);
 
   return vertex_edge_lists;
 }

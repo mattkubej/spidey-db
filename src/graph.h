@@ -36,6 +36,7 @@ void destroyGraph(Graph graph);
 void addVertex(Graph graph, char *key, char *value);
 Vertex getVertex(Graph graph, char *key);
 void addEdge(Graph graph, char *v1_key, char *v2_key);
+VertexEdgeLists toVertexEdgeLists(Graph graph);
 VertexEdgeLists getNeighbors(Graph graph, char *key, int distance);
 void destroyVertexEdgeLists(VertexEdgeLists vertex_edge_lists);
 

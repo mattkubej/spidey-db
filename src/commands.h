@@ -16,4 +16,6 @@ void commandSetEdge(Client client);
 void commandSetVertex(Client client);
 void commandGetVertex(Client client);
 void commandGetNeighbors(Client client);
+void commandGetGraph(Client client);
 struct spideyCommand *getSpideyCommandTable();
+int getSpideyCommandCount();

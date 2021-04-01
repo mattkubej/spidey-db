@@ -11,7 +11,9 @@ struct spideyCommand spideyCommandTable[] = {
     {"setedge", 3, commandSetEdge},
     {"setvertex", 3, commandSetVertex},
     {"getvertex", 2, commandGetVertex},
-    {"getneighbors", 3, commandGetNeighbors}};
+    {"getneighbors", 3, commandGetNeighbors},
+    {"getgraph", 1, commandGetGraph}
+};
 
 void commandCommand(Client client) {
   // cheating here, so redis-cli responds back
@@ -97,6 +99,36 @@ void commandGetNeighbors(Client client) {
   send(client->fd, client->reply_buf, client->reply_offset, 0);
 }
 
+void commandGetGraph(Client client) {
+  VertexEdgeLists vertex_edge_lists = toVertexEdgeLists(client->graph);
+
+  addArrayLengthReply(client, 2);
+
+  addArrayLengthReply(client, vertex_edge_lists->vertex_count);
+  Vertex v = vertex_edge_lists->vertex_head;
+  while (v != NULL) {
+    addBulkStringReply(client, v->key);
+    v = v->next;
+  }
+
+  addArrayLengthReply(client, vertex_edge_lists->edge_count);
+  Edge e = vertex_edge_lists->edge_head;
+  while (e != NULL) {
+    addArrayLengthReply(client, 2);
+    addBulkStringReply(client, e->src_key);
+    addBulkStringReply(client, e->dest_key);
+    e = e->next;
+  }
+
+  destroyVertexEdgeLists(vertex_edge_lists);
+
+  send(client->fd, client->reply_buf, client->reply_offset, 0);
+}
+
 struct spideyCommand *getSpideyCommandTable() {
   return spideyCommandTable;
+}
+
+int getSpideyCommandCount() {
+  return sizeof(spideyCommandTable) / sizeof(struct spideyCommand);
 }

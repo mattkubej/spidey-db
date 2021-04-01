@@ -22,7 +22,7 @@ SpideyServer createServer() {
 
   Dict cmd_dict = createDict();
   struct spideyCommand *spideyCommandTable = getSpideyCommandTable();
-  int command_count = sizeof(*spideyCommandTable) / sizeof(SpideyCommand);
+  int command_count = getSpideyCommandCount();
 
   for (int i = 0; i < command_count; i++) {
     SpideyCommand sc = spideyCommandTable + i;
