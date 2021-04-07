@@ -79,6 +79,12 @@ void commandGetVertex(Client client) {
 
   Vertex v = getVertex(client->graph, clt_req->req_args[1]);
 
+  if (v == NULL) {
+    addErrorReply(client, "ERR vertex not found");
+    send(client->fd, client->reply_buf, client->reply_offset, 0);
+    return;
+  }
+
   char msg[strlen(v->value) + 4];
   strcpy(msg, "+");
   strcat(msg, v->value);
