@@ -15,6 +15,7 @@ void commandPing(Client client);
 void commandSetEdge(Client client);
 void commandDeleteEdge(Client client);
 void commandSetVertex(Client client);
+void commandDeleteVertex(Client client);
 void commandGetVertex(Client client);
 void commandGetNeighbors(Client client);
 void commandGetGraph(Client client);

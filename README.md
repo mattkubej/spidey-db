@@ -25,5 +25,6 @@ will work or you can communicate over TCP
 * SETEDGE _[vertex-key]_ _[vertex-key]_
 * DELEDGE _[vertex-key]_ _[vertex-key]_
 * SETVERTEX _[key]_ _[value]_
+* DELVERTEX _[key]_
 * GETVERTEX _[key]_
 * GETNEIGHBORS _[vertex-key]_ _[distance]_

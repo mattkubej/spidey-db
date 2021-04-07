@@ -42,6 +42,26 @@ Vertex getVertex(Graph graph, char *key) {
   return vertex;
 }
 
+void deleteVertex(Graph graph, char *key) {
+  Vertex vertex = getVertex(graph, key);
+
+  while (vertex->next != NULL) {
+    Vertex temp = vertex->next;
+
+    deleteDirectedEdge(graph, temp->key, vertex->key);
+
+    vertex->next = vertex->next->next;
+
+    free(temp->key);
+    free(temp);
+  }
+
+  free(vertex->key);
+  free(vertex->value);
+
+  deleteDictItem(graph->v_dict, key);
+}
+
 Vertex createVertexRef(char *key) {
   Vertex ref = malloc(sizeof(*ref));
 
