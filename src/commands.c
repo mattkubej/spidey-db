@@ -14,8 +14,7 @@ struct spideyCommand spideyCommandTable[] = {
     {"delvertex", 2, commandDeleteVertex},
     {"getvertex", 2, commandGetVertex},
     {"getneighbors", 3, commandGetNeighbors},
-    {"getgraph", 1, commandGetGraph}
-};
+    {"getgraph", 1, commandGetGraph}};
 
 void commandCommand(Client client) {
   // cheating here, so redis-cli responds back

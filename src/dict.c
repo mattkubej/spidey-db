@@ -107,7 +107,8 @@ void *getDictItemValue(Dict d, char *key) {
 void deleteDictItem(Dict d, char *key) {
   struct item **prev;
 
-  for (prev = &(d->table[hash(key, d->size)]); prev != 0; prev = &((*prev)->next)) {
+  for (prev = &(d->table[hash(key, d->size)]); prev != 0;
+       prev = &((*prev)->next)) {
     if (!strcmp((*prev)->key, key)) {
       Item match = *prev;
       *prev = match->next;

@@ -203,12 +203,15 @@ VertexEdgeLists getNeighbors(Graph graph, char *key, int distance) {
   VertexEdgeLists vertex_edge_lists = createVertexEdgeLists();
 
   // dummy vertex header
-  vertex_edge_lists->vertex_head = malloc(sizeof(*vertex_edge_lists->vertex_head));
-  memset(vertex_edge_lists->vertex_head, 0, sizeof(*vertex_edge_lists->vertex_head));
+  vertex_edge_lists->vertex_head =
+      malloc(sizeof(*vertex_edge_lists->vertex_head));
+  memset(vertex_edge_lists->vertex_head, 0,
+         sizeof(*vertex_edge_lists->vertex_head));
 
   // dummy edge header
   vertex_edge_lists->edge_head = malloc(sizeof(*vertex_edge_lists->edge_head));
-  memset(vertex_edge_lists->edge_head, 0, sizeof(*vertex_edge_lists->edge_head));
+  memset(vertex_edge_lists->edge_head, 0,
+         sizeof(*vertex_edge_lists->edge_head));
 
   Vertex v_tail = vertex_edge_lists->vertex_head;
   Edge e_tail = vertex_edge_lists->edge_head;
@@ -275,12 +278,15 @@ VertexEdgeLists toVertexEdgeLists(Graph graph) {
   VertexEdgeLists vertex_edge_lists = createVertexEdgeLists();
 
   // dummy vertex header
-  vertex_edge_lists->vertex_head = malloc(sizeof(*vertex_edge_lists->vertex_head));
-  memset(vertex_edge_lists->vertex_head, 0, sizeof(*vertex_edge_lists->vertex_head));
+  vertex_edge_lists->vertex_head =
+      malloc(sizeof(*vertex_edge_lists->vertex_head));
+  memset(vertex_edge_lists->vertex_head, 0,
+         sizeof(*vertex_edge_lists->vertex_head));
 
   // dummy edge header
   vertex_edge_lists->edge_head = malloc(sizeof(*vertex_edge_lists->edge_head));
-  memset(vertex_edge_lists->edge_head, 0, sizeof(*vertex_edge_lists->edge_head));
+  memset(vertex_edge_lists->edge_head, 0,
+         sizeof(*vertex_edge_lists->edge_head));
 
   Vertex v_tail = vertex_edge_lists->vertex_head;
   Edge e_tail = vertex_edge_lists->edge_head;
@@ -296,7 +302,6 @@ VertexEdgeLists toVertexEdgeLists(Graph graph) {
       v_tail->next = c_vertex;
       v_tail = c_vertex;
       vertex_edge_lists->vertex_count++;
-
 
       Vertex neighbor = v->next;
 

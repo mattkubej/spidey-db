@@ -1,14 +1,14 @@
 #ifndef DICT_H
 #define DICT_H
 
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define INITIAL_SIZE 32
 #define GROWTH_FACTOR 2
 
-#define DICT_PROTECT_VALUES (1<<0)
-#define DICT_FREE_VALUES (1<<1)
+#define DICT_PROTECT_VALUES (1 << 0)
+#define DICT_FREE_VALUES (1 << 1)
 
 struct item {
   struct item *next;
