@@ -98,9 +98,18 @@ void commandGetVertex(Client client) {
 void commandGetNeighbors(Client client) {
   ClientRequest clt_req = client->clt_req;
 
+  char *vertex_key = clt_req->req_args[1];
+  Vertex root = getVertex(client->graph, vertex_key);
+
+  if (root == NULL) {
+    addErrorReply(client, "ERR vertex not found");
+    send(client->fd, client->reply_buf, client->reply_offset, 0);
+    return;
+  }
+
   int distance = atoi(clt_req->req_args[2]);
   VertexEdgeLists vertex_edge_lists =
-      getNeighbors(client->graph, clt_req->req_args[1], distance);
+      getNeighbors(client->graph, vertex_key, distance);
 
   addArrayLengthReply(client, 2);
 
