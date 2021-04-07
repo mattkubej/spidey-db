@@ -9,6 +9,7 @@ struct spideyCommand spideyCommandTable[] = {
     {"command", 1, commandCommand},
     {"ping", 1, commandPing},
     {"setedge", 3, commandSetEdge},
+    {"deledge", 3, commandDeleteEdge},
     {"setvertex", 3, commandSetVertex},
     {"getvertex", 2, commandGetVertex},
     {"getneighbors", 3, commandGetNeighbors},
@@ -40,6 +41,15 @@ void commandSetEdge(Client client) {
   ClientRequest clt_req = client->clt_req;
 
   addEdge(client->graph, clt_req->req_args[1], clt_req->req_args[2]);
+
+  addSimpleStringReply(client, RESPONSE_OK);
+  send(client->fd, client->reply_buf, client->reply_offset, 0);
+}
+
+void commandDeleteEdge(Client client) {
+  ClientRequest clt_req = client->clt_req;
+
+  deleteEdge(client->graph, clt_req->req_args[1], clt_req->req_args[2]);
 
   addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->reply_buf, client->reply_offset, 0);

@@ -68,6 +68,30 @@ void addEdge(Graph graph, char *v1_key, char *v2_key) {
   v2->next = v1_c;
 }
 
+void deleteDirectedEdge(Graph graph, char *src_key, char *dest_key) {
+  Vertex src = getVertex(graph, src_key);
+
+  while (src->next != NULL) {
+    if (strcmp(src->next->key, dest_key) == 0) {
+      Vertex temp = src->next;
+
+      src->next = src->next->next;
+
+      free(temp->key);
+      free(temp);
+
+      break;
+    }
+
+    src = src->next;
+  }
+}
+
+void deleteEdge(Graph graph, char *v1_key, char *v2_key) {
+  deleteDirectedEdge(graph, v1_key, v2_key);
+  deleteDirectedEdge(graph, v2_key, v1_key);
+}
+
 // --- getNeighbors and helpers ---
 
 VertexEdgeLists createVertexEdgeLists() {
