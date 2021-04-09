@@ -40,7 +40,24 @@ void commandPing(Client client) {
 void commandSetEdge(Client client) {
   ClientRequest clt_req = client->clt_req;
 
-  addEdge(client->graph, clt_req->req_args[1], clt_req->req_args[2]);
+  char *src_key = clt_req->req_args[1];
+  char *dest_key = clt_req->req_args[2];
+
+  Vertex src = getVertex(client->graph, src_key);
+  if (src == NULL) {
+    addErrorReply(client, "ERR src vertex not found");
+    send(client->fd, client->reply_buf, client->reply_offset, 0);
+    return;
+  }
+
+  Vertex dest = getVertex(client->graph, dest_key);
+  if (dest == NULL) {
+    addErrorReply(client, "ERR dest vertex not found");
+    send(client->fd, client->reply_buf, client->reply_offset, 0);
+    return;
+  }
+
+  addEdge(client->graph, src_key, dest_key);
 
   addSimpleStringReply(client, RESPONSE_OK);
   send(client->fd, client->reply_buf, client->reply_offset, 0);
