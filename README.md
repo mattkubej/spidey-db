@@ -22,9 +22,10 @@ will work or you can communicate over TCP
 
 * COMMAND
 * PING
-* SETEDGE _[vertex-key]_ _[vertex-key]_
-* DELEDGE _[vertex-key]_ _[vertex-key]_
 * SETVERTEX _[key]_ _[value]_
 * DELVERTEX _[key]_
 * GETVERTEX _[key]_
+* SETEDGE _[vertex-key]_ _[vertex-key]_
+* DELEDGE _[vertex-key]_ _[vertex-key]_
+* GETGRAPH
 * GETNEIGHBORS _[vertex-key]_ _[distance]_
